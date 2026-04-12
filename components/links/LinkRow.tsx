@@ -53,7 +53,7 @@ export function DraggableLink({
       style={style}
       ref={setNodeRef}
       className={[
-        "rounded-lg flex bg-white items-center p-4 py-2 shadow-(--shadow-card) ring-1 ring-(--color-border)",
+        "rounded-lg flex bg-white w-full items-center p-4 py-2 shadow-(--shadow-card) ring-1 ring-(--color-border)",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -66,18 +66,19 @@ export function DraggableLink({
       >
         ⠿
       </button>
-      <div className="p-3 flex flex-1 flex-col gap-1.5">
+      <div className="p-3 flex flex-1 min-w-0 flex-col gap-1.5">
         <p className="flex gap-1 capitalize cursor-pointer font-semibold items-center text-md">
-          <span className="flex gap-1 items-center flex-1">
-            {item.title}
-            <Pencil width={15} />
+          <span className="flex gap-1 items-center flex-1 min-w-0">
+            <span className="truncate flex-1 min-w-0">{item.title}</span>
+            <Pencil width={15} className="shrink-0" />
           </span>
-          <button onClick={deleteLink}>
+          <button className="shrink-0" onClick={deleteLink}>
             <Trash2 className="w-4" />
           </button>
         </p>
-        <p className="flex gap-1 font-medium cursor-pointer text-black/70 items-center text-sm">
-          {item.url} <Pencil width={15} />
+        <p className="flex gap-1 w-full min-w-0 font-medium cursor-pointer text-black/70 items-center text-sm">
+          <span className="truncate min-w-0 flex-1">{item.url}</span>
+          <Pencil width={15} className="shrink-0" />
         </p>
       </div>
     </div>

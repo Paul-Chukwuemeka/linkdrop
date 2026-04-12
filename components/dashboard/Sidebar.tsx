@@ -6,9 +6,31 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { ReactNode, useContext } from "react";
 import { AppContext } from "@/context/AppContext";
-import { PiEyesLight } from "react-icons/pi";
+import { PiEyesLight, PiEyes } from "react-icons/pi";
 import { FaPlus, FaPaintbrush } from "react-icons/fa6";
 import { IoIdCardSharp } from "react-icons/io5";
+
+function PreviewToggle() {
+  const { setIsPreview, isPreview } = useContext(AppContext)!;
+
+  return (
+    <button
+      className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-none text-sm font-semibold transition-all ${
+        isPreview
+          ? "bg-black text-white"
+          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
+      }`}
+      onClick={() => setIsPreview(!isPreview)}
+    >
+      {isPreview ? (
+        <PiEyes className="text-lg font-extrabold" />
+      ) : (
+        <PiEyesLight className="text-lg" />
+      )}
+      {isPreview ? "Hide Preview" : "Show Preview"}
+    </button>
+  );
+}
 
 function NavItem({
   href,
@@ -63,6 +85,7 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto flex flex-col gap-2">
+        <PreviewToggle />
         {user?.username && (
           <Link href={`/u/${encodeURIComponent(user.username)}`}>
             <Button variant="primary" className="w-full">
@@ -79,10 +102,8 @@ export function Sidebar() {
 }
 
 export function NavBar() {
-  const { setIsPreview, isPreview } = useContext(AppContext)!;
-
   return (
-    <div className="fixed lg:hidden z-100 overflow-hidden right-10 bottom-10 max-md:px-2 md:p-[0_0] h-13 duration-300 w-13 max-md:w-80 flex items-center justify-center shadow-[0px_0px_5px] shadow-gray-500/50 bg-white rounded-3xl ">
+    <div className="fixed md:hidden z-100 overflow-hidden right-10 bottom-10 max-md:px-2 md:p-[0_0] h-13 duration-300 w-13 max-md:w-60 flex items-center justify-center shadow-[0px_0px_5px] shadow-gray-500/50 bg-white rounded-3xl ">
       <NavItem
         href="/dashboard"
         label="Links"
@@ -101,13 +122,6 @@ export function NavBar() {
         mobile={true}
         icon={<FaPaintbrush className="text-lg" />}
       />
-      <button
-        className={`text-sm ${isPreview ? " bg-gray-800  text-white " : "bg-transparent"} h-13 w-13 duration-300 rounded-full md:text-sm flex items-center justify-center flex-col font-semibold `}
-        onClick={() => setIsPreview(!isPreview)}
-      >
-        <PiEyesLight  className="text-2xl max-md:text-xl" strokeWidth={5} />
-        <p className="md:hidden">Preview</p>
-      </button>
     </div>
   );
 }

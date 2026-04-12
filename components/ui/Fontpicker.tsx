@@ -6,7 +6,7 @@ import { AppContext } from "@/context/AppContext";
 
 const Fontpicker = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { cardStyle, setCardStyle } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle } = useContext(AppContext)!;
 
   const currentFont: FontType =
     fonts.find(
@@ -39,7 +39,7 @@ const Fontpicker = () => {
                   className={` h-15 ring-1 ${font.font.className} rounded-md ring-black/50`}
                   onClick={() => {
                     if (!cardStyle) return;
-                    setCardStyle({ ...cardStyle, font_style: font.name });
+                    updateCardStyle({ font_style: font.name });
                   }}
                 >
                   {font.name}

@@ -1,63 +1,15 @@
-import { CollectionBlock } from "@/components/collections/CollectionBlock";
-import { LinkCard } from "@/components/links/LinkCard";
-import { ProfileHeader } from "@/components/profile/ProfileHeader";
-import { resolveThemeVars, themeVarsToStyle } from "@/lib/theme";
-import type { Card, Collection, Link, UserProfilePublic } from "@/lib/types";
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { apiFetch } from "@/lib/api";
+import { Card, CardTheme } from "@/lib/types";
+import { isLight, darken, lighten } from "@/utils/colors";
+import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
+import { PublicLinkCard } from "@/components/links/PublicLinkCard";
+import { PublicCollection } from "@/components/collections/PublicCollection";
+import { fonts } from "@/lib/fonts";
+import { Metadata } from "next";
+import Link from "next/link";
 
-async function fetchProfile(username: string): Promise<UserProfilePublic> {
-  const base = process.env.NEXT_PUBLIC_API_URL;
-  if (!base) throw new Error("NEXT_PUBLIC_API_URL is not set");
-
-  const res = await fetch(new URL(`/profile/${encodeURIComponent(username)}`, base), {
-    cache: "no-store",
-  });
-
-  if (res.status === 404) notFound();
-  if (!res.ok) throw new Error("Failed to load profile");
-  return (await res.json()) as UserProfilePublic;
-}
-
-function buildTopLevelItems(card: Card): Array<
-  | { type: "link"; position: number; link: Link }
-  | { type: "collection"; position: number; collection: Collection }
-> {
-  const links = (card.links || []).filter((l) => l.collection_id === null);
-  const collections = card.collections || [];
-
-  const items = [
-    ...collections.map((collection) => ({
-      type: "collection" as const,
-      position: collection.position,
-      collection,
-    })),
-    ...links.map((link) => ({
-      type: "link" as const,
-      position: link.position,
-      link,
-    })),
-  ];
-
-  items.sort((a, b) => {
-    if (a.position !== b.position) return a.position - b.position;
-    return a.type === "collection" ? -1 : 1;
-  });
-
-  return items;
-}
-
-function linksByCollection(card: Card): Record<string, Link[]> {
-  const map: Record<string, Link[]> = {};
-  for (const link of card.links || []) {
-    if (!link.collection_id) continue;
-    map[link.collection_id] ||= [];
-    map[link.collection_id].push(link);
-  }
-  for (const id of Object.keys(map)) {
-    map[id].sort((a, b) => a.position - b.position);
-  }
-  return map;
+async function getCard(username: string): Promise<Card> {
+  return apiFetch(`/profile/${username}`);
 }
 
 export async function generateMetadata({
@@ -67,9 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { username } = await params;
   try {
-    const profile = await fetchProfile(username);
-    const title = `${profile.fullname} (@${profile.username})`;
-    const description = profile.bio || `Links by @${profile.username}`;
+    const card = await getCard(username);
+    const cardStyle: CardTheme = JSON.parse(card.style);
+
+    const title = `${card.user?.fullname || username} | LinkForge`;
+    const description = card.bio || `Links by @${username}`;
 
     return {
       title,
@@ -84,67 +38,119 @@ export async function generateMetadata({
   }
 }
 
-export default async function PublicProfilePage({
+export default async function Page({
   params,
 }: {
   params: Promise<{ username: string }>;
 }) {
   const { username } = await params;
-  const profile = await fetchProfile(username);
-  const card = profile.cards?.[0] as Card | undefined;
+  const card = await getCard(username);
 
-  const vars = resolveThemeVars(profile.theme);
-  const style = themeVarsToStyle(vars);
+  const cardStyle: CardTheme = JSON.parse(card.style);
+  const items = card.items_list || [];
 
-  if (!card) {
-    return (
-      <main className="min-h-dvh bg-(--page-bg) px-6" style={style}>
-        <div className="mx-auto w-full max-w-md">
-          <ProfileHeader
-            fullname={profile.fullname}
-            username={profile.username}
-            bio={profile.bio}
-            avatarUrl={profile.avatar_url}
-          />
-          <div className="rounded-3xl bg-white/70 p-6 text-center text-sm text-neutral-800 ring-1 ring-black/10">
-            No cards yet.
-          </div>
-        </div>
-      </main>
-    );
-  }
+  // Calculate gradient colors
+  const gradientColors =
+    cardStyle.gradient && cardStyle.gradient.length >= 2
+      ? cardStyle.gradient
+      : [
+          cardStyle.card_bg,
+          isLight(cardStyle.card_bg)
+            ? darken(cardStyle.card_bg, 0.8)
+            : lighten(cardStyle.card_bg, 0.8),
+        ];
 
-  const topItems = buildTopLevelItems(card);
-  const byCollection = linksByCollection(card);
+  // Get current font
+  const currentFont =
+    fonts.find(
+      (f) => f.name.toLowerCase() === cardStyle.font_style?.toLowerCase()
+    ) ?? fonts[0];
+
+  // Build background style
+  const backgroundStyle: React.CSSProperties =
+    cardStyle.bg_type === "solid"
+      ? { background: `#${cardStyle.card_bg}` }
+      : cardStyle.bg_type === "gradient"
+      ? {
+          background:
+            cardStyle.gradient_type === "radial"
+              ? `radial-gradient(circle at center, ${gradientColors.map((c) => `#${c}`).join(", ")})`
+              : `linear-gradient(${cardStyle.gradient_direction ?? 135}deg, ${gradientColors.map((c) => `#${c}`).join(", ")})`,
+        }
+      : cardStyle.bg_type === "image" && cardStyle.profile_image
+      ? {
+          backgroundImage: `url(${cardStyle.profile_image})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }
+      : { background: `#${cardStyle.card_bg}` };
+
+  const textColor = cardStyle.text_color || "ffffff";
 
   return (
-    <main className="min-h-dvh bg-(--page-bg) px-6" style={style}>
-      <div className="mx-auto w-full max-w-md pb-16">
-        <ProfileHeader
-          fullname={profile.fullname}
-          username={profile.username}
-          bio={profile.bio}
-          avatarUrl={profile.avatar_url}
-        />
+    <div
+      className="min-h-dvh w-full overflow-y-auto bg-fixed"
+      style={backgroundStyle}
+    >
+      <div
+        className={`mx-auto max-w-xl px-4 py-8 ${
+          currentFont?.font?.className || ""
+        }`}
+      >
+        {/* Main Card Container */}
+        <div className="rounded-3xl bg-white/10 backdrop-blur-sm p-6 sm:p-8">
+          <PublicProfileHeader
+            fullname={card.user?.fullname || ""}
+            username={card.user?.username || ""}
+            bio={card.bio || null}
+            avatarUrl={card.user?.avatar_url || null}
+            title_size={cardStyle.title_size}
+            text_size={cardStyle.text_size}
+            text_color={textColor}
+            title_color={cardStyle.title_color || textColor}
+          />
 
-        <div className="flex flex-col gap-4">
-          {topItems.map((item) => {
-            if (item.type === "link") {
-              return <LinkCard key={item.link.id} link={item.link} />;
-            }
+          {/* Links Section */}
+          <div className="mt-8 flex flex-col gap-4">
+            {items.map((item, i) =>
+              item.type === "link" ? (
+                <PublicLinkCard
+                  key={i}
+                  link={item.content}
+                  cardStyle={cardStyle}
+                />
+              ) : (
+                <PublicCollection
+                  key={i}
+                  collection={item.content}
+                  cardStyle={cardStyle}
+                />
+              )
+            )}
+          </div>
 
-            const links = byCollection[item.collection.id] || [];
-            return (
-              <CollectionBlock
-                key={item.collection.id}
-                collection={item.collection}
-                links={links}
-              />
-            );
-          })}
+          {/* Footer CTA */}
+          <div className="mt-10 text-center">
+            <Link
+              href="/"
+              className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-105"
+            >
+              Join LinkForge
+            </Link>
+          </div>
+        </div>
+
+        {/* Footer Links */}
+        <div className="mt-6 text-center text-xs opacity-60" style={{ color: `#${textColor}` }}>
+          <Link href="/" className="hover:underline">Cookie Preferences</Link>
+          {" · "}
+          <Link href="/" className="hover:underline">Report</Link>
+          {" · "}
+          <Link href="/" className="hover:underline">Privacy</Link>
+          {" · "}
+          <Link href="/" className="hover:underline">Explore</Link>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
-

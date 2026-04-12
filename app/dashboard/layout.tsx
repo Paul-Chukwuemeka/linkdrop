@@ -33,7 +33,6 @@ export default function DashboardLayout({
         <div className="mx-auto flex-1 md:grid w-full grid-cols-1 gap-3 lg:grid-cols-[250px_1fr] md:grid-cols-[200px_1fr]">
           <Sidebar />
           <NavBar />
-
           <div className=" h-full overflow-y-auto">
             <div className="min-w-0 h-full">{children}</div>
           </div>

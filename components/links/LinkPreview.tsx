@@ -1,15 +1,46 @@
 /* eslint-disable @next/next/no-img-element */
-import { Link as LinkType } from "@/lib/types";
+import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
 import { getDomain } from "@/utils/validate";
+import { buttonRadiusClasses,shadowStyles } from "@/lib/style-mappings";
 
-const LinkPreview = ({ item }: { item: LinkType }) => {
+function getButtonBgStyle(cardStyle: CardTheme | undefined) {
+  if (!cardStyle) return undefined;
+  if (cardStyle.button_type === "glass") {
+    return { background: "rgba(255,255,255,0.3)", backdropFilter: "blur(5px)" };
+  }
+  if (cardStyle.button_type === "outline") {
+    return {
+      borderColor: cardStyle.button_color
+        ? `#${cardStyle.button_color}`
+        : undefined,
+      borderWidth: "1px",
+    };
+  }
+  if (cardStyle.button_bg) {
+    return { backgroundColor: `#${cardStyle.button_bg}` };
+  }
+  return undefined;
+}
+
+const LinkPreview = ({
+  item,
+  cardStyle,
+}: {
+  item: LinkType;
+  cardStyle?: CardTheme;
+}) => {
   const domain = getDomain(item.url);
+  const buttonBgStyle = getButtonBgStyle(cardStyle);
 
   return (
     <Link
       href={item.url}
-      className="w-full rounded-full shadow-(--shadow-card) bg-white px-3 gap-5 h-12 font-semibold flex items-center"
+      className={`w-full px-3 gap-5 h-12 font-semibold flex items-center ${buttonRadiusClasses[cardStyle?.button_radius ?? "round"]}`}
+      style={{
+        ...buttonBgStyle,
+        ...(cardStyle?.shadow && shadowStyles[cardStyle.shadow]),
+      }}
     >
       <img
         width={64}
@@ -21,7 +52,16 @@ const LinkPreview = ({ item }: { item: LinkType }) => {
           e.currentTarget.src = "/globe.svg";
         }}
       />{" "}
-      <p className="capitalize">{item.title}</p>
+      <p
+       className="w-full truncate text-start capitalize"
+        style={{
+          color: cardStyle?.button_color
+            ? `#${cardStyle.button_color}`
+            : undefined,
+        }}
+      >
+        {item.title}
+      </p>
     </Link>
   );
 };

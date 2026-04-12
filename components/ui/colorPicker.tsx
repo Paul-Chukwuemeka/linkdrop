@@ -3,7 +3,7 @@ import { CardTheme } from "@/lib/types";
 import { useContext, useState } from "react";
 
 const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
-  const { cardStyle, setCardStyle } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle } = useContext(AppContext)!;
   const [isOpen, setIsOpen] = useState(false);
 
   const value =
@@ -21,7 +21,7 @@ const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
         type="text"
         onInput={(e) => {
           if (!cardStyle) return;
-          setCardStyle({ ...cardStyle, [property]: e.currentTarget.value });
+          updateCardStyle({ [property]: e.currentTarget.value });
         }}
         value={value}
         className="w-full outline-none"
@@ -33,8 +33,7 @@ const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
           className="cursor-pointer w-12 shrink-0 h-12 rounded-full"
           onChange={(e) => {
             if (!cardStyle) return;
-            setCardStyle({
-              ...cardStyle,
+            updateCardStyle({
               [property]: e.currentTarget.value.slice(1),
             });
           }}

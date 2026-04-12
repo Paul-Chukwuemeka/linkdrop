@@ -54,7 +54,21 @@ export interface Card {
   links?: Link[];
   collections?: Collection[];
   items_list: ItemFromList[];
-  style: string
+  style: string;
+  // Fields from /profile/{username} endpoint
+  fullname?: string;
+  username?: string;
+  bio?: string | null;
+  avatar_url?: string | null;
+  user?: publicCardUser;
+}
+
+export interface publicCardUser {
+  avatar_url: string | null;
+  bio: string | null;
+  fullname: string | null;
+  id: string | null;
+  username: string | null;
 }
 
 export interface CardCreate {
@@ -152,6 +166,7 @@ export interface CardTheme {
   card_bg: string;
   gradient: string[];
   gradient_type: "linear" | "radial";
+  gradient_direction: number; // Angle in degrees for linear gradients (0-360)
   button_bg: string;
   button_color: string;
   button_type: "solid" | "glass" | "outline";
@@ -161,8 +176,9 @@ export interface CardTheme {
   title_color: string | null;
   title_size: "large" | "medium" | "small";
   font_style: string;
-  shadow: number | null;
+  shadow: "none" | "soft" | "medium" | "hard" | "glow" | null;
   profile_image: string | null;
+  name?: string; // For preset identification
 }
 
 type NextFontWithVariable = NextFont & { variable: string };

@@ -39,10 +39,11 @@ export default function DashboardPage() {
     isCreatingCollection,
     setIsCreatingCollection,
     setIsCreatingLink,
+    isPreview,
+    setIsPreview
   } = useContext(AppContext)!;
   const { logout } = useAuth();
 
-  console.log(currentCard)
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
@@ -76,6 +77,9 @@ export default function DashboardPage() {
       loadCard(currentCard!.id);
     }
   }
+
+  console.log( "current",currentCard);
+
   const activeItem =
     currentCard &&
     currentCard.items_list.find((item) => item.content.id === activeId);
@@ -123,12 +127,21 @@ export default function DashboardPage() {
         </div>
       )}
       <div className="bg-white flex-1 w-full flex overflow-auto justify-center">
-        <div className="flex items-center  flex-1 overflow-auto max-w-380 bg-white gap-4">
+        <div className="flex items-center flex-1 overflow-auto max-w-380 bg-white gap-4 relative">
           <div className="overflow-auto flex justify-center flex-1 w-full p-6 h-full">
             <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3">
-              <h2 className="text-2xl mb-1 flex items-center gap-1 font-semibold">
-                {currentCard?.name} <PenLine className="w-4" />
-              </h2>
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl mb-1 flex items-center gap-1 font-semibold">
+                  {currentCard?.name} <PenLine className="w-4" />
+                </h2>
+                {/* Mobile preview toggle */}
+                <button
+                  className="md:hidden px-4 py-2 bg-black text-white rounded-full text-sm font-medium"
+                  onClick={() => setIsPreview(!isPreview)}
+                >
+                  {isPreview ? "Hide Preview" : "Show Preview"}
+                </button>
+              </div>
               <div className="flex relative rounded-3xl items-center w-full border bg-black text-white h-12">
                 <button
                   className="flex-1 h-12 rounded-3xl"
@@ -187,9 +200,8 @@ export default function DashboardPage() {
               )}
             </div>
           </div>
-          <div className="p-2">
-            <CardPreview />
-          </div>
+          {/* Preview: Overlay on mobile, side-by-side on md+ */}
+          
         </div>
       </div>
     </div>

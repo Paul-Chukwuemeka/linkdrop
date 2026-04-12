@@ -10,6 +10,7 @@ import React, {
 import { isValidUrl } from "@/utils/validate";
 import { apiFetch, ApiError } from "@/lib/api";
 
+
 type AppContextType = {
   profile: UserProfileMe | null;
   setProfile: Dispatch<SetStateAction<UserProfileMe | null>>;
@@ -84,7 +85,8 @@ export const AppContextProvider = ({
 
   async function loadCard(id: string) {
     try {
-      const data = await apiFetch<Card | null>(`/cards/${id}`);
+      const data = await apiFetch<Card | null>(`/cards/${id}/list`);
+      console.log(data)
       if (!data) return;
       const style = JSON.parse(data.style);
       setCurrentCard(data);

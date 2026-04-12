@@ -38,12 +38,11 @@ export function CollectionBlock({ item }: { item: Collection }) {
       style={style}
       ref={setNodeRef}
       className={[
-        "rounded-3xl bg-neutral-100 flex p-4 shadow-(--shadow-card) ring-1 ring-(--color-border)",
+        "rounded-3xl bg-neutral-100 flex-col gap-2 flex p-4 shadow-(--shadow-card) ring-1 ring-(--color-border)",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-      <div className="p-3 flex flex-1 flex-col gap-2">
         <div className="flex gap-4 justify-between">
           <button
             className="h-full w-10 cursor-grab text-sm text-gray-500"
@@ -69,7 +68,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
             <Trash2 className="w-4" />
           </button>
         </div>
-        <div className="h-fit py-2">
+        <div className="h-fit w-full py-2">
           {links.length > 0 ? (
             <div className="flex flex-col gap-2">
               {links.map((l, i) => (
@@ -93,7 +92,6 @@ export function CollectionBlock({ item }: { item: Collection }) {
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 }

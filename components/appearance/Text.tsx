@@ -5,7 +5,7 @@ import { AppContext } from "@/context/AppContext";
 import { Button } from "../ui/Button";
 import { Spinner } from "../ui/Spinner";
 const Text = () => {
-  const { cardStyle, setCardStyle,updateStyle,isSaving } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle,updateStyle,isSaving } = useContext(AppContext)!;
 
   const { title_size, text_size } = cardStyle!;
 
@@ -37,7 +37,7 @@ const Text = () => {
                 key={i}
                 className={` ${title_size == t ? "ring-2 bg-black/5 ring-black/30 " : "ring-1 ring-black/30 "} text-md rounded-md shrink-0 w-25 h-11`}
                 onClick={() => {
-                  setCardStyle({ ...cardStyle, title_size: t });
+                  updateCardStyle({ title_size: t });
                 }}
               >
                 {t}
@@ -55,7 +55,7 @@ const Text = () => {
                 key={i}
                 className={` ${text_size == t ? "ring-2 bg-black/5 ring-black/30 " : "ring-1 ring-black/30 "} text-md rounded-md shrink-0 w-25 h-11`}
                 onClick={() => {
-                  setCardStyle({ ...cardStyle, text_size: t });
+                  updateCardStyle({ text_size: t });
                 }}
               >
                 {t}

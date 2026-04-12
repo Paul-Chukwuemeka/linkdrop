@@ -1,7 +1,7 @@
-import { Collection } from "@/lib/types";
+import { Collection, CardTheme } from "@/lib/types";
 import LinkPreview from "../links/LinkPreview";
 
-const CollectionPreview = ({ item }: { item: Collection }) => {
+const CollectionPreview = ({ item, cardStyle }: { item: Collection; cardStyle?: CardTheme }) => {
   const links = item.links;
 
   if (links.length == 0) return;
@@ -11,7 +11,7 @@ const CollectionPreview = ({ item }: { item: Collection }) => {
       <p className="font-semibold capitalize">{item.title}</p>
       <div className="flex flex-col gap-3">
         {links.map((link, i) => {
-          return <LinkPreview item={link} key={i} />;
+          return <LinkPreview item={link} key={i} cardStyle={cardStyle} />;
         })}
       </div>
     </div>
