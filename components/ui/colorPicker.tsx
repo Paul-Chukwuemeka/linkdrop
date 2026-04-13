@@ -4,19 +4,15 @@ import { useContext, useState } from "react";
 
 const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
   const { cardStyle, updateCardStyle } = useContext(AppContext)!;
-  const [isOpen, setIsOpen] = useState(false);
 
   const value =
     cardStyle && cardStyle[property] !== null ? cardStyle[property] : "ffffff";
 
   return (
     <div
-      className="ring ring-black/20 text-black/70 px-4 text-lg w-70 h-12 p-2 flex items-center justify-between rounded-md"
-      onClick={() => {
-        setIsOpen(!isOpen);
-      }}
+      className="w-full ring ring-black/20 text-black/70 px-3 sm:px-4 text-base sm:text-lg h-10 sm:h-12 p-2 flex items-center justify-between rounded-lg bg-white"
     >
-      #
+      <span className="text-gray-400">#</span>
       <input
         type="text"
         onInput={(e) => {
@@ -24,13 +20,14 @@ const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
           updateCardStyle({ [property]: e.currentTarget.value });
         }}
         value={value}
-        className="w-full outline-none"
+        className="w-full outline-none bg-transparent ml-1 text-sm sm:text-base"
+        maxLength={6}
       />
-      <div className="w-7 ring-1 ring-black/30 h-7 shrink-0 flex overflow-hidden rounded-full justify-center items-center">
+      <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 flex overflow-hidden rounded-full justify-center items-center ring-1 ring-black/30 ml-2">
         <input
           type="color"
           value={`#${value}`}
-          className="cursor-pointer w-12 shrink-0 h-12 rounded-full"
+          className="cursor-pointer w-10 h-10 sm:w-12 sm:h-12 shrink-0 p-0 border-0"
           onChange={(e) => {
             if (!cardStyle) return;
             updateCardStyle({

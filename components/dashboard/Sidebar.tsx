@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { ReactNode, useContext } from "react";
 import { AppContext } from "@/context/AppContext";
-import { PiEyesLight, PiEyes } from "react-icons/pi";
+import { PiEyesLight, PiEyes, PiEyeBold } from "react-icons/pi";
 import { FaPlus, FaPaintbrush } from "react-icons/fa6";
 import { IoIdCardSharp } from "react-icons/io5";
 
@@ -15,19 +15,20 @@ function PreviewToggle() {
 
   return (
     <button
-      className={`flex items-center justify-center gap-2 px-3 py-2.5 rounded-none text-sm font-semibold transition-all ${
+      className={`flex items-center lg:hidden justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
         isPreview
           ? "bg-black text-white"
           : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200"
       }`}
       onClick={() => setIsPreview(!isPreview)}
+      aria-label={isPreview ? "Hide preview" : "Show preview"}
     >
       {isPreview ? (
         <PiEyes className="text-lg font-extrabold" />
       ) : (
         <PiEyesLight className="text-lg" />
       )}
-      {isPreview ? "Hide Preview" : "Show Preview"}
+      <span className="hidden sm:inline">{isPreview ? "Hide Preview" : "Show Preview"}</span>
     </button>
   );
 }
@@ -52,13 +53,17 @@ function NavItem({
   return (
     <Link
       href={href}
-      className={`
-        px-2 py-2 ${mobile && "md:hidden"} text-sm md:text-md max-md:flex items-center justify-between flex-col font-semibold transition-colors",
-        ${!mobile && active ? "bg-black text-white" : "md:hover:bg-white/60"}
-      `}
+      className={[
+        "font-semibold transition-colors",
+        mobile
+          ? "flex md:hidden flex-col items-center justify-center px-3 py-2 min-h-11 min-w-11 touch-manipulation"
+          : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
+        !mobile && active ? "bg-black text-white" : "hover:bg-white/60",
+        mobile && active ? "bg-black text-white rounded-full" : ""
+      ].filter(Boolean).join(" ")}
     >
       {icon}
-      {label}
+      {!mobile && label}
     </Link>
   );
 }
@@ -67,12 +72,11 @@ export function Sidebar() {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="flex h-full max-md:hidden w-full flex-col gap-4 rounded bg-white/60 p-4 shadow-(--shadow-nav) ring-1 ring-(--color-border) backdrop-blur">
+    <aside className="hidden md:flex h-full w-full flex-col gap-4 rounded-xl bg-white/60 p-4 shadow-(--shadow-nav) ring-1 ring-(--color-border) backdrop-blur">
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="md:text-2xl text-xl font-extrabold tracking-tight text-(--color-dark)"
-
+          className="text-xl lg:text-2xl font-extrabold tracking-tight text-(--color-dark)"
         >
           LinkForge
         </Link>
@@ -102,26 +106,34 @@ export function Sidebar() {
 }
 
 export function NavBar() {
+  const { isPreview, setIsPreview } = useContext(AppContext)!;
   return (
-    <div className="fixed md:hidden z-100 overflow-hidden right-10 bottom-10 max-md:px-2 md:p-[0_0] h-13 duration-300 w-13 max-md:w-60 flex items-center justify-center shadow-[0px_0px_5px] shadow-gray-500/50 bg-white rounded-3xl ">
+    <nav className="fixed md:hidden bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center shadow-lg shadow-gray-500/30 bg-white rounded-full px-2 sm:px-3  safe-area-bottom">
       <NavItem
         href="/dashboard"
         label="Links"
         mobile={true}
-        icon={<FaPlus className="text-lg" />}
+        icon={<FaPlus className="text-base sm:text-lg" />}
       />
       <NavItem
         href="/dashboard/cards"
         label="Cards"
         mobile={true}
-        icon={<IoIdCardSharp className="text-lg" />}
+        icon={<IoIdCardSharp className="text-base sm:text-lg" />}
       />
       <NavItem
         href="/dashboard/appearance"
         label="Appearance"
         mobile={true}
-        icon={<FaPaintbrush className="text-lg" />}
+        icon={<FaPaintbrush className="text-base sm:text-lg" />}
       />
-    </div>
+      <button
+        className="flex items-center justify-center text-black rounded-full px-3 py-2 text-lg sm:text-xl min-h-11 min-w-11 touch-manipulation"
+        onClick={() => setIsPreview(!isPreview)}
+        aria-label={isPreview ? "Hide preview" : "Show preview"}
+      >
+        <PiEyes strokeWidth={5} />
+      </button>
+    </nav>
   );
 }

@@ -40,10 +40,9 @@ export default function DashboardPage() {
     setIsCreatingCollection,
     setIsCreatingLink,
     isPreview,
-    setIsPreview
+    setIsPreview,
   } = useContext(AppContext)!;
   const { logout } = useAuth();
-
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
@@ -78,47 +77,50 @@ export default function DashboardPage() {
     }
   }
 
-  console.log( "current",currentCard);
+  console.log("current", currentCard);
 
   const activeItem =
     currentCard &&
     currentCard.items_list.find((item) => item.content.id === activeId);
 
   return (
-    <div className="flex min-w-0 flex-col h-full gap-4">
-      <div className="bg-white p-6 flex gap-2 items-center shadow-(--shadow-card) ring-1 ring-(--color-border)">
+    <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
+      <div className="bg-white p-3 sm:p-4 lg:p-5 flex gap-3 items-center shadow-(--shadow-card) ring-1 ring-(--color-border) rounded-xl">
         <div
-          className={`${!profile?.avatar_url && "p-3"} w-11 h-11 rounded-full ring-2 ring-gray-600/50 md:w-13 md:h-13 overflow-hidden flex items-center justify-center bg-gray-300`}
+          className={`${!profile?.avatar_url && "p-2"} w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-gray-600/50 lg:w-14 lg:h-14 overflow-hidden flex items-center justify-center bg-gray-200 shrink-0`}
         >
           <Image
             src={profile?.avatar_url ? profile?.avatar_url : "/user.svg"}
             alt={profile?.fullname || "User"}
-            className="border-none   outline-none"
+            className="w-full h-full object-cover"
             width={80}
             height={80}
           />
         </div>
-        <div className="gap-0.5 flex-1 flex flex-col">
+        <div className="flex-1 min-w-0 flex flex-col">
           <Link
             href={"/dashboard/appearance#username"}
-            className="text-md font-medium capitalize flex gap-1 items-center"
+            className="flex items-center gap-1 font-semibold"
           >
-            {profile?.fullname}
-            <PenLine className="w-4" />
+            <span className="truncate text-lg md:text-xl h-fit">
+              {profile?.fullname}
+            </span>
+            <PenLine className="w-4 shrink-0" />
           </Link>
           <Link
             href={"/dashboard/appearance#fullname"}
-            className="text-sm border-b leading-3 border-dashed w-fit "
+            className="text-xs sm:text-sm md:text-md border-b border-dashed w-fit"
           >
             @{profile?.username}
           </Link>
         </div>
 
         <button
-          className="w-10 h-10 md:hidden justify-center text-gray-700 flex items-center shadow-[0px_0px_5px] shadow-gray-500/50 bg-white rounded-full "
+          className="w-9 h-9 sm:w-10 sm:h-10 md:hidden justify-center text-gray-700 flex items-center shadow-md bg-white rounded-full shrink-0 touch-manipulation"
           onClick={logout}
+          aria-label="Log out"
         >
-          <TbLogout className="w-5" />
+          <TbLogout className="w-4 sm:w-5" />
         </button>
       </div>
       {error && (
@@ -126,25 +128,18 @@ export default function DashboardPage() {
           {error}
         </div>
       )}
-      <div className="bg-white flex-1 w-full flex overflow-auto justify-center">
-        <div className="flex items-center flex-1 overflow-auto max-w-380 bg-white gap-4 relative">
-          <div className="overflow-auto flex justify-center flex-1 w-full p-6 h-full">
-            <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3">
+      <div className="bg-white flex-1 w-full flex overflow-auto justify-center rounded-xl">
+        <div className="flex items-center flex-1 overflow-auto w-full gap-4 relative">
+          <div className="overflow-auto flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
+            <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl mb-1 flex items-center gap-1 font-semibold">
+                <h2 className="text-2xl sm:text-3xl mb-1 flex items-center gap-1 font-semibold">
                   {currentCard?.name} <PenLine className="w-4" />
                 </h2>
-                {/* Mobile preview toggle */}
-                <button
-                  className="md:hidden px-4 py-2 bg-black text-white rounded-full text-sm font-medium"
-                  onClick={() => setIsPreview(!isPreview)}
-                >
-                  {isPreview ? "Hide Preview" : "Show Preview"}
-                </button>
               </div>
-              <div className="flex relative rounded-3xl items-center w-full border bg-black text-white h-12">
+              <div className="flex relative rounded-2xl sm:rounded-3xl items-center w-full border bg-black text-white h-11 sm:h-12">
                 <button
-                  className="flex-1 h-12 rounded-3xl"
+                  className="flex-1 h-full rounded-2xl sm:rounded-3xl text-sm sm:text-base font-medium"
                   onClick={() => {
                     setIsCreatingLink(true);
                   }}
@@ -152,12 +147,17 @@ export default function DashboardPage() {
                   Add a new Link
                 </button>
                 <button
-                  className="border-l rounded-l-none rounded-3xl h-full border-gray-400 cursor-pointer  px-3"
+                  className="border-l rounded-l-none rounded-2xl sm:rounded-3xl h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
                   onClick={() => {
                     setOptions(!options);
                   }}
+                  aria-label="More options"
                 >
-                  {options ? <ChevronUp /> : <ChevronDown />}
+                  {options ? (
+                    <ChevronUp className="w-5" />
+                  ) : (
+                    <ChevronDown className="w-5" />
+                  )}
                   {options && (
                     <Options
                       setOptions={setOptions}
@@ -168,7 +168,6 @@ export default function DashboardPage() {
               </div>
               {isCreatingLink && <CreateLink />}
               {isCreatingCollection && <CreateCollection />}
-              {options}
               {currentCard && (
                 <DndContext
                   sensors={sensors}
@@ -201,7 +200,24 @@ export default function DashboardPage() {
             </div>
           </div>
           {/* Preview: Overlay on mobile, side-by-side on md+ */}
-          
+          <div
+            className={`
+            md:p-2
+            hidden lg:block
+          `}
+          >
+            <div className="flex items-center justify-center h-full md:h-auto md:items-stretch">
+              <div className="relative md:static">
+                <button
+                  className="md:hidden absolute -top-12 right-0 bg-white text-black px-3 py-1 rounded-full text-sm font-medium"
+                  onClick={() => setIsPreview(false)}
+                >
+                  Close
+                </button>
+                <CardPreview />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

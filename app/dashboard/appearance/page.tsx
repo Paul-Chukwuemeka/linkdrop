@@ -16,10 +16,8 @@ import Presets from "@/components/appearance/preset";
 const route = window.location.href.split("#")[1];
 
 export default function AppearancePage() {
-  const { profile, isLoading, error, currentCard } =
-    useContext(AppContext)!;
+  const { profile, isLoading, error, currentCard } = useContext(AppContext)!;
   const [current, setCurrent] = useState<string>(route ?? "profile");
-
 
   if (isLoading) {
     return (
@@ -43,25 +41,25 @@ export default function AppearancePage() {
   }
 
   return (
-    <div className="flex flex-1 h-full min-w-0 flex-col gap-3">
-      <div className="bg-white p-6">
-        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900">
+    <div className="flex flex-1 h-full min-w-0 flex-col gap-2 sm:gap-3">
+      <div className="bg-white p-4 sm:p-5 md:p-6 rounded-xl">
+        <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold tracking-tight text-neutral-900">
           Appearance - ({currentCard?.name})
         </h1>
-        <p className="mt-2 text-sm text-neutral-700">
+        <p className="mt-2 text-xs sm:text-sm text-neutral-700">
           Update your public profile details and choose a theme preset.
         </p>
       </div>
 
       {error && (
-        <div className="rounded-3xl bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
           {error}
         </div>
       )}
 
-      <div className="flex items-center flex-1 overflow-auto w-full bg-white gap-4">
-        <div className="p-6 flex-1 flex items-center flex-col gap-4 h-full ">
-          <div className="w-full max-w-200 flex flex-col gap-5">
+      <div className="flex items-center flex-1 overflow-auto w-full bg-white rounded-xl gap-4">
+        <div className="p-2 sm:p-3 md:p-4 flex-1 flex items-center flex-col gap-4 h-full">
+          <div className="w-full max-w-200 text-xs sm:text-sm md:text-base flex flex-col gap-3 md:gap-4">
             <Links setCurrent={setCurrent} current={current} />
             {current === "profile" && <Profile />}
             {current === "text" && <Text />}
@@ -70,7 +68,7 @@ export default function AppearancePage() {
             {current === "presets" && <Presets />}
           </div>
         </div>
-        <div className="max-lg:hidden px-10 p-2">
+        <div className="hidden lg:block px-6 xl:px-10 p-2">
           <CardPreview />
         </div>
       </div>
@@ -87,13 +85,17 @@ function Links({
 }) {
   const sections = ["profile", "text", "buttons", "background", "presets"];
   return (
-    <div className="w-full border-b border-black/20 max-w-120 p-1 grid-cols-[auto_auto_auto_auto_auto] grid gap-3">
+    <div className="w-full border-b border-black/20 max-w-150 p-1 flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3 md:gap-4">
       {sections.map((sect, i) => {
         return (
           <Link
             href={`#${sect}`}
             key={i}
-            className={`${current != sect ? "text-black/50 font-semibold" : " font-extrabold"} duration-300 text-center capitalize`}
+            className={`text-xs sm:text-sm md:text-base px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-all duration-300 text-center capitalize ${
+              current != sect
+                ? "text-black/50 font-semibold hover:text-black/70 hover:bg-black/5"
+                : "font-extrabold bg-black/10"
+            }`}
             onClick={() => setCurrent(sect)}
           >
             {sect}

@@ -56,9 +56,9 @@ export function CardsOverview() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4">
       {error && (
-        <div className="bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="bg-red-50 p-3 sm:p-4 rounded-xl text-sm text-red-700 ring-1 ring-red-100">
           {error}
         </div>
       )}

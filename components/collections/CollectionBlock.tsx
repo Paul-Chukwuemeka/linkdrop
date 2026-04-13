@@ -38,50 +38,52 @@ export function CollectionBlock({ item }: { item: Collection }) {
       style={style}
       ref={setNodeRef}
       className={[
-        "rounded-3xl bg-neutral-100 flex-col gap-2 flex p-4 shadow-(--shadow-card) ring-1 ring-(--color-border)",
+        "rounded-xl sm:rounded-2xl bg-neutral-100 flex-col gap-2 sm:gap-3 flex p-3 sm:p-4 shadow-(--shadow-card) ring-1 ring-(--color-border)",
       ]
         .filter(Boolean)
         .join(" ")}
     >
-        <div className="flex gap-4 justify-between">
+        <div className="flex gap-2 sm:gap-4 justify-between items-center">
           <button
-            className="h-full w-10 cursor-grab text-sm text-gray-500"
+            className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 shrink-0 touch-manipulation"
             {...attributes}
             {...listeners}
+            aria-label="Drag to reorder"
           >
             ⠿
           </button>
-          <p className="flex gap-1 flex-1 justify-center capitalize font-semibold text-neutral-600">
-            {item.title}
-            <Pencil className="w-4" />
+          <p className="flex gap-1 flex-1 justify-center capitalize font-semibold text-neutral-600 text-sm sm:text-base">
+            <span className="truncate">{item.title}</span>
+            <Pencil className="w-4 h-4 shrink-0" />
           </p>
           <button
-            className="text-md md:text-sm"
+            className="p-2 rounded-full hover:bg-white/50 transition-colors touch-manipulation"
             onClick={() => {
               setIsCreatingLink(true);
               setSelectedCollection(item.id);
             }}
+            aria-label="Add link to collection"
           >
-            <Plus className="w-5" />
+            <Plus className="w-5 h-5" />
           </button>
-          <button>
-            <Trash2 className="w-4" />
+          <button className="p-2 rounded-full hover:bg-red-50 transition-colors touch-manipulation" aria-label="Delete collection">
+            <Trash2 className="w-4 h-4" />
           </button>
         </div>
         <div className="h-fit w-full py-2">
           {links.length > 0 ? (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 sm:gap-3">
               {links.map((l, i) => (
                 <DraggableLink inCollection={true} key={i} item={l} />
               ))}
             </div>
           ) : (
-            <div className="flex gap-2 flex-col items-center justify-center p-3">
-              <p className="md:text-lg text-sm font-semibold">
+            <div className="flex gap-2 flex-col items-center justify-center p-3 sm:p-4">
+              <p className="text-sm sm:text-base font-semibold text-center">
                 Add a link to this collection
               </p>
               <button
-                className="text-md md:text-sm ring-1 ring-neutral-300 p-2 py-1 bg-white rounded-full"
+                className="text-sm ring-1 ring-neutral-300 px-4 py-2 bg-white rounded-full hover:bg-neutral-50 transition-colors touch-manipulation"
                 onClick={() => {
                   setIsCreatingLink(true);
                   setSelectedCollection(item.id);

@@ -5,10 +5,15 @@ import LinkPreview from "../links/LinkPreview";
 import CollectionPreview from "../collections/collectionPreview";
 import { fonts } from "@/lib/fonts";
 import { isLight, darken, lighten } from "@/utils/colors";
-import { titleSizeClasses, textSizeClasses, shadowStyles } from "@/lib/style-mappings";
+import {
+  titleSizeClasses,
+  textSizeClasses,
+  shadowStyles,
+} from "@/lib/style-mappings";
 
-const CardPreview = () => {
-  const { profile, currentCard, cardStyle } = useContext(AppContext)!;
+const CardPreview = ({ mobile }: { mobile?: boolean }) => {
+  const { profile, currentCard, cardStyle, isPreview, setIsPreview } =
+    useContext(AppContext)!;
 
   const items = currentCard?.items_list;
 
@@ -34,10 +39,28 @@ const CardPreview = () => {
 
   return (
     <div
-      className="flex items-center justify-center relative w-full h-full md:h-auto"
+      className={`flex items-center flex-col justify-center relative w-full ${mobile ? 'h-auto max-h-[85vh]' : 'h-full md:h-auto'}`}
+      onClick={() => {
+        if (mobile) {
+          setIsPreview(false);
+        }
+      }}
     >
+      {isPreview && mobile && (
+        <button
+          className="absolute z-10 top-2 right-2 bg-white/90 backdrop-blur px-4 py-2 text-sm font-semibold rounded-full shadow-lg transition-colors hover:bg-white"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsPreview(false);
+          }}
+          aria-label="Close preview"
+        >
+          Close
+        </button>
+      )}
       <div
-        className="mt-2 shadow-(--shadow-card) rounded-lg p-1 py-2 bg-(--page-bg) xl:w-70 w-70 h-140 ring-1 ring-black/10"
+        className="shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 bg-(--page-bg) w-[320px] sm:w-70 h-[560px] sm:h-140 ring-1 ring-black/10 overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
         style={{
           ...(cardStyle.bg_type === "solid" && {
             background: `#${cardStyle.card_bg}`,
@@ -58,19 +81,21 @@ const CardPreview = () => {
           ...(cardStyle.bg_type === "image" &&
             cardStyle.profile_image && {
               backgroundImage: `url(${cardStyle.profile_image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
             }),
         }}
       >
         <div
-          className={`min-h-130 overflow-y-auto preview h-full p-1 pb-5 flex flex-col lg:p-2 ${currentFont.font.className}`}
+          className={`h-full overflow-y-auto preview p-2 sm:p-1 sm:pb-5 lg:p-2 ${currentFont.font.className}`}
         >
-          <div className="flex *:shrink-0 flex-col items-center gap-2 h-fit py-4 text-center">
+          <div className="flex flex-col items-center gap-2 sm:gap-3 h-fit py-3 sm:py-4 text-center">
             <Image
               src={"/user.svg"}
               alt="user"
               width={100}
               height={100}
-              className="h-12 w-12 shrink-0 border rounded-full bg-white/40 ring-1 ring-black/10"
+              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 border rounded-full bg-white/40 ring-1 ring-black/10"
             />
             <p
               className={`font-black ${titleSizeClasses[cardStyle.title_size ?? "medium"]}`}
@@ -93,19 +118,21 @@ const CardPreview = () => {
               @{profile?.username}
             </p>
 
-            <p
-              className={`font-semibold text-center px-4 ${textSizeClasses[cardStyle.text_size ?? "medium"]}`}
-              style={{
-                color: cardStyle.text_color
-                  ? `#${cardStyle.text_color}`
-                  : undefined,
-              }}
-            >
-              {profile?.bio}
-            </p>
+            {profile?.bio && (
+              <p
+                className={`font-semibold text-center px-2 sm:px-4 ${textSizeClasses[cardStyle.text_size ?? "medium"]}`}
+                style={{
+                  color: cardStyle.text_color
+                    ? `#${cardStyle.text_color}`
+                    : undefined,
+                }}
+              >
+                {profile.bio}
+              </p>
+            )}
 
             <div
-              className={`w-full flex gap-2.5 p-2 flex-col flex-1 ${textSizeClasses[cardStyle.text_size ?? "medium"]}`}
+              className={`w-full flex gap-2 sm:gap-2.5 p-1 sm:p-2 flex-col flex-1 ${textSizeClasses[cardStyle.text_size ?? "medium"]}`}
               style={{
                 color: cardStyle.text_color
                   ? `#${cardStyle.text_color}`

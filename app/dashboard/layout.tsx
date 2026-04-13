@@ -5,6 +5,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { AppContextProvider } from "@/context/AppContext";
+import AppWrapper from "@/components/dashboard/Wrapper";
+import CardPreview from "@/components/cards/CardPreview";
 
 export default function DashboardLayout({
   children,
@@ -29,16 +31,15 @@ export default function DashboardLayout({
 
   return (
     <AppContextProvider>
-      <div className="min-h-dvh flex bg-neutral-100 p-3 md:p-3">
-        <div className="mx-auto flex-1 md:grid w-full grid-cols-1 gap-3 lg:grid-cols-[250px_1fr] md:grid-cols-[200px_1fr]">
-          <Sidebar />
-          <NavBar />
-          <div className=" h-full overflow-y-auto">
-            <div className="min-w-0 h-full">{children}</div>
-          </div>
-        </div>
+      <div className="min-h-dvh flex bg-neutral-100 p-2 sm:p-3 lg:p-4">
+          <AppWrapper>
+            <Sidebar />
+            <NavBar />
+            <div className="h-full overflow-y-auto overflow-x-hidden scrollbar-hide">
+              <div className="min-w-0 h-full pb-20 md:pb-0">{children}</div>
+            </div>
+          </AppWrapper>
       </div>
     </AppContextProvider>
   );
 }
-

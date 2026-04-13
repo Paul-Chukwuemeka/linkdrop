@@ -36,6 +36,7 @@ const LinkPreview = ({
   return (
     <Link
       href={item.url}
+      target="_blank"
       className={`w-full px-3 gap-5 h-12 font-semibold flex items-center ${buttonRadiusClasses[cardStyle?.button_radius ?? "round"]}`}
       style={{
         ...buttonBgStyle,

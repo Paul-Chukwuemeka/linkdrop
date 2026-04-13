@@ -15,27 +15,33 @@ const Text = () => {
   const textSizes = ["small", "medium", "large"] as const;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-4 sm:gap-5">
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-md">Page font</p>
-        <Fontpicker />
+        <p className="text-sm sm:text-base">Page font</p>
+        <div className="w-full sm:w-70">
+          <Fontpicker />
+        </div>
       </div>
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-md">Page text color</p>
-        <ColorPicker property="text_color" />
+        <p className="text-sm sm:text-base">Page text color</p>
+        <div className="w-full sm:w-70">
+          <ColorPicker property="text_color" />
+        </div>
       </div>
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-md">Title color</p>
-        <ColorPicker property="title_color" />
+        <p className="text-sm sm:text-base">Title color</p>
+        <div className="w-full sm:w-70">
+          <ColorPicker property="title_color" />
+        </div>
       </div>
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-md">Title size</p>
-        <div className="flex gap-2">
+        <p className="text-sm sm:text-base">Title size</p>
+        <div className="flex flex-wrap gap-2">
           {titleSizes.map((t, i) => {
             return (
               <button
                 key={i}
-                className={` ${title_size == t ? "ring-2 bg-black/5 ring-black/30 " : "ring-1 ring-black/30 "} text-md rounded-md shrink-0 w-25 h-11`}
+                className={`${title_size == t ? "ring-2 bg-black/5 ring-black/30" : "ring-1 ring-black/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
                 onClick={() => {
                   updateCardStyle({ title_size: t });
                 }}
@@ -47,13 +53,13 @@ const Text = () => {
         </div>
       </div>
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-md">Text size</p>
-        <div className="flex gap-2">
+        <p className="text-sm sm:text-base">Text size</p>
+        <div className="flex flex-wrap gap-2">
           {textSizes.map((t, i) => {
             return (
               <button
                 key={i}
-                className={` ${text_size == t ? "ring-2 bg-black/5 ring-black/30 " : "ring-1 ring-black/30 "} text-md rounded-md shrink-0 w-25 h-11`}
+                className={`${text_size == t ? "ring-2 bg-black/5 ring-black/30" : "ring-1 ring-black/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
                 onClick={() => {
                   updateCardStyle({ text_size: t });
                 }}
@@ -64,9 +70,9 @@ const Text = () => {
           })}
         </div>
       </div>
-        <Button className="w-40 mt-3" onClick={updateStyle} disabled={isSaving}>
-          {isSaving ? <Spinner/> : "Save changes"}
-        </Button>
+      <Button className="w-full sm:w-40 mt-2" onClick={updateStyle} disabled={isSaving}>
+        {isSaving ? <Spinner/> : "Save changes"}
+      </Button>
     </div>
   );
 };

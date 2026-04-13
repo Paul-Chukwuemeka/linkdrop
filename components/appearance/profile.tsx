@@ -39,8 +39,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col gap-1 ">
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+    <div className="flex flex-col gap-4 sm:gap-5">
+      <label className="flex flex-col gap-2 font-semibold text-neutral-800">
         Username
         <Input
           value={profile?.username}
@@ -51,7 +51,7 @@ const Profile = () => {
         />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 font-semibold text-neutral-800">
         Full name
         <Input
           value={profile?.fullname}
@@ -62,7 +62,7 @@ const Profile = () => {
         />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 font-semibold text-neutral-800">
         Bio
         <Textarea
           rows={4}
@@ -74,7 +74,7 @@ const Profile = () => {
         />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 font-semibold text-neutral-800">
         Avatar URL
         <Input
           value={profile?.avatar_url || ""}
@@ -85,8 +85,8 @@ const Profile = () => {
         />
       </label>
 
-      <div className="pt-4">
-        <Button onClick={save} disabled={isSaving}>
+      <div className="pt-2">
+        <Button onClick={save} disabled={isSaving} className="w-full sm:w-auto">
           {isSaving ? <Spinner /> : "Save changes"}
         </Button>
       </div>

@@ -14,38 +14,50 @@ const Fontpicker = () => {
     ) ?? fonts[0];
 
   return (
-    <div
-      className="ring ring-black/20 text-black/70 px-4 text-lg w-70 h-12 p-2 flex items-center justify-between rounded-md"
-      onClick={() => {
-        setIsOpen(!isOpen);
-      }}
-    >
-      <p className={`${currentFont.font.className}`}>{currentFont.name}</p>
-      <FaChevronDown className="text-md" />
+    <div className="relative">
+      <button
+        className="w-full ring ring-black/20 text-black/70 px-3 sm:px-4 text-base sm:text-lg h-10 sm:h-12 p-2 flex items-center justify-between rounded-lg bg-white transition-colors hover:bg-gray-50"
+        onClick={() => {
+          setIsOpen(!isOpen);
+        }}
+        aria-label="Select font"
+      >
+        <span className={`${currentFont.font.className} truncate`}>{currentFont.name}</span>
+        <FaChevronDown className={`text-sm transition-transform ${isOpen ? "rotate-180" : ""}`} />
+      </button>
 
       {isOpen && (
         <div
-          className="absolute left-0 p-10 flex items-center justify-center top-0 w-full h-dvh bg-black/10"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm"
           onClick={() => setIsOpen(false)}
         >
-          <div className="w-full gap-3 max-w-150 p-5 h-fit grid grid-cols-2 bg-white rounded-xl shadow-(--shadow-card)">
-            <div className="col-span-2">
-              <p>Page Font</p>
+          <div
+            className="w-full max-w-md sm:max-w-lg p-4 sm:p-6 bg-white rounded-xl shadow-(--shadow-card) max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Select Font</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+              {fonts.map((font, i) => {
+                const isSelected = currentFont.name === font.name;
+                return (
+                  <button
+                    key={i}
+                    className={`h-12 sm:h-14 px-4 ring-1 rounded-lg transition-all touch-manipulation ${font.font.className} ${
+                      isSelected
+                        ? "ring-2 ring-black bg-black/5"
+                        : "ring-black/20 hover:ring-black/40"
+                    }`}
+                    onClick={() => {
+                      if (!cardStyle) return;
+                      updateCardStyle({ font_style: font.name });
+                      setIsOpen(false);
+                    }}
+                  >
+                    {font.name}
+                  </button>
+                );
+              })}
             </div>
-            {fonts.map((font, i) => {
-              return (
-                <button
-                  key={i}
-                  className={` h-15 ring-1 ${font.font.className} rounded-md ring-black/50`}
-                  onClick={() => {
-                    if (!cardStyle) return;
-                    updateCardStyle({ font_style: font.name });
-                  }}
-                >
-                  {font.name}
-                </button>
-              );
-            })}
           </div>
         </div>
       )}
