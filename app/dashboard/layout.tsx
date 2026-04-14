@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { AppContextProvider } from "@/context/AppContext";
 import AppWrapper from "@/components/dashboard/Wrapper";
-import CardPreview from "@/components/cards/CardPreview";
 
 export default function DashboardLayout({
   children,

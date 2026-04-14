@@ -57,8 +57,8 @@ export default function AppearancePage() {
         </div>
       )}
 
-      <div className="flex items-center flex-1 overflow-auto w-full bg-white rounded-xl gap-4">
-        <div className="p-2 sm:p-3 md:p-4 flex-1 flex items-center flex-col gap-4 h-full">
+      <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
+        <div className="overflow-auto rounded-xl bg-white flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
           <div className="w-full max-w-200 text-xs sm:text-sm md:text-base flex flex-col gap-3 md:gap-4">
             <Links setCurrent={setCurrent} current={current} />
             {current === "profile" && <Profile />}
@@ -68,7 +68,7 @@ export default function AppearancePage() {
             {current === "presets" && <Presets />}
           </div>
         </div>
-        <div className="hidden lg:block px-6 xl:px-10 p-2">
+        <div className="md:p-2 hidden lg:flex bg-white p-2 items-center justify-center rounded-xl h-full">
           <CardPreview />
         </div>
       </div>
@@ -85,7 +85,7 @@ function Links({
 }) {
   const sections = ["profile", "text", "buttons", "background", "presets"];
   return (
-    <div className="w-full border-b border-black/20 max-w-150 p-1 flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-3 md:gap-4">
+    <div className="w-full border-b border-black/20 max-w-150 p-1 flex flex-wrap justify-center sm:justify-start gap-2 sm:gap-1 md:gap-1">
       {sections.map((sect, i) => {
         return (
           <Link

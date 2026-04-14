@@ -77,7 +77,6 @@ export default function DashboardPage() {
     }
   }
 
-
   const activeItem =
     currentCard &&
     currentCard.items_list.find((item) => item.content.id === activeId);
@@ -88,13 +87,12 @@ export default function DashboardPage() {
         method: "PATCH",
         json: { card_id: id },
       });
-      loadCard(id)
+      loadCard(id);
     } catch (error) {
       setError("Failed to update current card");
       console.log(error);
     }
   }
-
 
   return (
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
@@ -141,104 +139,88 @@ export default function DashboardPage() {
           {error}
         </div>
       )}
-      <div className="bg-white flex-1 w-full flex overflow-auto justify-center rounded-xl">
-        <div className="flex items-center flex-1 overflow-auto w-full gap-4 relative">
-          <div className="overflow-auto flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
-            <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
-              <div className="flex px-1 items-center justify-between">
-                <h2 className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold">
-                  {currentCard?.name} <PenLine className="w-4" />
-                </h2>
-                {profile && currentCard?.id !== profile!.current_card && (
-                  <button
-                    onClick={() => updateCurrentCard(currentCard!.id)}
-                    className="shadow-(--shadow-card) font-bold text-white bg-black px-3 py-2 md:py-1.5 rounded-full text-xs md:text-md"
-                  >
-                    Set main card
-                  </button>
-                )}
-              </div>
-              <div className="flex relative rounded-2xl sm:rounded-3xl items-center w-full border bg-black text-white h-11 sm:h-12">
+      <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
+        <div className="overflow-auto rounded-xl bg-white flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
+          <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
+            <div className="flex px-1 items-center justify-between">
+              <h2 className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold">
+                {currentCard?.name} <PenLine className="w-4" />
+              </h2>
+              {profile && currentCard?.id !== profile!.current_card && (
                 <button
-                  className="flex-1 h-full rounded-2xl sm:rounded-3xl text-sm sm:text-base font-medium"
-                  onClick={() => {
-                    setIsCreatingLink(true);
-                  }}
+                  onClick={() => updateCurrentCard(currentCard!.id)}
+                  className="shadow-(--shadow-card) font-bold text-white bg-black px-3 py-2 md:py-1.5 rounded-full text-xs md:text-md"
                 >
-                  Add a new Link
+                  Set main card
                 </button>
-                <button
-                  className="border-l rounded-l-none rounded-2xl sm:rounded-3xl h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
-                  onClick={() => {
-                    setOptions(!options);
-                  }}
-                  aria-label="More options"
-                >
-                  {options ? (
-                    <ChevronUp className="w-5" />
-                  ) : (
-                    <ChevronDown className="w-5" />
-                  )}
-                  {options && (
-                    <Options
-                      setOptions={setOptions}
-                      setIsCreatingCollection={setIsCreatingCollection}
-                    />
-                  )}
-                </button>
-              </div>
-              {isCreatingLink && <CreateLink />}
-              {isCreatingCollection && <CreateCollection />}
-              {currentCard && (
-                <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragStart={handleDragStart}
-                  onDragEnd={handleDragEnd}
-                >
-                  <SortableContext
-                    items={currentCard.items_list.map((_, i) => i)}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {currentCard?.items_list.map((item, i) => {
-                      return item.type == "link" ? (
-                        <DraggableLink key={i} item={item.content} />
-                      ) : (
-                        <CollectionBlock key={i} item={item.content} />
-                      );
-                    })}
-                  </SortableContext>
-                  <DragOverlay>
-                    {activeItem &&
-                      (activeItem.type == "link" ? (
-                        <DraggableLink item={activeItem.content} />
-                      ) : (
-                        <CollectionBlock item={activeItem.content} />
-                      ))}
-                  </DragOverlay>
-                </DndContext>
               )}
             </div>
-          </div>
-          {/* Preview: Overlay on mobile, side-by-side on md+ */}
-          <div
-            className={`
-            md:p-2
-            hidden lg:block
-          `}
-          >
-            <div className="flex items-center justify-center h-full md:h-auto md:items-stretch">
-              <div className="relative md:static">
-                <button
-                  className="md:hidden absolute -top-12 right-0 bg-white text-black px-3 py-1 rounded-full text-sm font-medium"
-                  onClick={() => setIsPreview(false)}
-                >
-                  Close
-                </button>
-                <CardPreview />
-              </div>
+            <div className="flex relative rounded-2xl sm:rounded-3xl items-center w-full border bg-black text-white h-11 sm:h-12">
+              <button
+                className="flex-1 h-full rounded-2xl sm:rounded-3xl text-sm sm:text-base font-medium"
+                onClick={() => {
+                  setIsCreatingLink(true);
+                }}
+              >
+                Add a new Link
+              </button>
+              <button
+                className="border-l rounded-l-none rounded-2xl sm:rounded-3xl h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
+                onClick={() => {
+                  setOptions(!options);
+                }}
+                aria-label="More options"
+              >
+                {options ? (
+                  <ChevronUp className="w-5" />
+                ) : (
+                  <ChevronDown className="w-5" />
+                )}
+                {options && (
+                  <Options
+                    setOptions={setOptions}
+                    setIsCreatingCollection={setIsCreatingCollection}
+                  />
+                )}
+              </button>
             </div>
+            {isCreatingLink && <CreateLink />}
+            {isCreatingCollection && <CreateCollection />}
+            {currentCard && (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={currentCard.items_list.map((_, i) => i)}
+                  strategy={verticalListSortingStrategy}
+                >
+                  {currentCard?.items_list.map((item, i) => {
+                    return item.type == "link" ? (
+                      <DraggableLink key={i} item={item.content} />
+                    ) : (
+                      <CollectionBlock key={i} item={item.content} />
+                    );
+                  })}
+                </SortableContext>
+                <DragOverlay>
+                  {activeItem &&
+                    (activeItem.type == "link" ? (
+                      <DraggableLink item={activeItem.content} />
+                    ) : (
+                      <CollectionBlock item={activeItem.content} />
+                    ))}
+                </DragOverlay>
+              </DndContext>
+            )}
           </div>
+        </div>
+        <div
+          className="md:p-2 hidden lg:flex bg-white p-2 items-center justify-center rounded-xl h-full"
+        >
+          <CardPreview />
         </div>
       </div>
     </div>

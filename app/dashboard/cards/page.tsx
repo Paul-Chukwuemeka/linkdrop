@@ -13,9 +13,12 @@ export default function DashboardCardsPage() {
           Manage the pages you publish under your username.
         </p>
       </div>
-      <div className="grid h-full flex-1 grid-cols-1 bg-white gap-4 sm:gap-6 rounded-xl overflow-auto lg:grid-cols-[1fr_360px]">
+      <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
         <CardsOverview />
-        <div className="hidden lg:block p-2 sm:p-3">
+        <div
+          className="md:p-2 hidden lg:flex bg-white p-2 items-center justify-center rounded-xl h-full
+          "
+        >
           <CardPreview />
         </div>
       </div>
