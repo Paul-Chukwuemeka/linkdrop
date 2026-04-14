@@ -3,9 +3,15 @@ import type { Card } from "@/lib/types";
 import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
 
-export function CardRow({ card }: { card: Card }) {
+export function CardRow({
+  card,
+  deleteCard,
+}: {
+  card: Card;
+  deleteCard: (id: string) => Promise<void>;
+}) {
   const { loadCard } = useContext(AppContext)!;
-  const router = useRouter()
+  const router = useRouter();
   return (
     <div className="flex items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-xl shadow-(--shadow-card) ring-1 ring-(--color-border)">
       <div className="min-w-0 flex-1">
@@ -18,10 +24,18 @@ export function CardRow({ card }: { card: Card }) {
         className="shrink-0 rounded-full bg-(--color-dark) px-3 sm:px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity touch-manipulation"
         onClick={() => {
           loadCard(card.id);
-          router.push("/dashboard")
+          router.push("/dashboard");
         }}
       >
         Select
+      </button>
+      <button
+        onClick={() => {
+          deleteCard(card.id);
+        }}
+        className="shrink-0 rounded-full bg-red-500/80 px-3 sm:px-4 py-2 text-sm font-semibold text-white hover:opacity-90 transition-opacity touch-manipulation"
+      >
+        Delete
       </button>
     </div>
   );

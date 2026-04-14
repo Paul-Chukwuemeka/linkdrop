@@ -10,10 +10,12 @@ export function CardList({
   cards,
   onCreateCard,
   isCreating,
+  deleteCard,
 }: {
   cards: Card[];
   onCreateCard: (name: string) => Promise<void>;
   isCreating: boolean;
+  deleteCard: (id: string) => Promise<void>;
 }) {
   const [name, setName] = useState("");
 
@@ -48,10 +50,9 @@ export function CardList({
             No cards yet.
           </div>
         ) : (
-          cards.map((card) => <CardRow key={card.id} card={card} />)
+          cards.map((card) => <CardRow deleteCard={deleteCard} key={card.id} card={card} />)
         )}
       </div>
     </div>
   );
 }
-

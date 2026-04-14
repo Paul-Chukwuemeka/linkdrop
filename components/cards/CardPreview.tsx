@@ -39,7 +39,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
 
   return (
     <div
-      className={`flex items-center flex-col justify-center relative w-full ${mobile ? 'h-auto max-h-[85vh]' : 'h-full md:h-auto'}`}
+      className={`flex items-center flex-col justify-center relative w-full ${mobile ? "h-auto max-h-[85vh]" : "h-full md:h-auto"}`}
       onClick={() => {
         if (mobile) {
           setIsPreview(false);
@@ -59,7 +59,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
         </button>
       )}
       <div
-        className="shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 bg-(--page-bg) w-[320px] sm:w-70 h-[560px] sm:h-140 ring-1 ring-black/10 overflow-hidden"
+        className="shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 bg-(--page-bg) w-[320px] sm:w-70 h-140 sm:h-140 ring-1 ring-black/10 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
         style={{
           ...(cardStyle.bg_type === "solid" && {
@@ -81,8 +81,8 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
           ...(cardStyle.bg_type === "image" &&
             cardStyle.profile_image && {
               backgroundImage: `url(${cardStyle.profile_image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }),
         }}
       >
@@ -102,7 +102,9 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               style={{
                 color: cardStyle.title_color
                   ? `#${cardStyle.title_color}`
-                  : undefined,
+                  : cardStyle.text_color
+                    ? `#${cardStyle.text_color}`
+                    : undefined,
               }}
             >
               {profile?.fullname}

@@ -47,6 +47,22 @@ export function CardsOverview() {
     }
   }
 
+  async function deleteCard(id: string) {
+    setError(null);
+    setIsCreating(true);
+    try {
+      await apiFetch<Card>(`/cards/${id}`, {
+        method: "Delete",
+      });
+      await load();
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Failed to delete card.");
+    } finally {
+      setIsCreating(false);
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center bg-white p-10 shadow-(--shadow-card) ring-1 ring-(--color-border)">
@@ -62,8 +78,12 @@ export function CardsOverview() {
           {error}
         </div>
       )}
-      <CardList cards={cards} onCreateCard={createCard} isCreating={isCreating} />
+      <CardList
+        cards={cards}
+        deleteCard={deleteCard}
+        onCreateCard={createCard}
+        isCreating={isCreating}
+      />
     </div>
   );
 }
-
