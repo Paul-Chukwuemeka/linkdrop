@@ -5,7 +5,7 @@ import Image from "next/image";
 import { PenLine, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
-import { apiFetch } from "@/lib/api";
+import { ApiError, apiFetch } from "@/lib/api";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -39,8 +39,8 @@ export default function DashboardPage() {
     isCreatingCollection,
     setIsCreatingCollection,
     setIsCreatingLink,
-    isPreview,
     setIsPreview,
+    setError,
   } = useContext(AppContext)!;
   const { logout } = useAuth();
 
@@ -77,11 +77,24 @@ export default function DashboardPage() {
     }
   }
 
-  console.log("current", currentCard);
 
   const activeItem =
     currentCard &&
     currentCard.items_list.find((item) => item.content.id === activeId);
+
+  async function updateCurrentCard(id: string) {
+    try {
+      await apiFetch("/profile/current", {
+        method: "PATCH",
+        json: { card_id: id },
+      });
+      loadCard(id)
+    } catch (error) {
+      setError("Failed to update current card");
+      console.log(error);
+    }
+  }
+
 
   return (
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
@@ -132,10 +145,18 @@ export default function DashboardPage() {
         <div className="flex items-center flex-1 overflow-auto w-full gap-4 relative">
           <div className="overflow-auto flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
             <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl sm:text-3xl mb-1 flex items-center gap-1 font-semibold">
+              <div className="flex px-1 items-center justify-between">
+                <h2 className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold">
                   {currentCard?.name} <PenLine className="w-4" />
                 </h2>
+                {profile && currentCard?.id !== profile!.current_card && (
+                  <button
+                    onClick={() => updateCurrentCard(currentCard!.id)}
+                    className="shadow-(--shadow-card) font-bold text-white bg-black px-3 py-2 md:py-1.5 rounded-full text-xs md:text-md"
+                  >
+                    Set main card
+                  </button>
+                )}
               </div>
               <div className="flex relative rounded-2xl sm:rounded-3xl items-center w-full border bg-black text-white h-11 sm:h-12">
                 <button

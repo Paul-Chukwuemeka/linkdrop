@@ -63,7 +63,7 @@ export default async function Page({
   // Get current font
   const currentFont =
     fonts.find(
-      (f) => f.name.toLowerCase() === cardStyle.font_style?.toLowerCase()
+      (f) => f.name.toLowerCase() === cardStyle.font_style?.toLowerCase(),
     ) ?? fonts[0];
 
   // Build background style
@@ -71,34 +71,36 @@ export default async function Page({
     cardStyle.bg_type === "solid"
       ? { background: `#${cardStyle.card_bg}` }
       : cardStyle.bg_type === "gradient"
-      ? {
-          background:
-            cardStyle.gradient_type === "radial"
-              ? `radial-gradient(circle at center, ${gradientColors.map((c) => `#${c}`).join(", ")})`
-              : `linear-gradient(${cardStyle.gradient_direction ?? 135}deg, ${gradientColors.map((c) => `#${c}`).join(", ")})`,
-        }
-      : cardStyle.bg_type === "image" && cardStyle.profile_image
-      ? {
-          backgroundImage: `url(${cardStyle.profile_image})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }
-      : { background: `#${cardStyle.card_bg}` };
+        ? {
+            background:
+              cardStyle.gradient_type === "radial"
+                ? `radial-gradient(circle at center, ${gradientColors.map((c) => `#${c}`).join(", ")})`
+                : `linear-gradient(${cardStyle.gradient_direction ?? 135}deg, ${gradientColors.map((c) => `#${c}`).join(", ")})`,
+          }
+        : cardStyle.bg_type === "image" && cardStyle.profile_image
+          ? {
+              backgroundImage: `url(${cardStyle.profile_image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }
+          : { background: `#${cardStyle.card_bg}` };
 
   const textColor = cardStyle.text_color || "ffffff";
 
   return (
     <div
-      className="min-h-dvh w-full overflow-y-auto bg-fixed"
+      className="min-h-dvh w-full flex items-start overflow-y-auto bg-fixed"
       style={backgroundStyle}
     >
       <div
-        className={`mx-auto max-w-xl px-4 py-8 ${
+        className={`mx-auto max-w-200 w-full shrink-0 px-4 py-8 ${
           currentFont?.font?.className || ""
         }`}
       >
-        {/* Main Card Container */}
-        <div className="rounded-3xl bg-white/10 backdrop-blur-sm p-6 sm:p-8">
+        <div
+          className="rounded-3xl w-full shadow-(--shadow-card) backdrop-blur-sm p-6 sm:p-8"
+          style={backgroundStyle}
+        >
           <PublicProfileHeader
             fullname={card.user?.fullname || ""}
             username={card.user?.username || ""}
@@ -110,7 +112,6 @@ export default async function Page({
             title_color={cardStyle.title_color || textColor}
           />
 
-          {/* Links Section */}
           <div className="mt-8 flex flex-col gap-4">
             {items.map((item, i) =>
               item.type === "link" ? (
@@ -125,11 +126,10 @@ export default async function Page({
                   collection={item.content}
                   cardStyle={cardStyle}
                 />
-              )
+              ),
             )}
           </div>
 
-          {/* Footer CTA */}
           <div className="mt-10 text-center">
             <Link
               href="/"
@@ -140,15 +140,25 @@ export default async function Page({
           </div>
         </div>
 
-        {/* Footer Links */}
-        <div className="mt-6 text-center text-xs opacity-60" style={{ color: `#${textColor}` }}>
-          <Link href="/" className="hover:underline">Cookie Preferences</Link>
+        <div
+          className="mt-6 text-center text-xs opacity-60"
+          style={{ color: `#${textColor}` }}
+        >
+          <Link href="/" className="hover:underline">
+            Cookie Preferences
+          </Link>
           {" · "}
-          <Link href="/" className="hover:underline">Report</Link>
+          <Link href="/" className="hover:underline">
+            Report
+          </Link>
           {" · "}
-          <Link href="/" className="hover:underline">Privacy</Link>
+          <Link href="/" className="hover:underline">
+            Privacy
+          </Link>
           {" · "}
-          <Link href="/" className="hover:underline">Explore</Link>
+          <Link href="/" className="hover:underline">
+            Explore
+          </Link>
         </div>
       </div>
     </div>

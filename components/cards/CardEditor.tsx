@@ -2,7 +2,7 @@
 
 import { CollectionEditor } from "@/components/collections/CollectionEditor";
 import { PreviewFrame, type PreviewItem } from "@/components/dashboard/PreviewFrame";
-// import { LinkRow } from "@/components/links/LinkRow";
+import { LinkRow } from "@/components/links/LinkRow";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Spinner } from "@/components/ui/Spinner";

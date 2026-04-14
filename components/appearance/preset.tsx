@@ -230,6 +230,7 @@ const Presets = () => {
       gradient_type: preset.gradient_type,
       gradient_direction: preset.gradient_direction,
       title_color: preset.title_color,
+      name: preset.name
     });
   };
 
@@ -259,9 +260,8 @@ const Presets = () => {
                     : "border-neutral-200 hover:border-neutral-300"
                 }`}
               >
-                {/* Preview Box */}
                 <div
-                  className="w-full aspect-[4/3] rounded-lg shadow-inner overflow-hidden relative"
+                  className={` w-full aspect-4/3 rounded-lg shadow-inner overflow-hidden relative`}
                   style={bgStyle}
                 >
                   {/* Mock Profile Preview */}

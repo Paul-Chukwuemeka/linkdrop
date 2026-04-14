@@ -86,7 +86,6 @@ export const AppContextProvider = ({
   async function loadCard(id: string) {
     try {
       const data = await apiFetch<Card | null>(`/cards/${id}/list`);
-      console.log(data)
       if (!data) return;
       const style = JSON.parse(data.style);
       setCurrentCard(data);
@@ -126,9 +125,10 @@ export const AppContextProvider = ({
       loadCard(currentCard!.id);
       setIsCreatingLink(false);
       setError(null);
-    } catch (error) {
-      setError("Failed to create Link");
-      console.log(error);
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Failed to create link.");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -143,9 +143,10 @@ export const AppContextProvider = ({
       });
       loadCard(currentCard!.id);
       setIsCreatingCollection(false);
-    } catch (error) {
-      setError("Failed to create Link");
-      console.log(error);
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Failed to create collection.");
+      console.log(err);
     } finally {
       setIsLoading(false);
       setSelectedCollection(null);
@@ -156,11 +157,10 @@ export const AppContextProvider = ({
     setIsSaving(true);
     try {
       const styleString = JSON.stringify(cardStyle);
-      const res = await apiFetch(`/cards/${currentCard?.id}/style`, {
+       await apiFetch(`/cards/${currentCard?.id}/style`, {
         method: "PATCH",
         json: { style: styleString },
       });
-      console.log(res);
     } catch (error) {
       setError("Failed to save style");
       console.log(error);

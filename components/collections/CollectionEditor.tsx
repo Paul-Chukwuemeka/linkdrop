@@ -1,11 +1,11 @@
 "use client";
 
-// import { LinkRow } from "@/components/links/LinkRow";
+import { LinkRow } from "@/components/links/LinkRow";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Collection, Link as LinkType } from "@/lib/types";
-import { Folder, GripVertical } from "lucide-react";
+import { Folder, GripVertical, Plus } from "lucide-react";
 import React, { useMemo, useRef, useState } from "react";
 
 export function CollectionEditor({
@@ -172,7 +172,10 @@ export function CollectionEditor({
       </div>
 
       <div className="mt-6 rounded-3xl bg-neutral-50 p-5 ring-1 ring-neutral-200">
-        <div className="text-sm font-bold text-neutral-900">Add a link</div>
+        <div className="flex items-center gap-2 text-sm font-bold text-neutral-900">
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          <span>Add a link</span>
+        </div>
         <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-center">
           <Input
             value={newTitle}
@@ -182,18 +185,21 @@ export function CollectionEditor({
           />
           <Input
             value={newUrl}
+            type="url"
             onChange={(e) => setNewUrl(e.target.value)}
             placeholder="https://…"
             className={nestedInputClassName}
           />
-          <Button type="button" onClick={createLink}>
+          <Button type="button" size="sm" className="rounded-2xl" onClick={createLink}>
             Add
           </Button>
         </div>
       </div>
 
       {error ? (
-        <div className="mt-4 text-sm text-red-700">{error}</div>
+        <div className="mt-4 rounded-xl bg-red-50 p-3 text-sm text-red-700 ring-1 ring-red-100">
+          {error}
+        </div>
       ) : null}
     </div>
   );

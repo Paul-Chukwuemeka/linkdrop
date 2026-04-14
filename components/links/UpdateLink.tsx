@@ -1,29 +1,74 @@
-import { useState, useContext } from "react";
+"use client";
+
 import { AppContext } from "@/context/AppContext";
+import { apiFetch, ApiError } from "@/lib/api";
+import type { Link as LinkType } from "@/lib/types";
+import { isValidUrl } from "@/utils/validate";
+import { Link2, X } from "lucide-react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Spinner } from "../ui/Spinner";
-import { isValidUrl } from "@/utils/validate";
-import { Link2, X } from "lucide-react";
 
-export function CreateLink() {
-  const { isLoading, saveLink, setIsCreatingLink, error, setError } =
-    useContext(AppContext)!;
-
-  const [title, setTitle] = useState<string>("");
-  const [url, setUrl] = useState<string>("");
+export function UpdateLink({
+  link,
+  onClose,
+}: {
+  link: LinkType;
+  onClose: () => void;
+}) {
+  const { currentCard, loadCard, setError } = useContext(AppContext)!;
+  const [title, setTitle] = useState(link.title);
+  const [url, setUrl] = useState(link.url);
+  const [isSaving, setIsSaving] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const nestedInputClassName =
     "rounded-xl bg-neutral-50 shadow-none ring-neutral-200 focus:ring-[var(--accent)]";
 
   function close() {
-    if (isLoading) return;
+    if (isSaving) return;
+    onClose();
+  }
+
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && !isSaving) onClose();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isSaving, onClose]);
+
+  async function save() {
+    const nextTitle = title.trim();
+    const nextUrl = url.trim();
+
+    if (!nextTitle || !nextUrl) {
+      setLocalError("Title and URL are required.");
+      return;
+    }
+
+    if (!isValidUrl(nextUrl)) {
+      setLocalError("Please enter a valid URL.");
+      return;
+    }
+
     setLocalError(null);
-    setHasSubmitted(false);
     setError(null);
-    setIsCreatingLink(false);
+    setIsSaving(true);
+    try {
+      await apiFetch<LinkType>(`/links/${link.id}`, {
+        method: "PATCH",
+        json: { title: nextTitle, url: nextUrl },
+      });
+      if (currentCard?.id) void loadCard(currentCard.id);
+      onClose();
+    } catch (err) {
+      if (err instanceof ApiError) setLocalError(err.message);
+      else setLocalError("Failed to update link.");
+    } finally {
+      setIsSaving(false);
+    }
   }
 
   return (
@@ -36,24 +81,11 @@ export function CreateLink() {
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
           e.preventDefault();
-          setHasSubmitted(true);
-          const nextTitle = title.trim();
-          const nextUrl = url.trim();
-          if (!nextTitle || !nextUrl) {
-            setLocalError("Title and URL are required.");
-            return;
-          }
-          if (!isValidUrl(nextUrl)) {
-            setLocalError("Please enter a valid URL (https://…).");
-            return;
-          }
-          setLocalError(null);
-          setError(null);
-          saveLink({ title: nextTitle, url: nextUrl });
+          void save();
         }}
         role="dialog"
         aria-modal="true"
-        aria-label="Add link"
+        aria-label="Edit link"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -62,11 +94,11 @@ export function CreateLink() {
                 <Link2 className="h-5 w-5" aria-hidden="true" />
               </span>
               <h2 className="text-lg font-extrabold tracking-tight text-neutral-900 sm:text-xl">
-                Add link
+                Edit link
               </h2>
             </div>
             <p className="mt-2 text-sm text-neutral-700">
-              Add a title and a URL for your page.
+              Update the title and URL.
             </p>
           </div>
           <button
@@ -84,10 +116,10 @@ export function CreateLink() {
             <div className="text-xs font-semibold text-neutral-600">Title</div>
             <Input
               value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. My portfolio"
               className={nestedInputClassName}
-              disabled={isLoading}
+              disabled={isSaving}
               autoFocus
             />
           </div>
@@ -97,28 +129,28 @@ export function CreateLink() {
             <Input
               type="url"
               value={url}
-              onChange={(e) => setUrl(e.currentTarget.value)}
+              onChange={(e) => setUrl(e.target.value)}
               placeholder="https://…"
               className={nestedInputClassName}
-              disabled={isLoading}
+              disabled={isSaving}
             />
             <div className="text-xs text-neutral-500">
               Tip: use a full URL (including https://).
             </div>
           </div>
 
-          {localError || (hasSubmitted ? error : null) ? (
+          {localError ? (
             <div className="rounded-xl bg-red-50 p-3 text-sm text-red-700 ring-1 ring-red-100">
-              {localError || error}
+              {localError}
             </div>
           ) : null}
 
           <div className="flex items-center justify-end gap-2 pt-1">
-            <Button type="button" variant="ghost" onClick={close} disabled={isLoading}>
+            <Button type="button" variant="ghost" onClick={close} disabled={isSaving}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? <Spinner /> : "Save"}
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? <Spinner /> : "Save"}
             </Button>
           </div>
         </div>

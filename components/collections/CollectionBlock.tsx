@@ -1,16 +1,18 @@
 "use client";
 import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
-import { Collection, ItemFromList, Link as LinkType } from "@/lib/types";
+import type { Collection } from "@/lib/types";
 import { CSS } from "@dnd-kit/utilities";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "@/context/AppContext";
-// import { Button } from "../ui/Button";
-// import { apiFetch, ApiError } from "@/lib/api";
+import { apiFetch, ApiError } from "@/lib/api";
 import { DraggableLink } from "../links/LinkRow";
+import { UpdateCollection } from "@/components/collections/UpdateCollection";
 
 export function CollectionBlock({ item }: { item: Collection }) {
-  const { setSelectedCollection, setIsCreatingLink } = useContext(AppContext)!;
+  const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setError } =
+    useContext(AppContext)!;
+  const [isEditing, setIsEditing] = useState(false);
   const {
     attributes,
     listeners,
@@ -33,16 +35,32 @@ export function CollectionBlock({ item }: { item: Collection }) {
 
   const links = item.links;
 
+  async function deleteCollection() {
+    const ok = window.confirm(
+      "Delete this collection? This will also delete the links inside it.",
+    );
+    if (!ok) return;
+    setError(null);
+    try {
+      await apiFetch<void>(`/collections/${item.id}`, { method: "DELETE" });
+      if (currentCard?.id) void loadCard(currentCard.id);
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Failed to delete collection.");
+    }
+  }
+
   return (
-    <div
-      style={style}
-      ref={setNodeRef}
-      className={[
-        "rounded-xl sm:rounded-2xl bg-neutral-100 flex-col gap-2 sm:gap-3 flex p-3 sm:p-4 shadow-(--shadow-card) ring-1 ring-(--color-border)",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
+    <>
+      <div
+        style={style}
+        ref={setNodeRef}
+        className={[
+          "flex flex-col gap-2 rounded-xl bg-neutral-100 p-3 shadow-(--shadow-card) ring-1 ring-(--color-border) sm:gap-3 sm:rounded-2xl sm:p-4",
+        ]
+          .filter(Boolean)
+          .join(" ")}
+      >
         <div className="flex gap-2 sm:gap-4 justify-between items-center">
           <button
             className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 shrink-0 touch-manipulation"
@@ -52,7 +70,10 @@ export function CollectionBlock({ item }: { item: Collection }) {
           >
             ⠿
           </button>
-          <p className="flex gap-1 flex-1 justify-center capitalize font-semibold text-neutral-600 text-sm sm:text-base">
+          <p
+            className="flex flex-1 cursor-pointer justify-center gap-1 text-sm font-semibold capitalize text-neutral-600 sm:text-base"
+            onClick={() => setIsEditing(true)}
+          >
             <span className="truncate">{item.title}</span>
             <Pencil className="w-4 h-4 shrink-0" />
           </p>
@@ -66,7 +87,11 @@ export function CollectionBlock({ item }: { item: Collection }) {
           >
             <Plus className="w-5 h-5" />
           </button>
-          <button className="p-2 rounded-full hover:bg-red-50 transition-colors touch-manipulation" aria-label="Delete collection">
+          <button
+            className="p-2 rounded-full hover:bg-red-50 transition-colors touch-manipulation"
+            aria-label="Delete collection"
+            onClick={deleteCollection}
+          >
             <Trash2 className="w-4 h-4" />
           </button>
         </div>
@@ -94,6 +119,13 @@ export function CollectionBlock({ item }: { item: Collection }) {
             </div>
           )}
         </div>
-    </div>
+      </div>
+      {isEditing ? (
+        <UpdateCollection
+          collection={item}
+          onClose={() => setIsEditing(false)}
+        />
+      ) : null}
+    </>
   );
 }

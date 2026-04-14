@@ -91,8 +91,8 @@ export function Sidebar() {
       <div className="mt-auto flex flex-col gap-2">
         <PreviewToggle />
         {user?.username && (
-          <Link href={`/u/${encodeURIComponent(user.username)}`}>
-            <Button variant="primary" className="w-full">
+          <Link href={`/u/${encodeURIComponent(user.username)}`} target="_blank">
+            <Button variant="primary" size="sm" className="w-full h-12">
               View public page
             </Button>
           </Link>

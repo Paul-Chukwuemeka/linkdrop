@@ -178,7 +178,7 @@ export interface CardTheme {
   font_style: string;
   shadow: "none" | "soft" | "medium" | "hard" | "glow" | null;
   profile_image: string | null;
-  name?: string; // For preset identification
+  name?: string;
 }
 
 type NextFontWithVariable = NextFont & { variable: string };
