@@ -1,11 +1,13 @@
 "use client";
 
 import { RegisterForm } from "@/components/auth/RegisterForm";
+import { Spinner } from "@/components/ui/Spinner";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export default function RegisterPage() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+    <div className="rounded-3xl bg-white p-8 shadow-(--shadow-card) ring-1 ring-(--color-border)">
       <h1
         className="text-3xl font-extrabold tracking-tight text-(--color-dark)"
   
@@ -17,7 +19,9 @@ export default function RegisterPage() {
       </p>
 
       <div className="mt-8">
-        <RegisterForm />
+        <Suspense fallback={<Spinner className="h-6 w-6 text-black" />}>
+          <RegisterForm />
+        </Suspense>
       </div>
 
       <p className="mt-6 text-sm text-neutral-700">

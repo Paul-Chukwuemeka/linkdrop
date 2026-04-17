@@ -20,7 +20,7 @@ export function CardList({
   const [name, setName] = useState("");
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-4">
+    <div className="flex flex-col w-full max-w-200 gap-3 sm:gap-4">
       <div className="bg-white p-4 sm:p-5 rounded-xl shadow-(--shadow-card) ring-1 ring-(--color-border)">
         <div className="text-sm font-bold text-neutral-900">Create a card</div>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">

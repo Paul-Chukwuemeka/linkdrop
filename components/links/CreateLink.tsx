@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Spinner } from "../ui/Spinner";
@@ -7,8 +7,8 @@ import { isValidUrl } from "@/utils/validate";
 import { Link2, X } from "lucide-react";
 
 export function CreateLink() {
-  const { isLoading, saveLink, setIsCreatingLink, error, setError } =
-    useContext(AppContext)!;
+  const { isLoadingCard: isLoading, saveLink, setIsCreatingLink, cardError: error, setCardError: setError } =
+    useCard();
 
   const [title, setTitle] = useState<string>("");
   const [url, setUrl] = useState<string>("");

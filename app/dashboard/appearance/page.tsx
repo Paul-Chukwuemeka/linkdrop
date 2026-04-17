@@ -5,7 +5,8 @@ import CardPreview from "@/components/cards/CardPreview";
 import { Spinner } from "@/components/ui/Spinner";
 import { Dispatch, SetStateAction, useState } from "react";
 import { useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useProfile } from "@/context/ProfileContext";
+import { useCard } from "@/context/CardContext";
 import Link from "next/link";
 import Profile from "@/components/appearance/profile";
 import Text from "@/components/appearance/Text";
@@ -16,7 +17,10 @@ import Presets from "@/components/appearance/preset";
 const route = window.location.href.split("#")[1];
 
 export default function AppearancePage() {
-  const { profile, isLoading, error, currentCard } = useContext(AppContext)!;
+  const { profile, isLoadingProfile, profileError } = useProfile();
+  const { currentCard, isLoadingCard, cardError } = useCard();
+  const isLoading = isLoadingProfile || isLoadingCard;
+  const error = profileError || cardError;
   const [current, setCurrent] = useState<string>(route ?? "profile");
 
   if (isLoading) {

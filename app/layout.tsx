@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "./providers";
 import { fontVariables , appFontClass} from "@/lib/fonts";
+import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
   title: "LinkForge",
@@ -17,6 +18,7 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className={`${fontVariables} ${appFontClass} min-h-full flex flex-col`}>
         <Providers>{children}</Providers>
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

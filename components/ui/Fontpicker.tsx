@@ -2,11 +2,11 @@ import { useContext, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { fonts } from "@/lib/fonts";
 import { FontType } from "@/lib/types";
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 
 const Fontpicker = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const { cardStyle, updateCardStyle } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle } = useStyle();
 
   const currentFont: FontType =
     fonts.find(

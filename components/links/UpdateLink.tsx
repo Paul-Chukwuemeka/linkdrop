@@ -1,6 +1,6 @@
 "use client";
 
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Link as LinkType } from "@/lib/types";
 import { isValidUrl } from "@/utils/validate";
@@ -17,7 +17,7 @@ export function UpdateLink({
   link: LinkType;
   onClose: () => void;
 }) {
-  const { currentCard, loadCard, setError } = useContext(AppContext)!;
+  const { currentCard, loadCard, setCardError: setError } = useCard();
   const [title, setTitle] = useState(link.title);
   const [url, setUrl] = useState(link.url);
   const [isSaving, setIsSaving] = useState(false);

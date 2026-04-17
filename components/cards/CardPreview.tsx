@@ -1,6 +1,8 @@
 import Image from "next/image";
 import { useContext, useMemo } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useProfile } from "@/context/ProfileContext";
+import { useCard } from "@/context/CardContext";
+import { useStyle } from "@/context/StyleContext";
 import LinkPreview from "../links/LinkPreview";
 import CollectionPreview from "../collections/collectionPreview";
 import { fonts } from "@/lib/fonts";
@@ -12,8 +14,9 @@ import {
 } from "@/lib/style-mappings";
 
 const CardPreview = ({ mobile }: { mobile?: boolean }) => {
-  const { profile, currentCard, cardStyle, isPreview, setIsPreview } =
-    useContext(AppContext)!;
+  const { profile } = useProfile();
+  const { currentCard, isPreview, setIsPreview } = useCard();
+  const { cardStyle } = useStyle();
 
   const items = currentCard?.items_list;
 
@@ -91,7 +94,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
         >
           <div className="flex flex-col items-center gap-2 sm:gap-3 h-fit py-3 sm:py-4 text-center">
             <Image
-              src={"/user.svg"}
+              src={profile?.avatar_url || "/user.svg"}
               alt="user"
               width={100}
               height={100}

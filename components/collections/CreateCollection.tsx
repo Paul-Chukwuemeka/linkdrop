@@ -1,13 +1,13 @@
 import { useState, useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Spinner } from "../ui/Spinner";
 import { FolderPlus, X } from "lucide-react";
 
 export function CreateCollection() {
-  const { isLoading, setIsCreatingCollection, addCollection, error, setError } =
-    useContext(AppContext)!;
+  const { isLoadingCard: isLoading, setIsCreatingCollection, addCollection, cardError: error, setCardError: setError } =
+    useCard();
 
   const [title, setTitle] = useState<string>("");
   const [localError, setLocalError] = useState<string | null>(null);

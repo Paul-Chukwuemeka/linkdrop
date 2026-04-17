@@ -1,6 +1,6 @@
 "use client";
 
-import { resolveThemeVars, themeVarsToStyle } from "@/lib/theme";
+
 import type { Collection, Link as LinkType } from "@/lib/types";
 import React, { useMemo } from "react";
 
@@ -33,18 +33,12 @@ export function PreviewFrame({
     fullname: string;
     bio: string | null;
     avatar_url: string | null;
-    theme: string | null;
   };
   cardName: string;
   items: PreviewItem[];
 }) {
-  const style = useMemo(() => {
-    const vars = resolveThemeVars(profile.theme);
-    return themeVarsToStyle(vars);
-  }, [profile.theme]);
-
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+    <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="text-sm font-bold text-neutral-900">Live preview</div>
@@ -61,8 +55,7 @@ export function PreviewFrame({
 
       <div className="mt-4 overflow-hidden rounded-[28px] ring-1 ring-black/10">
         <div
-          className="min-h-[560px] bg-[var(--page-bg)] px-5 pb-10"
-          style={style}
+          className="min-h-[560px] bg-(--page-bg) px-5 pb-10"
         >
           <div className="flex flex-col items-center gap-3 py-8 text-center">
             <div className="h-16 w-16 overflow-hidden rounded-full bg-white/40 ring-1 ring-black/10">

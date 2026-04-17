@@ -1,11 +1,13 @@
 "use client";
 import { SetStateAction, useContext, useMemo, useState } from "react";
-import { AppContext } from "@/context/AppContext";
-import Image from "next/image";
+import { useCard } from "@/context/CardContext";
+import { useProfile } from "@/context/ProfileContext";
 import { PenLine, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
-import { ApiError, apiFetch } from "@/lib/api";
+import { ProfileHeaderBar } from "@/components/dashboard/ProfileHeaderBar";
+import { OptionsDropdown } from "@/components/dashboard/OptionsDropdown";
+import { apiFetch } from "@/lib/api";
 import {
   SortableContext,
   verticalListSortingStrategy,
@@ -26,26 +28,31 @@ import { DraggableLink } from "../../components/links/LinkRow";
 import { CreateLink } from "@/components/links/CreateLink";
 import { CreateCollection } from "@/components/collections/CreateCollection";
 import { CollectionBlock } from "@/components/collections/CollectionBlock";
-import { useAuth } from "@/hooks/useAuth";
-import { TbLogout } from "react-icons/tb";
+import { useAuthContext as useAuth } from "@/context/AuthContext";
 
 export default function DashboardPage() {
+  const { profile, profileError } = useProfile();
   const {
-    profile,
-    error,
     currentCard,
+    setCurrentCard,
     loadCard,
     isCreatingLink,
     isCreatingCollection,
     setIsCreatingCollection,
     setIsCreatingLink,
-    setIsPreview,
-    setError,
-  } = useContext(AppContext)!;
+    cardError,
+    setCardError,
+    renameCard,
+  } = useCard();
+
+  const error = cardError || profileError;
+  const setError = setCardError;
   const { logout } = useAuth();
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState("");
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -59,11 +66,12 @@ export default function DashboardPage() {
 
   async function handleDragEnd(e: DragEndEvent) {
     const { active, over } = e;
-    if (!items) return;
+    if (!items || !currentCard) return;
     if (over && active.id !== over.id) {
       const oldIndex = items.findIndex((i) => i.content.id === active.id);
       const newIndex = items.findIndex((i) => i.content.id === over.id);
       if (oldIndex < 0 || newIndex < 0) return;
+
       const reordered: ItemFromList[] = arrayMove(
         items,
         oldIndex,
@@ -72,8 +80,20 @@ export default function DashboardPage() {
         ...item,
         position: index + 1,
       }));
-      await handleReorder(currentCard!.id, reordered);
-      loadCard(currentCard!.id);
+
+      const previousCard = { ...currentCard };
+      setCurrentCard({
+        ...currentCard,
+        items_list: reordered,
+      });
+
+      try {
+        await handleReorder(currentCard.id, reordered);
+      } catch (err) {
+        console.error("Failed to reorder items:", err);
+        setError("Failed to save new order. Reverting...");
+        setCurrentCard(previousCard);
+      }
     }
   }
 
@@ -90,50 +110,21 @@ export default function DashboardPage() {
       loadCard(id);
     } catch (error) {
       setError("Failed to update current card");
-      console.log(error);
     }
   }
 
+  const handleRename = async () => {
+    if (!editedName.trim() || editedName === currentCard?.name) {
+      setIsEditingName(false);
+      return;
+    }
+    await renameCard(editedName);
+    setIsEditingName(false);
+  };
+
   return (
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
-      <div className="bg-white p-3 sm:p-4 lg:p-5 flex gap-3 items-center shadow-(--shadow-card) ring-1 ring-(--color-border) rounded-xl">
-        <div
-          className={`${!profile?.avatar_url && "p-2"} w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-gray-600/50 lg:w-14 lg:h-14 overflow-hidden flex items-center justify-center bg-gray-200 shrink-0`}
-        >
-          <Image
-            src={profile?.avatar_url ? profile?.avatar_url : "/user.svg"}
-            alt={profile?.fullname || "User"}
-            className="w-full h-full object-cover"
-            width={80}
-            height={80}
-          />
-        </div>
-        <div className="flex-1 min-w-0 flex flex-col">
-          <Link
-            href={"/dashboard/appearance#username"}
-            className="flex items-center gap-1 font-semibold"
-          >
-            <span className="truncate text-lg md:text-xl h-fit">
-              {profile?.fullname}
-            </span>
-            <PenLine className="w-4 shrink-0" />
-          </Link>
-          <Link
-            href={"/dashboard/appearance#fullname"}
-            className="text-xs sm:text-sm md:text-md border-b border-dashed w-fit"
-          >
-            @{profile?.username}
-          </Link>
-        </div>
-
-        <button
-          className="w-9 h-9 sm:w-10 sm:h-10 md:hidden justify-center text-gray-700 flex items-center shadow-md bg-white rounded-full shrink-0 touch-manipulation"
-          onClick={logout}
-          aria-label="Log out"
-        >
-          <TbLogout className="w-4 sm:w-5" />
-        </button>
-      </div>
+      <ProfileHeaderBar profile={profile} logout={logout} />
       {error && (
         <div className="bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
           {error}
@@ -143,15 +134,36 @@ export default function DashboardPage() {
         <div className="overflow-auto rounded-xl bg-white flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
           <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
             <div className="flex px-1 items-center justify-between">
-              <h2 className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold">
-                {currentCard?.name} <PenLine className="w-4" />
-              </h2>
+              {isEditingName ? (
+                <input
+                  autoFocus
+                  className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black w-full mr-4"
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  onBlur={handleRename}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") handleRename();
+                    if (e.key === "Escape") setIsEditingName(false);
+                  }}
+                />
+              ) : (
+                <h2
+                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group"
+                  onClick={() => {
+                    setEditedName(currentCard?.name || "");
+                    setIsEditingName(true);
+                  }}
+                >
+                  {currentCard?.name}{" "}
+                  <PenLine className="w-4 transition-transform group-hover:scale-110" />
+                </h2>
+              )}
               {profile && currentCard?.id !== profile!.current_card && (
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
-                  className="shadow-(--shadow-card) font-bold text-white bg-black px-3 py-2 md:py-1.5 rounded-full text-xs md:text-md"
+                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black px-3 rounded-full text-xs md:text-md"
                 >
-                  Set main card
+                  Set as main card
                 </button>
               )}
             </div>
@@ -165,7 +177,7 @@ export default function DashboardPage() {
                 Add a new Link
               </button>
               <button
-                className="border-l rounded-l-none rounded-2xl sm:rounded-3xl h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
+                className="border-l rounded-l-none  h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
                 onClick={() => {
                   setOptions(!options);
                 }}
@@ -177,7 +189,7 @@ export default function DashboardPage() {
                   <ChevronDown className="w-5" />
                 )}
                 {options && (
-                  <Options
+                  <OptionsDropdown
                     setOptions={setOptions}
                     setIsCreatingCollection={setIsCreatingCollection}
                   />
@@ -194,14 +206,14 @@ export default function DashboardPage() {
                 onDragEnd={handleDragEnd}
               >
                 <SortableContext
-                  items={currentCard.items_list.map((_, i) => i)}
+                  items={currentCard.items_list.map((item) => item.content.id)}
                   strategy={verticalListSortingStrategy}
                 >
-                  {currentCard?.items_list.map((item, i) => {
+                  {currentCard?.items_list.map((item) => {
                     return item.type == "link" ? (
-                      <DraggableLink key={i} item={item.content} />
+                      <DraggableLink key={item.content.id} item={item.content} />
                     ) : (
-                      <CollectionBlock key={i} item={item.content} />
+                      <CollectionBlock key={item.content.id} item={item.content} />
                     );
                   })}
                 </SortableContext>
@@ -242,23 +254,4 @@ async function handleReorder(card_id: string, reordered: ItemFromList[]) {
   return res;
 }
 
-const Options = ({
-  setIsCreatingCollection,
-  setOptions,
-}: {
-  setOptions: React.Dispatch<SetStateAction<boolean>>;
-  setIsCreatingCollection: React.Dispatch<SetStateAction<boolean>>;
-}) => {
-  return (
-    <div
-      className="absolute options flex items-center justify-center  shadow-(--shadow-nav) z-100 text-black font-semibold bg-white top-full w-full h-14 left-0"
-      onClick={(e) => {
-        e.stopPropagation();
-        setIsCreatingCollection(true);
-        setOptions(false);
-      }}
-    >
-      Create a new collection
-    </div>
-  );
-};
+

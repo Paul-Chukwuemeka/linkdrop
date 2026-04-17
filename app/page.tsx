@@ -1,7 +1,7 @@
 import Background from "@/components/background";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import Link from "next/link";
+import { HeroForm } from "@/components/landing/HeroForm";
 
 export default function Home() {
   return (
@@ -45,16 +45,7 @@ export default function Home() {
               public profile in minutes.
             </p>
 
-            <div className="mt-6 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:items-center">
-              <div className="w-full sm:max-w-xs">
-                <Input placeholder="yourname" aria-label="Username" />
-              </div>
-              <Link href="/register" className="w-full sm:w-auto">
-                <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                  Get started for free
-                </Button>
-              </Link>
-            </div>
+            <HeroForm />
           </div>
           <div className="hidden lg:block flex-1">
 

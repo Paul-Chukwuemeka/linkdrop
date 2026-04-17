@@ -4,15 +4,19 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Spinner } from "@/components/ui/Spinner";
 import { ApiError } from "@/lib/api";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext as useAuth } from "@/context/AuthContext";
 import type { SignupRequest } from "@/lib/types";
 import React, { useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 export function RegisterForm() {
   const { register } = useAuth();
+  const searchParams = useSearchParams();
+
+  const initialUsername = searchParams.get("username") || "";
 
   const [form, setForm] = useState<SignupRequest>({
-    username: "",
+    username: initialUsername,
     email: "",
     fullname: "",
     password: "",
@@ -21,8 +25,30 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+
+  function validateField(key: string, value: string) {
+    let msg = "";
+    if (key === "username") {
+      if (!value.trim()) msg = "Username required.";
+      else if (!/^[a-zA-Z0-9_-]+$/.test(value)) msg = "Only letters, numbers, _, and - allowed.";
+    }
+    if (key === "email") {
+      if (!value.trim()) msg = "Email required.";
+      else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) msg = "Invalid email format.";
+    }
+    if (key === "password") {
+       if (value.length > 0 && value.length < 8) msg = "Minimum 8 characters.";
+       else if (value.length >= 8 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(value)) {
+         msg = "Need uppercase, number, and special character.";
+       }
+    }
+    setFieldErrors(prev => ({ ...prev, [key]: msg }));
+  }
+
   function update<K extends keyof SignupRequest>(key: K, value: SignupRequest[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+    validateField(key, value);
   }
 
   async function onSubmit(e: React.FormEvent) {
@@ -57,6 +83,7 @@ export function RegisterForm() {
           required
           minLength={3}
         />
+        {fieldErrors.username && <span className="text-xs text-red-600 font-normal">{fieldErrors.username}</span>}
       </label>
 
       <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
@@ -69,6 +96,7 @@ export function RegisterForm() {
           placeholder="you@example.com"
           required
         />
+        {fieldErrors.email && <span className="text-xs text-red-600 font-normal">{fieldErrors.email}</span>}
       </label>
 
       <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
@@ -93,6 +121,7 @@ export function RegisterForm() {
           required
           minLength={8}
         />
+        {fieldErrors.password && <span className="text-xs text-red-600 font-normal">{fieldErrors.password}</span>}
       </label>
 
       {error && (

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Spinner } from "@/components/ui/Spinner";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import toast from "react-hot-toast";
 import {
   DndContext,
   PointerSensor,
@@ -99,7 +100,7 @@ function DroppableArea({
   return (
     <div
       ref={setNodeRef}
-      className={[className, isOver ? "ring-2 ring-[var(--color-dark)]" : ""]
+      className={[className, isOver ? "ring-2 ring-(--color-dark)" : ""]
         .filter(Boolean)
         .join(" ")}
     >
@@ -473,6 +474,28 @@ export function CardEditor({ cardId }: { cardId: string }) {
     setContainers(nextContainers);
     containersRef.current = nextContainers;
     void persistDragChange({ activeId, startContainer, endContainer, nextContainers });
+
+    toast((t) => (
+      <div className="flex items-center gap-4">
+        <span className="text-sm font-medium">Order saved</span>
+        <button
+          onClick={() => {
+            setContainers(current);
+            containersRef.current = current;
+            void persistDragChange({
+              activeId,
+              startContainer: endContainer,
+              endContainer: startContainer,
+              nextContainers: current
+            });
+            toast.dismiss(t.id);
+          }}
+          className="rounded bg-black/10 px-2 py-1 text-xs font-semibold hover:bg-black/20 transition-colors"
+        >
+          Undo
+        </button>
+      </div>
+    ), { duration: 4000 });
   }
 
   async function addTopLevelLink() {
@@ -521,7 +544,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   if (isLoading) {
     return (
-      <div className="rounded-3xl bg-white p-10 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white p-10 shadow-(--shadow-card) ring-1 ring-(--color-border)">
         <div className="flex items-center gap-3">
           <Spinner />
           <div className="text-sm font-semibold text-neutral-800">
@@ -534,7 +557,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   if (!card) {
     return (
-      <div className="rounded-3xl bg-white p-6 text-sm text-neutral-800 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white p-6 text-sm text-neutral-800 shadow-(--shadow-card) ring-1 ring-(--color-border)">
         {error || "Card not found."}
       </div>
     );
@@ -544,7 +567,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      <div className="rounded-3xl bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
         <h1
           className="text-2xl font-extrabold tracking-tight text-neutral-900"
 
@@ -580,7 +603,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
             }}
           >
             {topSortableIds.length === 0 ? (
-              <div className="rounded-3xl bg-white p-6 text-sm text-neutral-700 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+              <div className="rounded-3xl bg-white p-6 text-sm text-neutral-700 shadow-(--shadow-card) ring-1 ring-(--color-border)">
                 No items yet. Add a link or a collection below.
               </div>
             ) : (
@@ -724,7 +747,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
           </DndContext>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+            <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
               <div className="text-sm font-bold text-neutral-900">Add link</div>
               <div className="mt-3 flex flex-col gap-3">
                 <Input
@@ -747,7 +770,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
               </div>
             </div>
 
-            <div className="rounded-3xl bg-white p-6 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+            <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
               <div className="text-sm font-bold text-neutral-900">
                 Add collection
               </div>
@@ -776,7 +799,6 @@ export function CardEditor({ cardId }: { cardId: string }) {
               fullname: profile?.fullname || "",
               bio: profile?.bio || null,
               avatar_url: profile?.avatar_url || null,
-              theme: profile?.theme || null,
             }}
             cardName={card.name}
             items={debouncedPreviewItems}

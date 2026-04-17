@@ -1,7 +1,7 @@
 "use client";
 
 import { useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 import { Button } from "@/components/ui/Button";
 import { CardTheme } from "@/lib/types";
 
@@ -209,8 +209,8 @@ function getButtonStyle(preset: CardTheme): React.CSSProperties {
 }
 
 const Presets = () => {
-  const { cardStyle, updateCardStyle, updateStyle, isSaving } =
-    useContext(AppContext)!;
+  const { cardStyle, updateCardStyle, updateStyle, isSavingStyle: isSaving } =
+    useStyle();
 
   const handleApplyPreset = (preset: CardTheme) => {
     updateCardStyle({

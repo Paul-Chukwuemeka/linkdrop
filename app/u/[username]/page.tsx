@@ -1,5 +1,5 @@
 import { apiFetch } from "@/lib/api";
-import { Card, CardTheme } from "@/lib/types";
+import { Card } from "@/lib/types";
 import { isLight, darken, lighten } from "@/utils/colors";
 import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
 import { PublicLinkCard } from "@/components/links/PublicLinkCard";
@@ -7,9 +7,14 @@ import { PublicCollection } from "@/components/collections/PublicCollection";
 import { fonts } from "@/lib/fonts";
 import { Metadata } from "next";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 async function getCard(username: string): Promise<Card> {
-  return apiFetch(`/profile/${username}`);
+  try {
+    return await apiFetch(`/profile/${username}`);
+  } catch {
+    notFound();
+  }
 }
 
 export async function generateMetadata({
@@ -20,10 +25,12 @@ export async function generateMetadata({
   const { username } = await params;
   try {
     const card = await getCard(username);
-    const cardStyle: CardTheme = JSON.parse(card.style);
 
     const title = `${card.user?.fullname || username} | LinkForge`;
     const description = card.bio || `Links by @${username}`;
+    
+    // Fallback to a default LinkForge image if the user doesn't have an avatar.
+    const ogImage = card.user?.avatar_url || "https://linkforge.example.com/og-image.jpg";
 
     return {
       title,
@@ -31,6 +38,21 @@ export async function generateMetadata({
       openGraph: {
         title,
         description,
+        type: "profile",
+        images: [
+          {
+            url: ogImage,
+            width: 800,
+            height: 800,
+            alt: `${username}'s profile image`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [ogImage],
       },
     };
   } catch {
@@ -46,7 +68,7 @@ export default async function Page({
   const { username } = await params;
   const card = await getCard(username);
 
-  const cardStyle: CardTheme = JSON.parse(card.style);
+  const cardStyle = card.style;
   const items = card.items_list || [];
 
   // Calculate gradient colors
@@ -93,7 +115,7 @@ export default async function Page({
       style={backgroundStyle}
     >
       <div
-        className={`mx-auto max-w-200 w-full shrink-0 px-4 py-8 ${
+        className={`mx-auto max-w-160 w-full shrink-0 px-4 py-8 ${
           currentFont?.font?.className || ""
         }`}
       >
@@ -144,21 +166,6 @@ export default async function Page({
           className="mt-6 text-center text-xs opacity-60"
           style={{ color: `#${textColor}` }}
         >
-          <Link href="/" className="hover:underline">
-            Cookie Preferences
-          </Link>
-          {" · "}
-          <Link href="/" className="hover:underline">
-            Report
-          </Link>
-          {" · "}
-          <Link href="/" className="hover:underline">
-            Privacy
-          </Link>
-          {" · "}
-          <Link href="/" className="hover:underline">
-            Explore
-          </Link>
         </div>
       </div>
     </div>

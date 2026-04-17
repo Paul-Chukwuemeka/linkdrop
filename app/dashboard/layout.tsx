@@ -1,10 +1,10 @@
 "use client";
 import { NavBar, Sidebar } from "@/components/dashboard/Sidebar";
 import { Spinner } from "@/components/ui/Spinner";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext as useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
-import { AppContextProvider } from "@/context/AppContext";
+import { Providers } from "@/context/Providers";
 import AppWrapper from "@/components/dashboard/Wrapper";
 
 export default function DashboardLayout({
@@ -29,7 +29,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <AppContextProvider>
+    <Providers>
       <div className="min-h-dvh flex bg-neutral-100 p-2 sm:p-3 lg:p-4">
           <AppWrapper>
             <Sidebar />
@@ -39,6 +39,6 @@ export default function DashboardLayout({
             </div>
           </AppWrapper>
       </div>
-    </AppContextProvider>
+    </Providers>
   );
 }

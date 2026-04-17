@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import ColorPicker from "../ui/colorPicker";
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { Spinner } from "../ui/Spinner";
 import { shadowStyles, ShadowType } from "@/lib/style-mappings";
@@ -14,8 +14,8 @@ const shadowOptions: { value: ShadowType; label: string }[] = [
 ];
 
 const Buttons = () => {
-  const { cardStyle, updateCardStyle, updateStyle, isSaving } =
-    useContext(AppContext)!;
+  const { cardStyle, updateCardStyle, updateStyle, isSavingStyle: isSaving } =
+    useStyle();
 
   const { button_radius, button_type, shadow } = cardStyle!;
   if (!cardStyle) return;

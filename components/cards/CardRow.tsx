@@ -1,4 +1,4 @@
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import type { Card } from "@/lib/types";
 import React, { useContext } from "react";
 import { useRouter } from "next/navigation";
@@ -10,7 +10,7 @@ export function CardRow({
   card: Card;
   deleteCard: (id: string) => Promise<void>;
 }) {
-  const { loadCard } = useContext(AppContext)!;
+  const { loadCard } = useCard();
   const router = useRouter();
   return (
     <div className="flex items-center justify-between gap-3 bg-white p-3 sm:p-4 rounded-xl shadow-(--shadow-card) ring-1 ring-(--color-border)">

@@ -14,6 +14,7 @@ export default function DashboardCardsPage() {
         </p>
       </div>
       <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
+        
         <CardsOverview />
         <div
           className="md:p-2 hidden lg:flex bg-white p-2 items-center justify-center rounded-xl h-full

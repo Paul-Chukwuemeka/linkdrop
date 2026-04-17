@@ -1,11 +1,11 @@
 import ColorPicker from "../ui/colorPicker";
 import Fontpicker from "../ui/Fontpicker";
 import { useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { Spinner } from "../ui/Spinner";
 const Text = () => {
-  const { cardStyle, updateCardStyle,updateStyle,isSaving } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle,updateStyle,isSavingStyle: isSaving } = useStyle();
 
   const { title_size, text_size } = cardStyle!;
 

@@ -54,7 +54,7 @@ export interface Card {
   links?: Link[];
   collections?: Collection[];
   items_list: ItemFromList[];
-  style: string;
+  style: CardTheme;
   // Fields from /profile/{username} endpoint
   fullname?: string;
   username?: string;

@@ -1,6 +1,6 @@
 "use client";
 
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Collection } from "@/lib/types";
 import { Folder, X } from "lucide-react";
@@ -16,7 +16,7 @@ export function UpdateCollection({
   collection: Collection;
   onClose: () => void;
 }) {
-  const { currentCard, loadCard, setError } = useContext(AppContext)!;
+  const { currentCard, loadCard, setCardError: setError } = useCard();
   const [title, setTitle] = useState(collection.title);
   const [isSaving, setIsSaving] = useState(false);
   const [localError, setLocalError] = useState<string | null>(null);

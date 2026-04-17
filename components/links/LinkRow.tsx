@@ -4,12 +4,13 @@ import { Link as LinkType } from "@/lib/types";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Pencil, Trash2 } from "lucide-react";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { apiFetch, ApiError } from "@/lib/api";
 import { isValidUrl } from "@/utils/validate";
 import { UpdateLink } from "@/components/links/UpdateLink";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export function DraggableLink({
   item,
@@ -18,12 +19,11 @@ export function DraggableLink({
   item: LinkType;
   inCollection?: boolean;
 }) {
-  const { setError, loadCard, currentCard } = useContext(AppContext)!;
+  const { setCardError: setError, loadCard, currentCard } = useCard();
   const [isEditing, setIsEditing] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
-  async function deleteLink() {
-    const ok = window.confirm("Delete this link?");
-    if (!ok) return;
+  async function executeDeleteLink() {
     setError(null);
     try {
       await apiFetch<void>(`/links/${item.id}`, { method: "DELETE" });
@@ -85,7 +85,7 @@ export function DraggableLink({
               className="shrink-0 rounded p-1 transition-colors hover:bg-red-50 touch-manipulation"
               onClick={(e) => {
                 e.stopPropagation();
-                void deleteLink();
+                setIsConfirmOpen(true);
               }}
               aria-label="Delete link"
             >
@@ -104,6 +104,13 @@ export function DraggableLink({
       {isEditing ? (
         <UpdateLink link={item} onClose={() => setIsEditing(false)} />
       ) : null}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={executeDeleteLink}
+        title="Delete Link"
+        message="Are you sure you want to permanently delete this link?"
+      />
     </>
   );
 }
@@ -124,6 +131,7 @@ export function LinkRow({
   const [title, setTitle] = useState(link.title);
   const [url, setUrl] = useState(link.url);
   const [error, setError] = useState<string | null>(null);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const saving = useRef(false);
 
   useEffect(() => {
@@ -152,10 +160,7 @@ export function LinkRow({
     }
   }
 
-  async function deleteLink() {
-    const ok = window.confirm("Delete this link?");
-    if (!ok) return;
-
+  async function executeDeleteLink() {
     setError(null);
     try {
       await apiFetch<void>(`/links/${link.id}`, { method: "DELETE" });
@@ -232,7 +237,7 @@ export function LinkRow({
           size="sm"
           className="rounded-2xl"
           type="button"
-          onClick={deleteLink}
+          onClick={() => setIsConfirmOpen(true)}
         >
           Delete
         </Button>
@@ -243,6 +248,13 @@ export function LinkRow({
           {error}
         </div>
       ) : null}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={executeDeleteLink}
+        title="Delete Link"
+        message="Are you sure you want to permanently delete this link?"
+      />
     </div>
   );
 }

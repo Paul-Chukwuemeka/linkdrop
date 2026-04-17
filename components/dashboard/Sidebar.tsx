@@ -1,17 +1,17 @@
 "use client";
 
 import { Button } from "@/components/ui/Button";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext as useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { ReactNode, useContext } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { PiEyesLight, PiEyes, PiEyeBold } from "react-icons/pi";
 import { FaPlus, FaPaintbrush } from "react-icons/fa6";
 import { IoIdCardSharp } from "react-icons/io5";
 
 function PreviewToggle() {
-  const { setIsPreview, isPreview } = useContext(AppContext)!;
+  const { setIsPreview, isPreview } = useCard();
 
   return (
     <button
@@ -56,10 +56,10 @@ function NavItem({
       className={[
         "font-semibold transition-colors",
         mobile
-          ? "flex md:hidden flex-col items-center justify-center px-3 py-2 min-h-11 min-w-11 touch-manipulation"
+          ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
           : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
-        !mobile && active ? "bg-black text-white" : "hover:bg-white/60",
-        mobile && active ? "bg-black text-white rounded-full" : ""
+        !mobile && active ? "bg-black text-white" : "hover:bg-black/20 hover:text-black",
+        mobile && active ? "bg-black text-white rounded-full" : "rounded-full"
       ].filter(Boolean).join(" ")}
     >
       {icon}
@@ -106,7 +106,7 @@ export function Sidebar() {
 }
 
 export function NavBar() {
-  const { isPreview, setIsPreview } = useContext(AppContext)!;
+  const { isPreview, setIsPreview } = useCard();
   return (
     <nav className="fixed md:hidden bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center shadow-lg shadow-gray-500/30 bg-white rounded-full px-2 sm:px-3  safe-area-bottom">
       <NavItem

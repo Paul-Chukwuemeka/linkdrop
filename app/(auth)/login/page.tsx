@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+    <div className="rounded-3xl bg-white p-8 shadow-(--shadow-card) ring-1 ring-(--color-border)">
       <h1
         className="text-3xl font-extrabold tracking-tight text-(--color-dark)"
   

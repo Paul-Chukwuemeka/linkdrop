@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Spinner } from "@/components/ui/Spinner";
 import { ApiError } from "@/lib/api";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthContext as useAuth } from "@/context/AuthContext";
 import React, { useState } from "react";
 
 export function LoginForm() {
@@ -17,6 +17,12 @@ export function LoginForm() {
   async function onSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     setError(null);
+
+    if (!username.trim() || !password) {
+      setError("Username and password are required.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {

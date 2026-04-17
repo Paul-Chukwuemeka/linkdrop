@@ -4,15 +4,16 @@ import type { Collection } from "@/lib/types";
 import { CSS } from "@dnd-kit/utilities";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useContext, useState } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import { DraggableLink } from "../links/LinkRow";
 import { UpdateCollection } from "@/components/collections/UpdateCollection";
+import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export function CollectionBlock({ item }: { item: Collection }) {
-  const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setError } =
-    useContext(AppContext)!;
+  const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setCardError: setError } = useCard();
   const [isEditing, setIsEditing] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const {
     attributes,
     listeners,
@@ -35,11 +36,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
 
   const links = item.links;
 
-  async function deleteCollection() {
-    const ok = window.confirm(
-      "Delete this collection? This will also delete the links inside it.",
-    );
-    if (!ok) return;
+  async function executeDeleteCollection() {
     setError(null);
     try {
       await apiFetch<void>(`/collections/${item.id}`, { method: "DELETE" });
@@ -90,7 +87,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
           <button
             className="p-2 rounded-full hover:bg-red-50 transition-colors touch-manipulation"
             aria-label="Delete collection"
-            onClick={deleteCollection}
+            onClick={() => setIsConfirmOpen(true)}
           >
             <Trash2 className="w-4 h-4" />
           </button>
@@ -126,6 +123,13 @@ export function CollectionBlock({ item }: { item: Collection }) {
           onClose={() => setIsEditing(false)}
         />
       ) : null}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        onClose={() => setIsConfirmOpen(false)}
+        onConfirm={executeDeleteCollection}
+        title="Delete Collection"
+        message="Are you sure you want to delete this collection? This will permanently delete all links inside it."
+      />
     </>
   );
 }

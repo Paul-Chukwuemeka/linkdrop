@@ -1,9 +1,9 @@
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 import { CardTheme } from "@/lib/types";
 import { useContext, useState } from "react";
 
 const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
-  const { cardStyle, updateCardStyle } = useContext(AppContext)!;
+  const { cardStyle, updateCardStyle } = useStyle();
 
   const value =
     cardStyle && cardStyle[property] !== null ? cardStyle[property] : "ffffff";

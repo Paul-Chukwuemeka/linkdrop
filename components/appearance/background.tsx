@@ -4,7 +4,7 @@ import ColorPicker from "../ui/colorPicker";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { CiImageOn } from "react-icons/ci";
 import { useContext, useMemo } from "react";
-import { AppContext } from "@/context/AppContext";
+import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { Spinner } from "../ui/Spinner";
 import { GradientColorsManager } from "./GradientColorPicker";
@@ -22,8 +22,8 @@ const directionPresets = [
 ];
 
 const Background = () => {
-  const { cardStyle, updateStyle, isSaving, updateCardStyle } =
-    useContext(AppContext)!;
+  const { cardStyle, updateStyle, isSavingStyle: isSaving, updateCardStyle } =
+    useStyle();
   const { bg_type, gradient_type, gradient_direction, gradient, card_bg } =
     cardStyle!;
 
