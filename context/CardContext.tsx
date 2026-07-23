@@ -51,7 +51,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
 
   const loadCard = useCallback(async (id: string) => {
     try {
-      const data = await apiFetch<Card | null>(`/cards/${id}/list`);
+      const data = await apiFetch<Card | null>(`/api/cards/${id}/list`);
       if (data) setCurrentCard(data);
     } catch (error) {
       setCardError("Failed to load card");
@@ -64,7 +64,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     (async () => {
       setIsLoadingCard(true);
       try {
-        const data = await apiFetch<Card>("/cards/current/list");
+        const data = await apiFetch<Card>("/api/cards/current/list");
         if (mounted && data) setCurrentCard(data);
       } catch {
         // Will fall back to profile.current_card path below
@@ -90,7 +90,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     }
     setIsLoadingCard(true);
     try {
-      await apiFetch("/links", {
+      await apiFetch("/api/links", {
         method: "POST",
         json: {
           title: title.trim() || null,
@@ -115,7 +115,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
   async function addCollection(title: string) {
     setIsLoadingCard(true);
     try {
-      await apiFetch("/collections", {
+      await apiFetch("/api/collections", {
         method: "POST",
         json: { title: title.trim() || null, card_id: currentCard?.id },
       });
@@ -143,7 +143,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     setCurrentCard({ ...currentCard, name: newName });
 
     try {
-      await apiFetch(`/cards/${currentCard.id}`, {
+      await apiFetch(`/api/cards/${currentCard.id}`, {
         method: "PATCH",
         json: { name: newName.trim() },
       });

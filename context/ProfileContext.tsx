@@ -33,7 +33,7 @@ export function ProfileProvider({ children }: { children: React.ReactNode }) {
       setProfileError(null);
       setIsLoadingProfile(true);
       try {
-        const data = await apiFetch<UserProfileMe>("/profile/me");
+        const data = await apiFetch<UserProfileMe>("/api/profile/me");
         if (mounted) setProfile(data);
       } catch (err) {
         if (err instanceof ApiError) setProfileError(err.message);

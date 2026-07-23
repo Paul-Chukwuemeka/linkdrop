@@ -1,0 +1,18 @@
+export const DEFAULT_CARD_STYLE = {
+  card_bg: "ffffff",
+  bg_type: "solid",
+  text_color: "000000",
+  button_radius: "round",
+  button_bg: "ffffff",
+  button_color: "000000",
+  button_type: "solid",
+  profile_image: null,
+  shadow: null,
+  font_style: "inter",
+  gradient: [],
+  title_size: "medium",
+  text_size: "medium",
+  gradient_type: "linear",
+  title_color: null,
+  gradient_direction: 180,
+} as const

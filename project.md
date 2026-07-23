@@ -2,7 +2,7 @@
 
 LinkForge is a link-in-bio platform where users can create a public profile page and organize links into cards and collections.
 
-This workspace currently contains the backend. The frontend is planned separately and is documented here so both sides stay aligned.
+This is a full-stack Next.js application — the backend API routes live alongside the frontend in the same project.
 
 ---
 
@@ -16,222 +16,164 @@ This workspace currently contains the backend. The frontend is planned separatel
 
 ---
 
-## Frontend
-
-### Frontend Goals
-
-- Provide auth screens for sign up and login
-- Provide a dashboard for managing cards, links, collections, and profile settings
-- Provide a public profile page for visitors
-- Support drag-and-drop ordering for top-level card items and links inside collections
-
-### Planned Frontend Stack
+## Tech Stack
 
 | Layer | Technology |
 |------|------------|
-| Framework | Next.js (App Router) |
-| Styling | Tailwind CSS |
-| State / Data | API client + auth helpers |
-| Deployment | Vercel |
-
-### Planned Frontend Pages
-
-| Route | Description |
-|------|-------------|
-| `/register` | Sign-up form |
-| `/login` | Login form |
-| `/dashboard` | Main editor for cards, links, and collections |
-| `/dashboard/appearance` | Profile and theme settings |
-| `/u/:username` | Public-facing profile page |
-
-### Planned Frontend Structure
-
-```text
-frontend/
-├── app/
-│   ├── login/
-│   ├── register/
-│   ├── dashboard/
-│   ├── dashboard/appearance/
-│   └── u/[username]/
-├── components/
-└── lib/
-```
-## Backend
-
-### Current Backend Stack
-
-| Layer | Technology |
-|------|------------|
-| Framework | FastAPI |
-| ORM | SQLAlchemy |
-| Migrations | Alembic |
-| Auth | JWT access + refresh tokens |
-| Database | Configured via `CONNECTION_STRING` |
-
-### Current Backend Structure
-
-```text
-backend/
-├── alembic/
-├── lib/
-│   ├── auth.py
-│   ├── database.py
-│   └── security.py
-├── models/
-│   ├── userModel.py
-│   ├── cardModel.py
-│   ├── CollectionModel.py
-│   └── LinkModel.py
-├── routes/
-│   ├── auth.py
-│   ├── cards.py
-│   ├── collections.py
-│   ├── links.py
-│   ├── profile.py
-│   └── protected.py
-├── schemas/
-└── main.py
-```
-
-### Current Backend Models
-
-#### User
-
-```text
-id
-username
-email
-password
-fullname
-bio
-avatar_url
-theme
-```
-
-#### Card
-
-```text
-id
-user_id
-name
-```
-
-#### Collection
-
-```text
-id
-card_id
-title
-position
-```
-
-#### Link
-
-```text
-id
-card_id
-collection_id
-title
-url
-position
-```
-
-### Current Backend API
-
-#### Auth
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `POST` | `/auth/signup` | Create account |
-| `POST` | `/auth/login` | Log in and get access + refresh tokens |
-| `POST` | `/auth/refresh` | Refresh token pair |
-| `GET` | `/auth/me` | Get authenticated user |
-
-#### Profile
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `GET` | `/profile/me` | Get current user's profile |
-| `PATCH` | `/profile/me` | Update username, fullname, bio, avatar, and theme |
-| `GET` | `/profile/{username}` | Get public profile |
-
-#### Cards
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `GET` | `/cards/me` | List current user's cards |
-| `POST` | `/cards` | Create a card |
-| `GET` | `/cards/{card_id}` | Get one card |
-| `PATCH` | `/cards/{card_id}` | Update card name |
-| `DELETE` | `/cards/{card_id}` | Delete a card |
-| `GET` | `/cards/{card_id}/items` | Get mixed top-level items for a card |
-| `PATCH` | `/cards/{card_id}/items/reorder` | Reorder top-level links and collections |
-
-#### Collections
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `GET` | `/collections` | List collections for a card |
-| `POST` | `/collections` | Create a collection |
-| `PATCH` | `/collections/{collection_id}` | Update collection title |
-| `DELETE` | `/collections/{collection_id}` | Delete a collection |
-
-#### Links
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `GET` | `/links` | List links for a card or collection |
-| `POST` | `/links` | Create a link |
-| `PATCH` | `/links/reorder` | Reorder links inside a collection |
-| `PATCH` | `/links/{link_id}` | Update a link |
-| `PATCH` | `/links/{link_id}/move` | Move a link between top-level and collections |
-| `DELETE` | `/links/{link_id}` | Delete a link |
-
-#### Utility
-
-| Method | Route | Description |
-|------|-------|-------------|
-| `GET` | `/health` | Basic health endpoint |
-| `GET` | `/protected/ping` | Auth-protected test route |
-
-### Backend Auth Notes
-
-- Access tokens are used on protected API requests
-- Refresh tokens are used to obtain a new token pair
-- Protected routes resolve the current user from the access token subject
-- Logout and server-side token revocation are not implemented yet
+| Framework | Next.js 16 (App Router) |
+| Styling | Tailwind CSS 4 |
+| ORM | Prisma 7.9 (PostgreSQL) |
+| Auth | Auth.js v5 (JWT sessions) |
+| Database | PostgreSQL |
+| Storage | Cloudflare R2 (avatars) |
+| Validation | Zod |
+| Drag & Drop | @dnd-kit |
 
 ---
 
-## Shared Product Features
+## Data Model
 
-### Current Core Scope
+### User
 
-- Auth with access and refresh tokens
-- Public profile retrieval by username
-- Profile editing for authenticated users
-- Card CRUD
-- Collection CRUD
-- Link CRUD
-- Reordering of mixed top-level card items
-- Reordering of links inside collections
+| Field | Type | Notes |
+|-------|------|-------|
+| id | UUID | Primary key |
+| username | String(30) | Unique |
+| email | String | Unique |
+| password | String | Argon2 hashed |
+| fullname | String | |
+| bio | String? | |
+| avatar_url | String? | R2 URL |
+| current_card | String? | FK → Card |
 
-### Later / Extended Scope
+### Card
 
-- Richer theme presets and custom themes
-- Link click analytics
-- Social icon detection from URLs
-- QR code generation
-- Custom domains
-- Avatar upload pipeline
+| Field | Type | Notes |
+|-------|------|-------|
+| id | UUID | Primary key |
+| user_id | UUID | FK → User |
+| name | String | |
+| style | JSON | CardTheme object |
+
+### Collection
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | UUID | Primary key |
+| card_id | UUID | FK → Card |
+| title | String | Unique per card |
+| position | Int | Sort order |
+
+### Link
+
+| Field | Type | Notes |
+|-------|------|-------|
+| id | UUID | Primary key |
+| card_id | UUID | FK → Card |
+| collection_id | UUID? | FK → Collection (null = top-level) |
+| title | String | |
+| url | String | |
+| position | Int | Sort order |
+
+---
+
+## API Routes
+
+### Auth
+
+| Method | Route | Description |
+|------|-------|-------------|
+| `POST` | `/api/auth/signup` | Create account |
+| `GET/POST` | `/api/auth/[...nextauth]` | Auth.js handlers |
+| `GET` | `/api/auth/me` | Get current user |
+
+### Profile
+
+| Method | Route | Description |
+|------|-------|-------------|
+| `GET` | `/api/profile/me` | Get current user's profile |
+| `PATCH` | `/api/profile/me` | Update profile |
+| `PATCH` | `/api/profile/current` | Set current card |
+| `POST` | `/api/profile/upload-avatar` | Upload avatar to R2 |
+| `GET` | `/api/profile/[username]` | Get public profile |
+
+### Cards
+
+| Method | Route | Description |
+|------|-------|-------------|
+| `GET` | `/api/cards` | List current user's cards |
+| `POST` | `/api/cards` | Create a card |
+| `GET` | `/api/cards/me` | List cards (alias) |
+| `GET` | `/api/cards/current/list` | Get current card with items |
+| `GET` | `/api/cards/[cardId]` | Get one card (public) |
+| `GET` | `/api/cards/[cardId]/list` | Get card with items (auth) |
+| `GET` | `/api/cards/[cardId]/items` | Get card items (alias) |
+| `PATCH` | `/api/cards/[cardId]` | Update card |
+| `DELETE` | `/api/cards/[cardId]` | Delete card |
+| `PATCH` | `/api/cards/[cardId]/style` | Update card style |
+| `PATCH` | `/api/cards/[cardId]/reorder` | Reorder card items |
+| `PATCH` | `/api/cards/[cardId]/items/reorder` | Reorder items (alias) |
+
+### Collections
+
+| Method | Route | Description |
+|------|-------|-------------|
+| `GET` | `/api/collections` | List collections for a card |
+| `POST` | `/api/collections` | Create a collection |
+| `PATCH` | `/api/collections/[collectionId]` | Update collection title |
+| `DELETE` | `/api/collections/[collectionId]` | Delete a collection |
+
+### Links
+
+| Method | Route | Description |
+|------|-------|-------------|
+| `GET` | `/api/links` | List links for a card |
+| `POST` | `/api/links` | Create a link |
+| `PATCH` | `/api/links/[linkId]` | Update a link |
+| `DELETE` | `/api/links/[linkId]` | Delete a link |
+| `PATCH` | `/api/links/[linkId]/move` | Move link between collections |
+| `PATCH` | `/api/links/reorder` | Reorder links |
+
+---
+
+## Auth
+
+- Auth.js v5 with JWT session strategy
+- Credentials provider (email + password with Argon2)
+- Optional Google/GitHub OAuth
+- Session cookie sent automatically on same-origin requests
+- `proxy.ts` middleware protects `/dashboard/*` routes
+
+---
+
+## Project Structure
+
+```text
+linkforge/
+├── app/
+│   ├── api/                    # API routes (30 endpoints)
+│   ├── (auth)/                 # Login, register pages
+│   ├── dashboard/              # Dashboard pages
+│   └── u/[username]/           # Public profile
+├── components/                 # React components
+├── context/                    # React context (Card, Profile, Style)
+├── lib/
+│   ├── auth-config.ts          # Auth.js configuration
+│   ├── db.ts                   # Prisma client
+│   ├── api.ts                  # apiFetch() wrapper
+│   ├── validations/            # Zod schemas
+│   └── ...
+├── prisma/
+│   └── schema.prisma           # Database schema
+└── proxy.ts                    # Route guard middleware
+```
 
 ---
 
 ## Development Notes
 
-- The backend now uses Alembic for schema migrations
-- The app should not create tables automatically on import
-- Ordered content is driven by `position` for links and collections
-- Card order is currently deterministic but not user-reorderable
-- The frontend should treat the backend API contract above as the source of truth, not older route names like `/auth/register`
+- Database migrations: `npx prisma migrate dev`
+- Prisma client generates to `lib/generated/prisma/client.ts`
+- Prisma 7.x requires `@prisma/adapter-pg` driver adapter
+- Auth.js config lives in `lib/auth-config.ts` (not in route file)
+- OAuth providers conditionally included only when env vars are set

@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+.turbo
 
 # production
 /build
@@ -43,6 +44,15 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# AI / Agent config
+.agents/
+.claude/
+.windsurf/
+skill.md
+skills-lock.json
+AGENTS.md
+CLAUDE.md
+
 # IDE / Editor
 .vscode/
 .idea/
@@ -54,3 +64,8 @@ next-env.d.ts
 # OS files
 .DS_Store
 Thumbs.db
+
+/lib/generated/prisma
+skill.md
+skill.md
+skill.md

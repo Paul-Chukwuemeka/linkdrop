@@ -57,7 +57,7 @@ export function UpdateLink({
     setError(null);
     setIsSaving(true);
     try {
-      await apiFetch<LinkType>(`/links/${link.id}`, {
+      await apiFetch<LinkType>(`/api/links/${link.id}`, {
         method: "PATCH",
         json: { title: nextTitle, url: nextUrl },
       });

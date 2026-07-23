@@ -47,7 +47,7 @@ export function CollectionEditor({
     saving.current = true;
     setError(null);
     try {
-      const updated = await apiFetch<Collection>(`/collections/${collection.id}`, {
+      const updated = await apiFetch<Collection>(`/api/collections/${collection.id}`, {
         method: "PATCH",
         json: { title: nextTitle },
       });
@@ -68,7 +68,7 @@ export function CollectionEditor({
 
     setError(null);
     try {
-      await apiFetch<void>(`/collections/${collection.id}`, { method: "DELETE" });
+      await apiFetch<void>(`/api/collections/${collection.id}`, { method: "DELETE" });
       onCollectionDeleted(collection.id);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
@@ -83,7 +83,7 @@ export function CollectionEditor({
 
     setError(null);
     try {
-      const created = await apiFetch<LinkType>("/links", {
+      const created = await apiFetch<LinkType>("/api/links", {
         method: "POST",
         json: {
           card_id: collection.card_id,

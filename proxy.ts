@@ -2,8 +2,10 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
-  const session = request.cookies.get("lf_session")?.value;
-  const isLoggedIn = session === "1";
+  const sessionToken =
+    request.cookies.get("authjs.session-token")?.value ||
+    request.cookies.get("__Secure-authjs.session-token")?.value;
+  const isLoggedIn = Boolean(sessionToken);
   const pathname = request.nextUrl.pathname;
 
   if (isLoggedIn && pathname === "/") {
@@ -23,4 +25,3 @@ export function proxy(request: NextRequest) {
 export const config = {
   matcher: ["/", "/dashboard/:path*"],
 };
-

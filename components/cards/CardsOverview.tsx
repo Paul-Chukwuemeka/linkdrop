@@ -16,7 +16,7 @@ export function CardsOverview() {
     setError(null);
     setIsLoading(true);
     try {
-      const data = await apiFetch<Card[]>("/cards/me");
+      const data = await apiFetch<Card[]>("/api/cards/me");
       setCards(data);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
@@ -34,7 +34,7 @@ export function CardsOverview() {
     setError(null);
     setIsCreating(true);
     try {
-      await apiFetch<Card>("/cards", {
+      await apiFetch<Card>("/api/cards", {
         method: "POST",
         json: { name: name.trim() || null },
       });
@@ -51,7 +51,7 @@ export function CardsOverview() {
     setError(null);
     setIsCreating(true);
     try {
-      await apiFetch<Card>(`/cards/${id}`, {
+      await apiFetch<Card>(`/api/cards/${id}`, {
         method: "Delete",
       });
       await load();

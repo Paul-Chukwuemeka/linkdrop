@@ -1,0 +1,165 @@
+"use client";
+
+import { useState, useCallback, useEffect } from "react";
+import Cropper, { type Area } from "react-easy-crop";
+import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
+import { apiFetch, ApiError } from "@/lib/api";
+import type { UserProfileMe } from "@/lib/types";
+
+interface AvatarCropModalProps {
+  file: File | null;
+  onComplete: (profile: UserProfileMe) => void;
+  onCancel: () => void;
+}
+
+function getCroppedImg(imageSrc: string, crop: Area): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = 256;
+      canvas.height = 256;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return reject(new Error("Failed to get canvas context"));
+
+      ctx.drawImage(
+        image,
+        crop.x,
+        crop.y,
+        crop.width,
+        crop.height,
+        0,
+        0,
+        256,
+        256
+      );
+
+      canvas.toBlob(
+        (blob) => {
+          if (blob) resolve(blob);
+          else reject(new Error("Failed to create image blob"));
+        },
+        "image/png"
+      );
+    };
+    image.onerror = () => reject(new Error("Failed to load image"));
+    image.src = imageSrc;
+  });
+}
+
+export function AvatarCropModal({
+  file,
+  onComplete,
+  onCancel,
+}: AvatarCropModalProps) {
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Read file on mount
+  useEffect(() => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => setImageSrc(reader.result as string);
+    reader.readAsDataURL(file);
+  }, [file]);
+
+  const onCropComplete = useCallback(
+    (_croppedArea: Area, croppedAreaPixels: Area) => {
+      setCroppedAreaPixels(croppedAreaPixels);
+    },
+    []
+  );
+
+  async function handleSave() {
+    if (!imageSrc || !croppedAreaPixels) return;
+    setIsUploading(true);
+    setError(null);
+    try {
+      const blob = await getCroppedImg(imageSrc, croppedAreaPixels);
+      const formData = new FormData();
+      formData.append("file", blob, "avatar.png");
+
+      const updated = await apiFetch<UserProfileMe>(
+        "/api/profile/upload-avatar",
+        { method: "POST", body: formData }
+      );
+      onComplete(updated);
+    } catch (err) {
+      if (err instanceof ApiError) setError(err.message);
+      else setError("Failed to upload image.");
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  if (!file) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+      <div
+        className="bg-white rounded-2xl p-6 max-w-md w-full mx-auto flex flex-col gap-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <h3 className="text-xl font-bold text-black">Crop avatar</h3>
+
+        <div className="relative w-full h-64 bg-neutral-100 rounded-xl overflow-hidden">
+          {imageSrc && (
+            <Cropper
+              image={imageSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
+          )}
+          {isUploading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+              <Spinner />
+            </div>
+          )}
+        </div>
+
+        <label className="flex flex-col gap-1 text-sm text-neutral-600">
+          Zoom
+          <input
+            type="range"
+            min={1}
+            max={3}
+            step={0.1}
+            value={zoom}
+            onChange={(e) => setZoom(Number(e.target.value))}
+            className="w-full accent-black"
+          />
+        </label>
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+
+        <div className="flex gap-3">
+          <Button
+            variant="ghost"
+            onClick={onCancel}
+            disabled={isUploading}
+            className="flex-1"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleSave}
+            disabled={isUploading || !imageSrc}
+            className="flex-1"
+          >
+            {isUploading ? <Spinner /> : "Save"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
+}

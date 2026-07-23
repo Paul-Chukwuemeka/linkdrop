@@ -1,73 +1,91 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Spinner } from "@/components/ui/Spinner";
-import { ApiError } from "@/lib/api";
-import { useAuthContext as useAuth } from "@/context/AuthContext";
-import type { SignupRequest } from "@/lib/types";
-import React, { useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/Button"
+import { Input } from "@/components/ui/Input"
+import { Spinner } from "@/components/ui/Spinner"
+import { signIn } from "next-auth/react"
+import { useSearchParams } from "next/navigation"
+import React, { useState } from "react"
+
+interface FormState {
+  username: string
+  email: string
+  fullname: string
+  password: string
+}
 
 export function RegisterForm() {
-  const { register } = useAuth();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
+  const initialUsername = searchParams.get("username") || ""
 
-  const initialUsername = searchParams.get("username") || "";
-
-  const [form, setForm] = useState<SignupRequest>({
+  const [form, setForm] = useState<FormState>({
     username: initialUsername,
     email: "",
     fullname: "",
     password: "",
-  });
+  })
 
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
   function validateField(key: string, value: string) {
-    let msg = "";
+    let msg = ""
     if (key === "username") {
-      if (!value.trim()) msg = "Username required.";
-      else if (!/^[a-zA-Z0-9_-]+$/.test(value)) msg = "Only letters, numbers, _, and - allowed.";
+      if (!value.trim()) msg = "Username required."
+      else if (!/^[a-zA-Z0-9_-]+$/.test(value)) msg = "Only letters, numbers, _, and - allowed."
     }
     if (key === "email") {
-      if (!value.trim()) msg = "Email required.";
-      else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) msg = "Invalid email format.";
+      if (!value.trim()) msg = "Email required."
+      else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) msg = "Invalid email format."
     }
     if (key === "password") {
-       if (value.length > 0 && value.length < 8) msg = "Minimum 8 characters.";
-       else if (value.length >= 8 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(value)) {
-         msg = "Need uppercase, number, and special character.";
-       }
+      if (value.length > 0 && value.length < 8) msg = "Minimum 8 characters."
+      else if (value.length >= 8 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(value)) {
+        msg = "Need uppercase, number, and special character."
+      }
     }
-    setFieldErrors(prev => ({ ...prev, [key]: msg }));
+    setFieldErrors((prev) => ({ ...prev, [key]: msg }))
   }
 
-  function update<K extends keyof SignupRequest>(key: K, value: SignupRequest[K]) {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    validateField(key, value);
+  function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+    setForm((prev) => ({ ...prev, [key]: value }))
+    validateField(key, value)
   }
 
   async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
+    e.preventDefault()
+    setError(null)
+    setIsSubmitting(true)
 
     try {
-      await register({
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: form.username.trim(),
+          email: form.email.trim(),
+          fullname: form.fullname.trim(),
+          password: form.password,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        setError(data.detail || "Registration failed. Please try again.")
+        setIsSubmitting(false)
+        return
+      }
+
+      await signIn("credentials", {
         username: form.username.trim(),
-        email: form.email.trim(),
-        fullname: form.fullname.trim(),
         password: form.password,
-      });
-    } catch (err) {
-      if (err instanceof ApiError) setError(err.message);
-      else setError("Registration failed. Please try again.");
+        redirectTo: "/dashboard",
+      })
+    } catch {
+      setError("Registration failed. Please try again.")
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   }
 
@@ -141,6 +159,5 @@ export function RegisterForm() {
         )}
       </Button>
     </form>
-  );
+  )
 }
-

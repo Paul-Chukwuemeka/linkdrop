@@ -1,37 +1,38 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
-import { Spinner } from "@/components/ui/Spinner";
-import { ApiError } from "@/lib/api";
-import { useAuthContext as useAuth } from "@/context/AuthContext";
-import React, { useState } from "react";
+import { Button } from "@/components/ui/Button"
+import { Input } from "@/components/ui/Input"
+import { Spinner } from "@/components/ui/Spinner"
+import { signIn } from "next-auth/react"
+import React, { useState } from "react"
 
 export function LoginForm() {
-  const { login } = useAuth();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [username, setUsername] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  async function onSubmit(e: React.SubmitEvent) {
-    e.preventDefault();
-    setError(null);
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setError(null)
 
     if (!username.trim() || !password) {
-      setError("Username and password are required.");
-      return;
+      setError("Username and password are required.")
+      return
     }
 
-    setIsSubmitting(true);
+    setIsSubmitting(true)
 
     try {
-      await login(username.trim(), password);
-    } catch (err) {
-      if (err instanceof ApiError) setError(err.message);
-      else setError("Login failed. Please try again.");
+      await signIn("credentials", {
+        username: username.trim(),
+        password,
+        redirectTo: "/dashboard",
+      })
+    } catch {
+      setError("Login failed. Please try again.")
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
   }
 
@@ -77,6 +78,5 @@ export function LoginForm() {
         )}
       </Button>
     </form>
-  );
+  )
 }
-

@@ -28,7 +28,7 @@ import { DraggableLink } from "../../components/links/LinkRow";
 import { CreateLink } from "@/components/links/CreateLink";
 import { CreateCollection } from "@/components/collections/CreateCollection";
 import { CollectionBlock } from "@/components/collections/CollectionBlock";
-import { useAuthContext as useAuth } from "@/context/AuthContext";
+import { signOut } from "next-auth/react";
 
 export default function DashboardPage() {
   const { profile, profileError } = useProfile();
@@ -47,7 +47,8 @@ export default function DashboardPage() {
 
   const error = cardError || profileError;
   const setError = setCardError;
-  const { logout } = useAuth();
+
+  const logout = () => signOut({ callbackUrl: "/login" });
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
@@ -103,7 +104,7 @@ export default function DashboardPage() {
 
   async function updateCurrentCard(id: string) {
     try {
-      await apiFetch("/profile/current", {
+      await apiFetch("/api/profile/current", {
         method: "PATCH",
         json: { card_id: id },
       });
@@ -245,7 +246,7 @@ async function handleReorder(card_id: string, reordered: ItemFromList[]) {
     id: item.content.id,
     position: item.position,
   }));
-  const res = await apiFetch(`/cards/${card_id}/reorder`, {
+  const res = await apiFetch(`/api/cards/${card_id}/reorder`, {
     method: "PATCH",
     json: {
       items,

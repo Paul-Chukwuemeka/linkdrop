@@ -1,17 +1,18 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/Button";
-import { useAuthContext as useAuth } from "@/context/AuthContext";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { ReactNode, useContext } from "react";
-import { useCard } from "@/context/CardContext";
-import { PiEyesLight, PiEyes, PiEyeBold } from "react-icons/pi";
-import { FaPlus, FaPaintbrush } from "react-icons/fa6";
-import { IoIdCardSharp } from "react-icons/io5";
+import { Button } from "@/components/ui/Button"
+import { useSession } from "next-auth/react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React, { ReactNode } from "react"
+import { useCard } from "@/context/CardContext"
+import { PiEyesLight, PiEyeBold } from "react-icons/pi"
+import { FaPlus, FaPaintbrush } from "react-icons/fa6"
+import { IoIdCardSharp } from "react-icons/io5"
+import { signOut } from "next-auth/react"
 
 function PreviewToggle() {
-  const { setIsPreview, isPreview } = useCard();
+  const { setIsPreview, isPreview } = useCard()
 
   return (
     <button
@@ -24,13 +25,13 @@ function PreviewToggle() {
       aria-label={isPreview ? "Hide preview" : "Show preview"}
     >
       {isPreview ? (
-        <PiEyes className="text-lg font-extrabold" />
+        <PiEyeBold className="text-lg font-extrabold" />
       ) : (
         <PiEyesLight className="text-lg" />
       )}
       <span className="hidden sm:inline">{isPreview ? "Hide Preview" : "Show Preview"}</span>
     </button>
-  );
+  )
 }
 
 function NavItem({
@@ -39,16 +40,16 @@ function NavItem({
   icon,
   mobile,
 }: {
-  href: string;
-  label: string;
-  icon?: ReactNode | null;
-  mobile?: boolean;
+  href: string
+  label: string
+  icon?: ReactNode | null
+  mobile?: boolean
 }) {
-  const pathname = usePathname();
+  const pathname = usePathname()
   const active =
-    label == "Links"
+    label === "Links"
       ? pathname === "/dashboard"
-      : pathname.toLowerCase().includes(label.toLowerCase());
+      : pathname.toLowerCase().includes(label.toLowerCase())
 
   return (
     <Link
@@ -59,17 +60,20 @@ function NavItem({
           ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
           : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
         !mobile && active ? "bg-black text-white" : "hover:bg-black/20 hover:text-black",
-        mobile && active ? "bg-black text-white rounded-full" : "rounded-full"
-      ].filter(Boolean).join(" ")}
+        mobile && active ? "bg-black text-white rounded-full" : "rounded-full",
+      ]
+        .filter(Boolean)
+        .join(" ")}
     >
       {icon}
       {!mobile && label}
     </Link>
-  );
+  )
 }
 
 export function Sidebar() {
-  const { user, logout } = useAuth();
+  const { data: session } = useSession()
+  const user = session?.user
 
   return (
     <aside className="hidden md:flex h-full w-full flex-col gap-4 rounded-xl bg-white/60 p-4 shadow-(--shadow-nav) ring-1 ring-(--color-border) backdrop-blur">
@@ -97,18 +101,22 @@ export function Sidebar() {
             </Button>
           </Link>
         )}
-        <Button variant="ghost" className="w-full" onClick={logout}>
+        <Button
+          variant="ghost"
+          className="w-full"
+          onClick={() => signOut({ callbackUrl: "/login" })}
+        >
           Log out
         </Button>
       </div>
     </aside>
-  );
+  )
 }
 
 export function NavBar() {
-  const { isPreview, setIsPreview } = useCard();
+  const { isPreview, setIsPreview } = useCard()
   return (
-    <nav className="fixed md:hidden bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center shadow-lg shadow-gray-500/30 bg-white rounded-full px-2 sm:px-3  safe-area-bottom">
+    <nav className="fixed md:hidden bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center justify-center shadow-lg shadow-gray-500/30 bg-white rounded-full px-2 sm:px-3 safe-area-bottom">
       <NavItem
         href="/dashboard"
         label="Links"
@@ -132,8 +140,8 @@ export function NavBar() {
         onClick={() => setIsPreview(!isPreview)}
         aria-label={isPreview ? "Hide preview" : "Show preview"}
       >
-        <PiEyes strokeWidth={5} />
+        <PiEyeBold strokeWidth={5} />
       </button>
     </nav>
-  );
+  )
 }

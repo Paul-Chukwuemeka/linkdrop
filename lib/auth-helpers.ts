@@ -1,0 +1,9 @@
+import { auth } from "@/lib/auth-config"
+
+export async function requireAuth() {
+  const session = await auth()
+  if (!session?.user?.id) {
+    throw new Error("UNAUTHORIZED")
+  }
+  return session.user as { id: string; username: string; email: string }
+}

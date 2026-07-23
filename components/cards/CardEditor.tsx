@@ -177,7 +177,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
     let mounted = true;
     (async () => {
       try {
-        const me = await apiFetch<UserProfileMe>("/profile/me");
+        const me = await apiFetch<UserProfileMe>("/api/profile/me");
         if (mounted) setProfile(me);
       } catch {
         // Preview is optional.
@@ -197,9 +197,9 @@ export function CardEditor({ cardId }: { cardId: string }) {
     if (!opts?.silent) setIsLoading(true);
     try {
       const [cardData, itemData, linkData] = await Promise.all([
-        apiFetch<Card>(`/cards/${cardId}`),
-        apiFetch<CardItem[]>(`/cards/${cardId}/items`),
-        apiFetch<LinkType[]>(`/links?card_id=${encodeURIComponent(cardId)}`),
+        apiFetch<Card>(`/api/cards/${cardId}`),
+        apiFetch<CardItem[]>(`/api/cards/${cardId}/items`),
+        apiFetch<LinkType[]>(`/api/links?card_id=${encodeURIComponent(cardId)}`),
       ]);
       setCard(cardData);
       setItems(itemData);
@@ -290,7 +290,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   async function persistReorder(nextContainers: Record<string, string[]>) {
     const top = nextContainers[TOP_CONTAINER_ID] || [];
-    await apiFetch<void>(`/cards/${cardId}/items/reorder`, {
+    await apiFetch<void>(`/api/cards/${cardId}/items/reorder`, {
       method: "PATCH",
       json: {
         items: top.map((id, position) => {
@@ -307,7 +307,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
     collectionId: string,
     linkSortableIds: string[],
   ) {
-    await apiFetch<void>("/links/reorder", {
+    await apiFetch<void>("/api/links/reorder", {
       method: "PATCH",
       json: {
         card_id: cardId,
@@ -345,7 +345,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
         const nextCollectionId = endContainer.startsWith(COLLECTION_CONTAINER_PREFIX)
           ? endContainer.slice(COLLECTION_CONTAINER_PREFIX.length)
           : null;
-        const moved = await apiFetch<LinkType>(`/links/${linkId}/move`, {
+        const moved = await apiFetch<LinkType>(`/api/links/${linkId}/move`, {
           method: "PATCH",
           json: { collection_id: nextCollectionId },
         });
@@ -506,7 +506,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
     setIsAddingLink(true);
     setError(null);
     try {
-      await apiFetch<LinkType>("/links", {
+      await apiFetch<LinkType>("/api/links", {
         method: "POST",
         json: { card_id: cardId, title, url },
       });
@@ -528,7 +528,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
     setIsAddingCollection(true);
     setError(null);
     try {
-      await apiFetch<Collection>("/collections", {
+      await apiFetch<Collection>("/api/collections", {
         method: "POST",
         json: { card_id: cardId, title },
       });

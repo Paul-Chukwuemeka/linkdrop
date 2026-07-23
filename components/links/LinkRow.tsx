@@ -26,7 +26,7 @@ export function DraggableLink({
   async function executeDeleteLink() {
     setError(null);
     try {
-      await apiFetch<void>(`/links/${item.id}`, { method: "DELETE" });
+      await apiFetch<void>(`/api/links/${item.id}`, { method: "DELETE" });
       loadCard(currentCard!.id);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
@@ -147,7 +147,7 @@ export function LinkRow({
     saving.current = true;
     setError(null);
     try {
-      const updated = await apiFetch<LinkType>(`/links/${link.id}`, {
+      const updated = await apiFetch<LinkType>(`/api/links/${link.id}`, {
         method: "PATCH",
         json: patch,
       });
@@ -163,7 +163,7 @@ export function LinkRow({
   async function executeDeleteLink() {
     setError(null);
     try {
-      await apiFetch<void>(`/links/${link.id}`, { method: "DELETE" });
+      await apiFetch<void>(`/api/links/${link.id}`, { method: "DELETE" });
       onDeleted?.(link.id);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);

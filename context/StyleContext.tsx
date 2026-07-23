@@ -51,7 +51,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   async function updateStyle() {
     setIsSavingStyle(true);
     try {
-      await apiFetch(`/cards/${currentCard?.id}/style`, {
+      await apiFetch(`/api/cards/${currentCard?.id}/style`, {
         method: "PATCH",
         json: { style: cardStyle },
       });

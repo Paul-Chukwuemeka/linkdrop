@@ -6,9 +6,9 @@ description: >
   clone, bio page builder, or any feature within one (e.g., public profile page,
   link editor dashboard, theme picker, analytics). Also trigger for adjacent tasks
   like designing the landing page, auth flow, or API schema for such a product.
-  Covers full-stack implementation with Next.js (frontend) + FastAPI (backend) +
-  SQLite/PostgreSQL, with a design language derived from Linktree's bold visual
-  identity.
+  Covers full-stack implementation with Next.js 16 (App Router with API routes) +
+  Prisma + Auth.js v5 + PostgreSQL, with a design language derived from Linktree's
+  bold visual identity.
 ---
 
 # Linktree Clone — Build Skill
@@ -270,89 +270,104 @@ Everything is **pill-shaped or roundrect** — never square corners.
 
 ---
 
-## 4. Data Models
+## 4. Data Models (Prisma Schema)
 
 ### User
 
-```python
-class User(Base):
-    __tablename__ = "users"
-
-    id         = Column(UUID, primary_key=True, default=uuid4)
-    username   = Column(String(30), unique=True, nullable=False, index=True)
-    email      = Column(String, unique=True, nullable=False)
-    password_hash = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    profile    = relationship("Profile", back_populates="user", uselist=False)
-    links      = relationship("Link", back_populates="user", order_by="Link.position")
+```prisma
+model User {
+  id            String    @id @default(uuid())
+  username      String    @unique @db.VarChar(30)
+  email         String    @unique
+  password      String
+  fullname      String
+  bio           String?
+  avatar_url    String?
+  current_card  String?
+  cards         Card[]
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
 ```
 
-### Profile
+### Card
 
-```python
-class Profile(Base):
-    __tablename__ = "profiles"
+```prisma
+model Card {
+  id         String       @id @default(uuid())
+  name       String
+  style      Json?
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  links      Link[]
+  collections Collection[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+```
 
-    id           = Column(UUID, primary_key=True, default=uuid4)
-    user_id      = Column(UUID, ForeignKey("users.id"), unique=True)
-    display_name = Column(String(60))
-    bio          = Column(String(160))
-    avatar_url   = Column(String)
-    theme        = Column(JSON, default=default_theme)  # see § 5 below
-    user         = relationship("User", back_populates="profile")
+### Collection
+
+```prisma
+model Collection {
+  id       String   @id @default(uuid())
+  title    String
+  position Int      @default(0)
+  cardId   String
+  card     Card     @relation(fields: [cardId], references: [id])
+  links    Link[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([cardId, title])
+}
 ```
 
 ### Link
 
-```python
-class Link(Base):
-    __tablename__ = "links"
-
-    id         = Column(UUID, primary_key=True, default=uuid4)
-    user_id    = Column(UUID, ForeignKey("users.id"), nullable=False, index=True)
-    title      = Column(String(80), nullable=False)
-    url        = Column(String, nullable=False)
-    icon       = Column(String)          # emoji or icon key
-    is_active  = Column(Boolean, default=True)
-    position   = Column(Integer, nullable=False)  # 0-indexed sort order
-    click_count = Column(Integer, default=0)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    user       = relationship("User", back_populates="links")
-```
-
-### Click Event (optional analytics table)
-
-```python
-class ClickEvent(Base):
-    __tablename__ = "click_events"
-
-    id         = Column(UUID, primary_key=True, default=uuid4)
-    link_id    = Column(UUID, ForeignKey("links.id"), nullable=False, index=True)
-    clicked_at = Column(DateTime, default=datetime.utcnow)
-    referrer   = Column(String)
-    country    = Column(String(2))   # ISO-2 from IP geo (optional)
+```prisma
+model Link {
+  id           String      @id @default(uuid())
+  title        String
+  url          String
+  position     Int         @default(0)
+  cardId       String
+  card         Card        @relation(fields: [cardId], references: [id])
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+}
 ```
 
 ---
 
 ## 5. Theme System
 
-Themes are stored as a JSON blob on `profiles.theme`. This lets you add new fields
+Themes are stored as a JSON blob on `cards.style`. This lets you add new fields
 without a migration.
 
-```python
-# Default theme shape
-default_theme = {
-    "bg_color":        "#FFFFFF",
-    "link_bg":         "#1A1A1A",
-    "link_text":       "#FFFFFF",
-    "link_border":     "none",
-    "link_style":      "filled",    # "filled" | "outline" | "soft"
-    "font":            "DM Sans",
-    "button_radius":   "pill",      # "pill" | "rounded" | "square"
-    "accent_color":    "#C5F135",
-}
+```ts
+// Default theme shape (lib/constants.ts)
+const DEFAULT_CARD_STYLE = {
+  bg_type:        "solid",       // "solid" | "gradient" | "image"
+  card_bg:        "FFFFFF",
+  text_color:     "1A1A1A",
+  title_color:    "1A1A1A",
+  button_bg:      "1A1A1A",
+  button_text:    "FFFFFF",
+  button_radius:  "9999px",      // pill
+  card_radius:    "24px",
+  font_style:     "Plus Jakarta Sans",
+  title_size:     "2xl",
+  text_size:      "base",
+  gradient:       ["C5F135", "1A1A1A"],
+  gradient_type:  "linear",      // "linear" | "radial"
+  gradient_direction: 135,
+  profile_image:  null,
+};
 ```
 
 Apply theme CSS vars on the profile page wrapper:
@@ -375,24 +390,40 @@ return (
 
 ---
 
-## 6. API Endpoints (FastAPI)
+## 6. API Endpoints (Next.js API Routes)
+
+All routes live under `/api/*` in the Next.js app. Auth uses Auth.js session cookies.
 
 ```
-POST   /auth/register          → create user + profile
-POST   /auth/login             → return JWT
-GET    /auth/me                → current user info
+POST   /api/auth/signup           → create user
+GET/POST /api/auth/[...nextauth]  → Auth.js handlers
+GET    /api/auth/me               → current user info
 
-GET    /profile/:username      → public profile + active links (no auth)
-PATCH  /profile/me             → update display_name, bio, avatar_url, theme
+GET    /api/profile/me            → current user's profile
+PATCH  /api/profile/me            → update profile
+PATCH  /api/profile/current       → set current card
+POST   /api/profile/upload-avatar → upload avatar to R2
+GET    /api/profile/:username     → public profile
 
-GET    /links                  → list user's links (auth required)
-POST   /links                  → create link
-PATCH  /links/:id              → update title/url/icon/is_active
-DELETE /links/:id              → delete link
-POST   /links/reorder          → body: { ids: string[] } — update positions
+GET    /api/cards                 → list user's cards
+POST   /api/cards                 → create card
+GET    /api/cards/[cardId]        → get one card
+PATCH  /api/cards/[cardId]        → update card
+DELETE /api/cards/[cardId]        → delete card
+PATCH  /api/cards/[cardId]/style  → update card style
+PATCH  /api/cards/[cardId]/reorder → reorder card items
 
-POST   /links/:id/click        → increment click_count (called from public page)
-GET    /analytics              → per-link click counts + time series (auth required)
+GET    /api/links                 → list links
+POST   /api/links                 → create link
+PATCH  /api/links/[linkId]        → update link
+DELETE /api/links/[linkId]        → delete link
+PATCH  /api/links/[linkId]/move   → move link between collections
+PATCH  /api/links/reorder         → reorder links
+
+GET    /api/collections           → list collections
+POST   /api/collections           → create collection
+PATCH  /api/collections/:id       → update collection
+DELETE /api/collections/:id       → delete collection
 ```
 
 ---
@@ -401,39 +432,38 @@ GET    /analytics              → per-link click counts + time series (auth req
 
 ### `/` - landing page
 
-### `/[username].tsx` — Public Profile
+### `/u/[username]` — Public Profile
 
-- Fetch via `getServerSideProps` (always fresh) or `getStaticProps` + `revalidate: 60` (ISR)
-- Apply theme CSS vars as inline style on root `<main>`
-- Fire `POST /links/:id/click` on link click (non-blocking — fire and forget)
-- Keep it lightweight: no client JS bundle required beyond the click tracker
+- **Server component.** Fetch `GET /api/profile/[username]` server-side.
+- Render `<ProfileHeader>` (avatar, name, bio) + the first card's items.
+- Generate `<head>` metadata via `generateMetadata()` with OG tags.
 
-### `/dashboard/index.tsx` — Link Editor
+### `/dashboard` — Link Editor
 
-- Client-side fetch behind auth guard (redirect to `/login` if no JWT)
+- Client-side fetch behind auth guard (redirect to `/login` if no session)
 - Drag-and-drop reorder: use `@dnd-kit/core` (lightweight, accessible)
-- Optimistic UI updates for toggle (active/inactive) before API round-trip
+- Optimistic UI updates for toggle before API round-trip
 - Inline edit on link title/URL — avoid modal for every small change
 
-### `/dashboard/appearance.tsx` — Theme Picker
+### `/dashboard/appearance` — Theme Picker
 
 - Live preview panel (phone mockup) that mirrors the public profile
 - Colour pickers for bg, link bg, link text, accent
 - Font selector (show actual font in dropdown)
-- PATCH `/profile/me` on "Save changes"
+- PATCH `/api/cards/[cardId]/style` on "Save changes"
 
 ---
 
 ## 9. Checklist — MVP Feature Set
 
-- [ ] Landing page (lime bg, pill nav, hero + CTA input)
-- [ ] Register / Login (JWT, argon2 password hashing)
-- [ ] Dashboard — CRUD links, drag-to-reorder
-- [ ] Public profile page — themed link list
+- [x] Landing page (lime bg, pill nav, hero + CTA input)
+- [x] Register / Login (Auth.js, Argon2 password hashing)
+- [x] Dashboard — CRUD links, drag-to-reorder
+- [x] Public profile page — themed link list
 - [ ] Click tracking (fire-and-forget POST on link tap)
-- [ ] Appearance editor — bg + link colour + font
-- [ ] Username availability check on register
-- [ ] Avatar upload (S3 / Cloudflare R2 presigned URL)
+- [x] Appearance editor — bg + link colour + font
+- [x] Username availability check on register
+- [x] Avatar upload (Cloudflare R2)
 - [ ] Basic analytics table (clicks per link, last 30 days)
 
 ---
@@ -445,4 +475,4 @@ GET    /analytics              → per-link click counts + time series (auth req
 | Reorder sends N PATCH calls | Send one `POST /links/reorder` with full ordered `ids` array |
 | Theme stored as many columns | Store as JSON blob; easier to extend |
 | Public profile slow on cold start | Use ISR with `revalidate: 60` or edge runtime |
-| JWT stored in localStorage | Store in `httpOnly` cookie to prevent XSS |
+| JWT stored in localStorage | Store in `httpOnly` cookie (Auth.js handles this) |

@@ -1,4 +1,5 @@
-import { apiFetch } from "@/lib/api";
+import { prisma } from "@/lib/db";
+import { buildCardItemsList } from "@/lib/card-utils";
 import { Card } from "@/lib/types";
 import { isLight, darken, lighten } from "@/utils/colors";
 import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
@@ -10,11 +11,37 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 async function getCard(username: string): Promise<Card> {
-  try {
-    return await apiFetch(`/profile/${username}`);
-  } catch {
-    notFound();
+  const user = await prisma.user.findFirst({
+    where: { username: { equals: username, mode: "insensitive" } },
+  });
+
+  if (!user) notFound();
+
+  if (!user.currentCard) {
+    return {
+      id: null as unknown as string,
+      user_id: user.id,
+      name: "Untitled",
+      items_list: [],
+      style: { bg_type: "solid", card_bg: "ffffff", text_color: "000000", gradient: [], gradient_type: "linear", gradient_direction: 135, button_bg: "000000", button_color: "ffffff", button_type: "solid", button_radius: "pill", text_size: "medium", title_size: "medium", font_style: "Plus Jakarta Sans", shadow: "none", title_color: null, profile_image: null },
+      user: { id: user.id, username: user.username, fullname: user.fullname, bio: user.bio, avatar_url: user.avatarUrl },
+    };
   }
+
+  const card = await prisma.card.findUnique({ where: { id: user.currentCard } });
+  if (!card) notFound();
+
+  const itemsList = await buildCardItemsList(card.id);
+
+  return {
+    id: card.id,
+    user_id: card.userId,
+    name: card.name,
+    bio: card.bio,
+    items_list: itemsList as unknown as Card["items_list"],
+    style: card.style as unknown as Card["style"],
+    user: { id: user.id, username: user.username, fullname: user.fullname, bio: user.bio, avatar_url: user.avatarUrl },
+  };
 }
 
 export async function generateMetadata({
@@ -29,7 +56,6 @@ export async function generateMetadata({
     const title = `${card.user?.fullname || username} | LinkForge`;
     const description = card.bio || `Links by @${username}`;
     
-    // Fallback to a default LinkForge image if the user doesn't have an avatar.
     const ogImage = card.user?.avatar_url || "https://linkforge.example.com/og-image.jpg";
 
     return {
@@ -71,7 +97,6 @@ export default async function Page({
   const cardStyle = card.style;
   const items = card.items_list || [];
 
-  // Calculate gradient colors
   const gradientColors =
     cardStyle.gradient && cardStyle.gradient.length >= 2
       ? cardStyle.gradient
@@ -82,13 +107,11 @@ export default async function Page({
             : lighten(cardStyle.card_bg, 0.8),
         ];
 
-  // Get current font
   const currentFont =
     fonts.find(
       (f) => f.name.toLowerCase() === cardStyle.font_style?.toLowerCase(),
     ) ?? fonts[0];
 
-  // Build background style
   const backgroundStyle: React.CSSProperties =
     cardStyle.bg_type === "solid"
       ? { background: `#${cardStyle.card_bg}` }

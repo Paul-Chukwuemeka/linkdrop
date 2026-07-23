@@ -48,7 +48,7 @@ export function UpdateCollection({
     setError(null);
     setIsSaving(true);
     try {
-      await apiFetch<Collection>(`/collections/${collection.id}`, {
+      await apiFetch<Collection>(`/api/collections/${collection.id}`, {
         method: "PATCH",
         json: { title: nextTitle },
       });

@@ -39,7 +39,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
   async function executeDeleteCollection() {
     setError(null);
     try {
-      await apiFetch<void>(`/collections/${item.id}`, { method: "DELETE" });
+      await apiFetch<void>(`/api/collections/${item.id}`, { method: "DELETE" });
       if (currentCard?.id) void loadCard(currentCard.id);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
