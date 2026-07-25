@@ -1,7 +1,7 @@
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { useProfile } from "@/context/ProfileContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import { UserProfileMe } from "@/lib/types";
@@ -16,6 +16,11 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
+  const [urlInput, setUrlInput] = useState(profile?.avatar_url || "");
+
+  useEffect(() => {
+    setUrlInput(profile?.avatar_url || "");
+  }, [profile?.avatar_url]);
 
   const getAvatarUrl = (url: string | null | undefined) => {
     if (!url) return "/user.svg";
@@ -51,7 +56,7 @@ const Profile = () => {
           username: profile.username,
           fullname: profile.fullname,
           bio: profile.bio,
-          avatar_url: profile.avatar_url,
+          avatar_url: urlInput || null,
         },
       });
       setProfile(updated);
@@ -93,7 +98,10 @@ const Profile = () => {
               <Button 
                 variant="ghost" 
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                onClick={() => setProfile(p => p ? { ...p, avatar_url: null } : p)}
+                onClick={() => {
+                  setProfile(p => p ? { ...p, avatar_url: null } : p);
+                  setUrlInput("");
+                }}
               >
                 Remove
               </Button>
@@ -150,12 +158,17 @@ const Profile = () => {
         <label className="flex flex-col gap-2 font-semibold text-neutral-800">
           Avatar URL (Optional)
           <Input
-            value={profile?.avatar_url || ""}
-            onChange={(e) =>
-              setProfile((p) => (p ? { ...p, avatar_url: e.target.value } : p))
-            }
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
             placeholder="https://…"
+            disabled={!!profile?.avatar_url && profile.avatar_url.includes("/avatars/")}
+            className={profile?.avatar_url && profile.avatar_url.includes("/avatars/") ? "opacity-50 cursor-not-allowed bg-neutral-100" : ""}
           />
+          {profile?.avatar_url && profile.avatar_url.includes("/avatars/") ? (
+            <p className="text-xs text-neutral-500">Upload a photo or remove the current one to use a URL instead.</p>
+          ) : !profile?.avatar_url ? (
+            <p className="text-xs text-neutral-500">Paste an image URL. It will be saved to your storage so it always loads.</p>
+          ) : null}
         </label>
 
         <div className="pt-2">

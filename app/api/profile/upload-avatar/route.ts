@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth-config"
 import { prisma } from "@/lib/db"
-import { r2, R2_BUCKET, R2_PUBLIC_URL } from "@/lib/s3"
+import { r2, R2_BUCKET, R2_PUBLIC_URL, deleteFromR2 } from "@/lib/s3"
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { unauthorizedResponse, errorResponse, serverErrorResponse } from "@/lib/api-utils"
-import { randomUUID } from "crypto"
+import { createHash } from "crypto"
 
 const MAX_SIZE = 5 * 1024 * 1024 // 5MB
+
+const EXT_MAP: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/gif": "gif",
+  "image/webp": "webp",
+}
 
 export async function POST(request: Request) {
   const session = await auth()
@@ -19,24 +26,29 @@ export async function POST(request: Request) {
   if (!file.type.startsWith("image/")) return errorResponse("File must be an image", 400)
   if (file.size > MAX_SIZE) return errorResponse("File too large (max 5MB)", 413)
 
-  const ext = file.name.split(".").pop() || "bin"
-  const filename = `avatars/${randomUUID()}.${ext}`
-
   try {
     const buffer = Buffer.from(await file.arrayBuffer())
+
+    const hash = createHash("sha256").update(buffer).digest("hex")
+    const ext = EXT_MAP[file.type.split(";")[0].trim()] || file.name.split(".").pop() || "jpg"
+    const key = `avatars/${hash}.${ext}`
+
+    // Delete old R2 object if it exists
+    const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { avatarUrl: true } })
+    if (user?.avatarUrl) await deleteFromR2(user.avatarUrl)
 
     await r2.send(
       new PutObjectCommand({
         Bucket: R2_BUCKET,
-        Key: filename,
+        Key: key,
         Body: buffer,
-        ContentType: file.type,
+        ContentType: file.type.split(";")[0].trim(),
       })
     )
 
     const avatarUrl = R2_PUBLIC_URL
-      ? `${R2_PUBLIC_URL}/${filename}`
-      : `/${filename}`
+      ? `${R2_PUBLIC_URL}/${key}`
+      : `/${key}`
 
     const updated = await prisma.user.update({
       where: { id: session.user.id },

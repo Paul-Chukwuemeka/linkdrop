@@ -3,6 +3,63 @@ import { auth } from "@/lib/auth-config"
 import { prisma } from "@/lib/db"
 import { profileUpdateSchema } from "@/lib/validations/profile"
 import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse, serverErrorResponse } from "@/lib/api-utils"
+import { r2, R2_BUCKET, R2_PUBLIC_URL, deleteFromR2 } from "@/lib/s3"
+import { PutObjectCommand } from "@aws-sdk/client-s3"
+import { createHash } from "crypto"
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB
+const FETCH_TIMEOUT = 10000 // 10s
+
+const CONTENT_TYPE_TO_EXT: Record<string, string> = {
+  "image/jpeg": "jpg",
+  "image/png": "png",
+  "image/gif": "gif",
+  "image/webp": "webp",
+}
+
+async function reHostAvatarUrl(url: string, currentAvatarUrl?: string | null): Promise<string> {
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT)
+
+  let response: Response
+  try {
+    response = await fetch(url, {
+      signal: controller.signal,
+      headers: { "User-Agent": "LinkForge/1.0" },
+    })
+  } finally {
+    clearTimeout(timeout)
+  }
+
+  if (!response.ok) throw new Error(`Failed to fetch image (HTTP ${response.status})`)
+
+  const contentType = response.headers.get("content-type") || ""
+  if (!contentType.startsWith("image/")) throw new Error("URL does not point to an image")
+
+  const contentLength = Number(response.headers.get("content-length") || "0")
+  if (contentLength > MAX_IMAGE_SIZE) throw new Error("Image exceeds 5MB limit")
+
+  const buffer = Buffer.from(await response.arrayBuffer())
+  if (buffer.length > MAX_IMAGE_SIZE) throw new Error("Image exceeds 5MB limit")
+
+  const hash = createHash("sha256").update(buffer).digest("hex")
+  const ext = CONTENT_TYPE_TO_EXT[contentType.split(";")[0].trim()] || "jpg"
+  const key = `avatars/${hash}.${ext}`
+
+  // Delete old R2 object if it exists
+  if (currentAvatarUrl) await deleteFromR2(currentAvatarUrl)
+
+  await r2.send(
+    new PutObjectCommand({
+      Bucket: R2_BUCKET,
+      Key: key,
+      Body: buffer,
+      ContentType: contentType.split(";")[0].trim(),
+    })
+  )
+
+  return R2_PUBLIC_URL ? `${R2_PUBLIC_URL}/${key}` : `/${key}`
+}
 
 export async function GET() {
   const session = await auth()
@@ -93,7 +150,18 @@ export async function PATCH(request: Request) {
       updateData.bio = bio?.trim() || null
     }
     if (avatar_url !== undefined) {
-      updateData.avatarUrl = avatar_url?.trim() || null
+      const trimmed = avatar_url?.trim() || null
+      if (trimmed && /^https?:\/\//i.test(trimmed)) {
+        try {
+          const current = await prisma.user.findUnique({ where: { id: session.user.id }, select: { avatarUrl: true } })
+          updateData.avatarUrl = await reHostAvatarUrl(trimmed, current?.avatarUrl)
+        } catch (err) {
+          const message = err instanceof Error ? err.message : "Failed to process image URL"
+          return errorResponse(message, 400)
+        }
+      } else {
+        updateData.avatarUrl = trimmed
+      }
     }
     if (theme !== undefined) {
       updateData.theme = theme?.trim() || "default"

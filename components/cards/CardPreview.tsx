@@ -20,7 +20,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
 
   const items = currentCard?.items_list;
 
-  const backgroundColor = cardStyle ? cardStyle.card_bg : "ffffff";
+  const backgroundColor = cardStyle?.card_bg ?? "ffffff";
 
   const endColor = useMemo(
     () =>
@@ -62,9 +62,10 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
         </button>
       )}
       <div
-        className="shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 bg-(--page-bg) w-[320px] sm:w-70 h-140 sm:h-140 ring-1 ring-black/10 overflow-hidden"
+        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 ring-1 ring-black/10 overflow-hidden ${mobile ? "w-full max-w-94 h-full min-h-200 " : "w-[320px] h-140"}`}
         onClick={(e) => e.stopPropagation()}
         style={{
+          background: `#${backgroundColor}`,
           ...(cardStyle.bg_type === "solid" && {
             background: `#${cardStyle.card_bg}`,
           }),
@@ -98,7 +99,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               alt="user"
               width={100}
               height={100}
-              className="h-10 w-10 sm:h-12 sm:w-12 shrink-0 border rounded-full bg-white/40 ring-1 ring-black/10"
+              className={`${mobile ? "" :""}  shrink-0 border rounded-full bg-white/40 ring-1 ring-black/10 object-cover`}
             />
             <p
               className={`font-black ${titleSizeClasses[cardStyle.title_size ?? "medium"]}`}

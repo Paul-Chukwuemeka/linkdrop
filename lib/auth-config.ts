@@ -58,10 +58,51 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       : []),
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        const email = user.email!
+        let dbUser = await prisma.user.findUnique({ where: { email } })
+
+        if (!dbUser) {
+          let username = email.split("@")[0].replace(/[^a-zA-Z0-9_-]/g, "_")
+          while (await prisma.user.findUnique({ where: { username } })) {
+            username = `${username}_${Math.random().toString(36).substring(2, 6)}`
+          }
+
+          dbUser = await prisma.user.create({
+            data: { username, email, fullname: user.name || username, avatarUrl: user.image },
+          })
+        }
+
+        const exists = await prisma.account.findFirst({
+          where: { provider: "google", providerAccountId: account.providerAccountId },
+        })
+        if (!exists) {
+          await prisma.account.create({
+            data: {
+              userId: dbUser.id,
+              type: "oauth",
+              provider: "google",
+              providerAccountId: account.providerAccountId,
+              access_token: account.access_token,
+              id_token: account.id_token,
+            },
+          })
+        }
+      }
+      return true
+    },
+    async jwt({ token, user, account }) {
+      if (account?.provider === "google" && user) {
+        const dbUser = await prisma.user.findUnique({ where: { email: user.email! } })
+        if (dbUser) {
+          token.id = dbUser.id
+          token.username = dbUser.username
+        }
+      }
+      if (user && "username" in user && user.username) {
         token.id = user.id
-        token.username = (user as { username?: string }).username ?? user.name ?? ""
+        token.username = (user as { username: string }).username
       }
       return token
     },

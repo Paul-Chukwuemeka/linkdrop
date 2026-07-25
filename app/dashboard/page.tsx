@@ -36,6 +36,7 @@ export default function DashboardPage() {
     currentCard,
     setCurrentCard,
     loadCard,
+    isLoadingCard,
     isCreatingLink,
     isCreatingCollection,
     setIsCreatingCollection,
@@ -131,10 +132,26 @@ export default function DashboardPage() {
           {error}
         </div>
       )}
+      {currentCard === null && !isLoadingCard && (
+        <div className="flex flex-col items-center justify-center rounded-xl bg-white p-12 text-center">
+          <h3 className="text-lg font-semibold text-neutral-800">No cards yet</h3>
+          <p className="mt-2 text-sm text-neutral-600">
+            Create your first card to start adding links.
+          </p>
+          <Link
+            href="/dashboard/cards"
+            className="mt-6 rounded-full bg-black px-6 py-2 text-sm font-bold text-white hover:bg-neutral-800 transition-colors"
+          >
+            Create your first card
+          </Link>
+        </div>
+      )}
       <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
         <div className="overflow-auto rounded-xl bg-white flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
           <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
-            <div className="flex px-1 items-center justify-between">
+            {currentCard && (
+              <>
+              <div className="flex px-1 items-center justify-between">
               {isEditingName ? (
                 <input
                   autoFocus
@@ -199,34 +216,34 @@ export default function DashboardPage() {
             </div>
             {isCreatingLink && <CreateLink />}
             {isCreatingCollection && <CreateCollection />}
-            {currentCard && (
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={currentCard.items_list.map((item) => item.content.id)}
+                strategy={verticalListSortingStrategy}
               >
-                <SortableContext
-                  items={currentCard.items_list.map((item) => item.content.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  {currentCard?.items_list.map((item) => {
-                    return item.type == "link" ? (
-                      <DraggableLink key={item.content.id} item={item.content} />
-                    ) : (
-                      <CollectionBlock key={item.content.id} item={item.content} />
-                    );
-                  })}
-                </SortableContext>
-                <DragOverlay>
-                  {activeItem &&
-                    (activeItem.type == "link" ? (
-                      <DraggableLink item={activeItem.content} />
-                    ) : (
-                      <CollectionBlock item={activeItem.content} />
-                    ))}
-                </DragOverlay>
-              </DndContext>
+                {currentCard.items_list.map((item) => {
+                  return item.type == "link" ? (
+                    <DraggableLink key={item.content.id} item={item.content} />
+                  ) : (
+                    <CollectionBlock key={item.content.id} item={item.content} />
+                  );
+                })}
+              </SortableContext>
+              <DragOverlay>
+                {activeItem &&
+                  (activeItem.type == "link" ? (
+                    <DraggableLink item={activeItem.content} />
+                  ) : (
+                    <CollectionBlock item={activeItem.content} />
+                  ))}
+              </DragOverlay>
+            </DndContext>
+              </>
             )}
           </div>
         </div>

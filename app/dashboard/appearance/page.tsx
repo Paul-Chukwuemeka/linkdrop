@@ -44,6 +44,23 @@ export default function AppearancePage() {
     );
   }
 
+  if (!currentCard) {
+    return (
+      <div className="rounded-3xl bg-white p-6 text-sm text-neutral-800 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+        <h3 className="text-lg font-semibold text-neutral-800">No cards yet</h3>
+        <p className="mt-2 text-neutral-600">
+          Create a card first to customize its appearance.
+        </p>
+        <Link
+          href="/dashboard/cards"
+          className="mt-6 inline-block rounded-full bg-black px-6 py-2 text-sm font-bold text-white hover:bg-neutral-800 transition-colors"
+        >
+          Create your first card
+        </Link>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-1 h-full min-w-0 flex-col gap-2 sm:gap-3">
       <div className="bg-white p-4 sm:p-5 md:p-6 rounded-xl">

@@ -65,7 +65,7 @@ export function CardsOverview() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center bg-white p-10 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+      <div className="overflow-auto rounded-xl bg-white flex items-center justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
         <Spinner />
       </div>
     );

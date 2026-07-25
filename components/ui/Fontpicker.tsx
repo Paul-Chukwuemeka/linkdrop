@@ -10,7 +10,7 @@ const Fontpicker = () => {
 
   const currentFont: FontType =
     fonts.find(
-      (f) => f.name.toLowerCase() == cardStyle?.font_style.toLowerCase(),
+      (f) => f.name.toLowerCase() == cardStyle?.font_style?.toLowerCase(),
     ) ?? fonts[0];
 
   return (
