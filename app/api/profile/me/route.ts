@@ -17,7 +17,19 @@ const CONTENT_TYPE_TO_EXT: Record<string, string> = {
   "image/webp": "webp",
 }
 
+const ALLOWED_AVATAR_HOSTS = new Set([
+  "lh3.googleusercontent.com",
+  "pbs.twimg.com",
+  "avatars.githubusercontent.com",
+  "i.pravatar.cc",
+])
+
 async function reHostAvatarUrl(url: string, currentAvatarUrl?: string | null): Promise<string> {
+  const urlObj = new URL(url)
+  if (!ALLOWED_AVATAR_HOSTS.has(urlObj.hostname)) {
+    throw new Error("Image host not allowed")
+  }
+
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT)
 
@@ -46,7 +58,6 @@ async function reHostAvatarUrl(url: string, currentAvatarUrl?: string | null): P
   const ext = CONTENT_TYPE_TO_EXT[contentType.split(";")[0].trim()] || "jpg"
   const key = `avatars/${hash}.${ext}`
 
-  // Delete old R2 object if it exists
   if (currentAvatarUrl) await deleteFromR2(currentAvatarUrl)
 
   await r2.send(
@@ -170,14 +181,6 @@ export async function PATCH(request: Request) {
     const updated = await prisma.user.update({
       where: { id: session.user.id },
       data: updateData,
-      include: {
-        cards: {
-          include: {
-            links: true,
-            collections: { include: { links: true } },
-          },
-        },
-      },
     })
 
     return NextResponse.json({
@@ -189,36 +192,6 @@ export async function PATCH(request: Request) {
       avatar_url: updated.avatarUrl,
       theme: updated.theme,
       current_card: updated.currentCard,
-      cards: updated.cards.map((card) => ({
-        id: card.id,
-        user_id: card.userId,
-        name: card.name,
-        bio: card.bio,
-        style: card.style,
-        links: card.links.map((l) => ({
-          id: l.id,
-          card_id: l.cardId,
-          collection_id: l.collectionId,
-          title: l.title,
-          url: l.url,
-          position: l.position,
-        })),
-        collections: card.collections.map((c) => ({
-          id: c.id,
-          card_id: c.cardId,
-          title: c.title,
-          position: c.position,
-          links: c.links.map((l) => ({
-            id: l.id,
-            card_id: l.cardId,
-            collection_id: l.collectionId,
-            title: l.title,
-            url: l.url,
-            position: l.position,
-          })),
-        })),
-        items_list: [],
-      })),
     })
   } catch (error: unknown) {
     if (error && typeof error === "object" && "code" in error && error.code === "P2002") {

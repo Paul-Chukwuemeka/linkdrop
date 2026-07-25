@@ -33,7 +33,6 @@ export async function POST(request: Request) {
     const ext = EXT_MAP[file.type.split(";")[0].trim()] || file.name.split(".").pop() || "jpg"
     const key = `avatars/${hash}.${ext}`
 
-    // Delete old R2 object if it exists
     const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { avatarUrl: true } })
     if (user?.avatarUrl) await deleteFromR2(user.avatarUrl)
 
@@ -53,14 +52,6 @@ export async function POST(request: Request) {
     const updated = await prisma.user.update({
       where: { id: session.user.id },
       data: { avatarUrl },
-      include: {
-        cards: {
-          include: {
-            links: true,
-            collections: { include: { links: true } },
-          },
-        },
-      },
     })
 
     return NextResponse.json({
@@ -72,21 +63,6 @@ export async function POST(request: Request) {
       avatar_url: updated.avatarUrl,
       theme: updated.theme,
       current_card: updated.currentCard,
-      cards: updated.cards.map((c) => ({
-        id: c.id, user_id: c.userId, name: c.name, bio: c.bio, style: c.style,
-        links: c.links.map((l) => ({
-          id: l.id, card_id: l.cardId, collection_id: l.collectionId,
-          title: l.title, url: l.url, position: l.position,
-        })),
-        collections: c.collections.map((col) => ({
-          id: col.id, card_id: col.cardId, title: col.title, position: col.position,
-          links: col.links.map((l) => ({
-            id: l.id, card_id: l.cardId, collection_id: l.collectionId,
-            title: l.title, url: l.url, position: l.position,
-          })),
-        })),
-        items_list: [],
-      })),
     })
   } catch (error) {
     console.error("Avatar upload error:", error)

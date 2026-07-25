@@ -1,11 +1,10 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
-export function proxy(request: NextRequest) {
-  const sessionToken =
-    request.cookies.get("authjs.session-token")?.value ||
-    request.cookies.get("__Secure-authjs.session-token")?.value;
-  const isLoggedIn = Boolean(sessionToken);
+export async function proxy(request: NextRequest) {
+  const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+  const isLoggedIn = Boolean(token);
   const pathname = request.nextUrl.pathname;
 
   if (isLoggedIn && pathname === "/") {

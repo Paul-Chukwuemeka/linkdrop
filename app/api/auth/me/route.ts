@@ -1,27 +1,27 @@
 import { NextResponse } from "next/server"
-import { auth } from "@/lib/auth-config"
 import { prisma } from "@/lib/db"
+import { requireAuth } from "@/lib/auth-helpers"
+import { unauthorizedResponse, notFoundResponse } from "@/lib/api-utils"
 
 export async function GET() {
-  const session = await auth()
+  try {
+    const user = await requireAuth()
 
-  if (!session?.user?.id) {
-    return NextResponse.json({ detail: "Not authenticated" }, { status: 401 })
+    const dbUser = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        fullname: true,
+      },
+    })
+
+    if (!dbUser) return notFoundResponse("User not found")
+
+    return NextResponse.json(dbUser)
+  } catch (e) {
+    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
+    throw e
   }
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: {
-      id: true,
-      username: true,
-      email: true,
-      fullname: true,
-    },
-  })
-
-  if (!user) {
-    return NextResponse.json({ detail: "User not found" }, { status: 404 })
-  }
-
-  return NextResponse.json(user)
 }

@@ -21,7 +21,7 @@ export function CardList({
 
   return (
     <div className="flex flex-col w-full max-w-200 gap-3 sm:gap-4">
-      <div className="bg-white p-4 sm:p-5 rounded-xl shadow-(--shadow-card) ring-1 ring-(--color-border)">
+      <div className="bg-white p-4 sm:p-5 rounded-md shadow-(--shadow-card) ring-1 ring-(--color-border)">
         <div className="text-sm font-bold text-neutral-900">Create a card</div>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Input
@@ -46,7 +46,7 @@ export function CardList({
 
       <div className="flex flex-col gap-3">
         {cards.length === 0 ? (
-          <div className="rounded-xl sm:rounded-2xl bg-white p-4 sm:p-6 text-sm text-neutral-700 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+          <div className="rounded-sm sm:rounded-md bg-white p-4 sm:p-6 text-sm text-neutral-700 shadow-(--shadow-card) ring-1 ring-(--color-border)">
             No cards yet.
           </div>
         ) : (

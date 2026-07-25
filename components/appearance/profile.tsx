@@ -89,7 +89,7 @@ const Profile = () => {
             <Button 
               variant="primary" 
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-2"
+              className="flex items-center gap-1"
             >
               <Upload className="w-4 h-4" />
               Upload Photo

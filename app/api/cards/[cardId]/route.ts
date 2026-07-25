@@ -2,8 +2,8 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth-config"
 import { prisma } from "@/lib/db"
 import { buildCardItemsList } from "@/lib/card-utils"
-import { cardUpdateSchema, cardItemReorderSchema } from "@/lib/validations/cards"
-import { errorResponse, unauthorizedResponse, notFoundResponse, serverErrorResponse } from "@/lib/api-utils"
+import { cardUpdateSchema } from "@/lib/validations/cards"
+import { errorResponse, unauthorizedResponse, notFoundResponse } from "@/lib/api-utils"
 
 export async function GET(
   _request: Request,
@@ -94,6 +94,22 @@ export async function DELETE(
   if (!card) return notFoundResponse("Card not found")
 
   await prisma.card.delete({ where: { id: cardId } })
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: { currentCard: true },
+  })
+
+  if (user?.currentCard === cardId) {
+    const nextCard = await prisma.card.findFirst({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: "desc" },
+    })
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { currentCard: nextCard?.id ?? null },
+    })
+  }
 
   return new NextResponse(null, { status: 204 })
 }

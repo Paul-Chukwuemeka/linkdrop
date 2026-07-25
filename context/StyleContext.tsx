@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { CardTheme } from "@/lib/types";
 import { apiFetch } from "@/lib/api";
 import { useCard } from "./CardContext";
@@ -28,20 +28,12 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   const { currentCard, setCardError } = useCard();
   const [cardStyle, setCardStyle] = useState<CardTheme | null>(null);
   const [isSavingStyle, setIsSavingStyle] = useState(false);
-  const originalCardId = useRef<string | null>(null);
 
-  // Sync style when a new card is loaded, but maintain current object identity if editing
   useEffect(() => {
-    if (currentCard && originalCardId.current === null) {
+    if (currentCard) {
       setCardStyle(currentCard.style);
-      originalCardId.current = currentCard.id;
     }
-    // If currentCard ID massively changes, rebuild
-    if (currentCard && originalCardId.current !== null && currentCard.id !== originalCardId.current) {
-       setCardStyle(currentCard.style);
-       originalCardId.current = currentCard.id;
-    }
-  }, [currentCard]);
+  }, [currentCard?.id, currentCard?.style]);
 
   function updateCardStyle(updates: Partial<CardTheme>) {
     if (!cardStyle) return;
@@ -55,7 +47,6 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
         method: "PATCH",
         json: { style: cardStyle },
       });
-      originalCardId.current = currentCard?.id ?? null;
       toast.success("Card style saved!");
     } catch (error) {
       setCardError("Failed to save style");

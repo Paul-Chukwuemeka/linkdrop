@@ -1,66 +1,69 @@
 import { NextResponse } from "next/server"
-import { auth } from "@/lib/auth-config"
 import { prisma } from "@/lib/db"
+import { requireAuth } from "@/lib/auth-helpers"
 import { cardCreateSchema } from "@/lib/validations/cards"
 import { unauthorizedResponse, errorResponse, serverErrorResponse } from "@/lib/api-utils"
 
 export async function GET() {
-  const session = await auth()
-  if (!session?.user?.id) return unauthorizedResponse()
+  try {
+    const user = await requireAuth()
 
-  const cards = await prisma.card.findMany({
-    where: { userId: session.user.id },
-    include: {
-      links: true,
-      collections: { include: { links: true } },
-    },
-    orderBy: { id: "asc" },
-  })
+    const cards = await prisma.card.findMany({
+      where: { userId: user.id },
+      include: {
+        links: true,
+        collections: { include: { links: true } },
+      },
+      orderBy: { id: "asc" },
+    })
 
-  return NextResponse.json(
-    cards.map((card) => ({
-      id: card.id,
-      user_id: card.userId,
-      name: card.name,
-      bio: card.bio,
-      style: card.style,
-      links: card.links.map((l) => ({
-        id: l.id, card_id: l.cardId, collection_id: l.collectionId,
-        title: l.title, url: l.url, position: l.position,
-      })),
-      collections: card.collections.map((c) => ({
-        id: c.id, card_id: c.cardId, title: c.title, position: c.position,
-        links: c.links.map((l) => ({
+    return NextResponse.json(
+      cards.map((card) => ({
+        id: card.id,
+        user_id: card.userId,
+        name: card.name,
+        bio: card.bio,
+        style: card.style,
+        links: card.links.map((l) => ({
           id: l.id, card_id: l.cardId, collection_id: l.collectionId,
           title: l.title, url: l.url, position: l.position,
         })),
-      })),
-    }))
-  )
+        collections: card.collections.map((c) => ({
+          id: c.id, card_id: c.cardId, title: c.title, position: c.position,
+          links: c.links.map((l) => ({
+            id: l.id, card_id: l.cardId, collection_id: l.collectionId,
+            title: l.title, url: l.url, position: l.position,
+          })),
+        })),
+      }))
+    )
+  } catch (e) {
+    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
+    throw e
+  }
 }
 
 export async function POST(request: Request) {
-  const session = await auth()
-  if (!session?.user?.id) return unauthorizedResponse()
-
-  let body: unknown = null
   try {
-    body = await request.json()
-  } catch {
-    body = null
-  }
+    const user = await requireAuth()
 
-  const parsed = cardCreateSchema.safeParse(body)
-  if (!parsed.success) {
-    return errorResponse(parsed.error.issues[0].message, 400)
-  }
+    let body: unknown = null
+    try {
+      body = await request.json()
+    } catch {
+      body = null
+    }
 
-  const name = parsed.data.name?.trim() || "Untitled"
+    const parsed = cardCreateSchema.safeParse(body)
+    if (!parsed.success) {
+      return errorResponse(parsed.error.issues[0].message, 400)
+    }
 
-  try {
+    const name = parsed.data.name?.trim() || "Untitled"
+
     const card = await prisma.card.create({
       data: {
-        userId: session.user.id,
+        userId: user.id,
         name,
       },
     })
@@ -77,8 +80,9 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     )
-  } catch (error) {
-    console.error("Create card error:", error)
+  } catch (e) {
+    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
+    console.error("Create card error:", e)
     return serverErrorResponse("Could not create card")
   }
 }

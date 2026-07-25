@@ -12,7 +12,7 @@ export function useCard(cardId: string) {
   const reload = useCallback(async () => {
     setError(null);
     try {
-      const res = await apiFetch<Card>(`/cards/${cardId}`);
+      const res = await apiFetch<Card>(`/api/cards/${cardId}/list`);
       setCard(res);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);

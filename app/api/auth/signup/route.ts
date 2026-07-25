@@ -2,10 +2,15 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { signupSchema } from "@/lib/validations/auth"
 import { errorResponse, conflictResponse, serverErrorResponse } from "@/lib/api-utils"
+import { checkRateLimit } from "@/lib/rate-limit"
 import argon2 from "argon2"
 import { DEFAULT_CARD_STYLE } from "@/lib/constants"
 
 export async function POST(request: Request) {
+  if (!checkRateLimit(request, 5, 60_000)) {
+    return errorResponse("Too many requests. Please try again later.", 429)
+  }
+
   try {
     const body = await request.json()
     const parsed = signupSchema.safeParse(body)
