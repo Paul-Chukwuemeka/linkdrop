@@ -11,7 +11,7 @@ export default function Home() {
         <nav className="mt-4 sm:mt-6 flex items-center justify-between rounded-full bg-white w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 shadow-(--shadow-nav)">
           <Link
             href="/"
-            className="text-lg sm:text-xl font-extrabold tracking-tight text-(--color-dark)"
+            className="text-lg sm:text-xl font-extrabold tracking-tight text-(--text-primary)"
           >
             LinkForge
           </Link>
@@ -36,7 +36,7 @@ export default function Home() {
         </nav>
         <section className="mt-12 sm:mt-16 lg:mt-20 items-start justify-start py-6 sm:py-10 flex w-full flex-1">
           <div className="max-w-2xl">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black italic leading-tight tracking-tight text-(--color-dark-alt)">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black italic leading-tight tracking-tight" style={{ color: "#243010" }}>
               One link for everything you build.
             </h1>
 

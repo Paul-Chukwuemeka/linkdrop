@@ -32,6 +32,7 @@ export interface UserProfilePublic {
 export interface UserProfileMe extends UserProfilePublic {
   email: string
   current_card: string
+  last_selected_card: string | null
 }
 
 export interface Card {
@@ -163,6 +164,7 @@ export interface CardTheme {
   title_size: "large" | "medium" | "small"
   font_style: string
   shadow: "none" | "soft" | "medium" | "hard" | "glow" | null
+  shadow_color: string | null
   profile_image: string | null
   name?: string
 }

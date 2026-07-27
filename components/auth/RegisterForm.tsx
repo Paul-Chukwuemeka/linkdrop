@@ -91,7 +91,7 @@ export function RegisterForm() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
         Username
         <Input
           autoComplete="username"
@@ -104,7 +104,7 @@ export function RegisterForm() {
         {fieldErrors.username && <span className="text-xs text-red-600 font-normal">{fieldErrors.username}</span>}
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
         Email
         <Input
           autoComplete="email"
@@ -117,7 +117,7 @@ export function RegisterForm() {
         {fieldErrors.email && <span className="text-xs text-red-600 font-normal">{fieldErrors.email}</span>}
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
         Full name
         <Input
           autoComplete="name"
@@ -128,7 +128,7 @@ export function RegisterForm() {
         />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
         Password
         <Input
           autoComplete="new-password"

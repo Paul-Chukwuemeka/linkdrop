@@ -17,6 +17,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "none",
+    shadow_color: null,
     font_style: "Inter",
     gradient: [],
     title_size: "medium",
@@ -36,6 +37,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "medium",
+    shadow_color: null,
     font_style: "Inter",
     gradient: [],
     title_size: "medium",
@@ -55,6 +57,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "medium",
+    shadow_color: null,
     font_style: "Inter",
     gradient: ["ff6b6b", "feca57"],
     title_size: "large",
@@ -74,6 +77,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "medium",
+    shadow_color: null,
     font_style: "Inter",
     gradient: ["03045e", "0077b6", "00b4d8"],
     title_size: "medium",
@@ -93,6 +97,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "soft",
+    shadow_color: null,
     font_style: "Inter",
     gradient: [],
     title_size: "medium",
@@ -112,6 +117,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "soft",
+    shadow_color: null,
     font_style: "Inter",
     gradient: [],
     title_size: "medium",
@@ -131,6 +137,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "outline",
     profile_image: null,
     shadow: "none",
+    shadow_color: null,
     font_style: "Inter",
     gradient: [],
     title_size: "medium",
@@ -150,6 +157,7 @@ const STYLE_PRESETS: CardTheme[] = [
     button_type: "solid",
     profile_image: null,
     shadow: "glow",
+    shadow_color: "e0aaff",
     font_style: "Inter",
     gradient: ["10002b", "3c096c", "7b2ff7", "e0aaff"],
     title_size: "large",
@@ -237,10 +245,10 @@ const Presets = () => {
   return (
     <div className="flex flex-col gap-6 w-full max-w-180">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 mb-2">
+        <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
           Theme Presets
         </h2>
-        <p className="text-sm text-neutral-600 mb-6">
+        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
           Choose a preset to quickly apply a complete theme to your profile.
         </p>
 
@@ -256,8 +264,8 @@ const Presets = () => {
                 onClick={() => handleApplyPreset(preset)}
                 className={`group relative flex flex-col gap-3 p-4 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
                   isActive
-                    ? "border-black shadow-md"
-                    : "border-neutral-200 hover:border-neutral-300"
+                    ? "border-black dark:border-white shadow-md"
+                    : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
               >
                 <div
@@ -292,14 +300,14 @@ const Presets = () => {
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-semibold text-sm ${
-                      isActive ? "text-neutral-900" : "text-neutral-700"
+                      isActive ? "text-neutral-900 dark:text-neutral-100" : "text-neutral-700 dark:text-neutral-300"
                     }`}
                   >
                     {preset.name}
                   </span>
                   {isActive && (
                     <svg
-                      className="w-5 h-5 text-black"
+                      className="w-5 h-5 text-black dark:text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >

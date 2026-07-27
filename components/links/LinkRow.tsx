@@ -58,14 +58,14 @@ export function DraggableLink({
         style={style}
         ref={setNodeRef}
         className={[
-          "flex w-full items-center rounded-lg bg-white p-2 py-2 shadow-(--shadow-card) ring-1 ring-(--color-border) sm:rounded-xl sm:p-3 md:p-4",
+          "flex w-full items-center rounded-lg bg-white dark:bg-neutral-900 p-2 py-2 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:rounded-xl sm:p-3 md:p-4",
         ]
           .filter(Boolean)
           .join(" ")}
       >
         <button
           hidden={inCollection}
-          className="h-full w-8 shrink-0 cursor-grab text-sm text-gray-500 touch-manipulation sm:w-10"
+          className="h-full w-8 shrink-0 cursor-grab text-sm text-gray-500 dark:text-gray-400 touch-manipulation sm:w-10"
           {...attributes}
           {...listeners}
           aria-label="Drag to reorder"
@@ -74,7 +74,7 @@ export function DraggableLink({
         </button>
         <div className="flex min-w-0 flex-1 flex-col gap-1 p-2 sm:gap-1.5 sm:p-3">
           <p
-            className="flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base"
+            className="flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100"
             onClick={() => setIsEditing(true)}
           >
             <span className="flex min-w-0 flex-1 items-center gap-2">
@@ -82,7 +82,7 @@ export function DraggableLink({
               <Pencil width={14} className="h-4 w-4 shrink-0" />
             </span>
             <button
-              className="shrink-0 rounded p-1 transition-colors hover:bg-red-50 touch-manipulation"
+              className="shrink-0 rounded p-1 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30 touch-manipulation"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsConfirmOpen(true);
@@ -93,7 +93,7 @@ export function DraggableLink({
             </button>
           </p>
           <p
-            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 sm:text-sm"
+            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-sm"
             onClick={() => setIsEditing(true)}
           >
             <span className="min-w-0 flex-1 truncate">{item.url}</span>
@@ -140,7 +140,7 @@ export function LinkRow({
   }, [link.id, link.title, link.url]);
 
   const nestedInputClassName =
-    "rounded-2xl bg-neutral-50 shadow-none ring-neutral-200 focus:ring-[var(--accent)]";
+    "rounded-2xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
 
   async function savePatch(patch: Partial<Pick<LinkType, "title" | "url">>) {
     if (saving.current) return;
@@ -174,7 +174,7 @@ export function LinkRow({
   return (
     <div
       className={[
-        "rounded-3xl bg-white shadow-(--shadow-card) ring-1 ring-(--color-border)",
+        "rounded-3xl bg-white dark:bg-neutral-900 shadow-(--shadow-card) ring-1 ring-(--border-color)",
         compact ? "p-3" : "p-4",
       ]
         .filter(Boolean)
@@ -184,7 +184,7 @@ export function LinkRow({
         {dragHandle ? (
           <button
             type="button"
-            className="inline-flex h-11 w-11 cursor-grab items-center justify-center rounded-2xl bg-neutral-50 text-neutral-700 ring-1 ring-neutral-200 hover:bg-neutral-100 active:cursor-grabbing"
+            className="inline-flex h-11 w-11 cursor-grab items-center justify-center rounded-2xl bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 ring-1 ring-neutral-200 dark:ring-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 active:cursor-grabbing"
             aria-label="Drag link"
             {...(dragHandle.attributes as React.HTMLAttributes<HTMLButtonElement>)}
             {...(dragHandle.listeners as React.HTMLAttributes<HTMLButtonElement>)}
@@ -194,7 +194,7 @@ export function LinkRow({
         ) : null}
 
         <div className="min-w-0 flex-1">
-          <div className="text-xs font-semibold text-neutral-600">Link</div>
+          <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Link</div>
           <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
             <Input
               value={title}
@@ -244,7 +244,7 @@ export function LinkRow({
       </div>
 
       {error ? (
-        <div className="mt-3 rounded-xl bg-red-50 p-3 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="mt-3 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
           {error}
         </div>
       ) : null}

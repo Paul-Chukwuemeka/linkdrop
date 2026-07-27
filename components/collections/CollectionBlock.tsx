@@ -53,14 +53,14 @@ export function CollectionBlock({ item }: { item: Collection }) {
         style={style}
         ref={setNodeRef}
         className={[
-          "flex flex-col gap-2 rounded-xl bg-neutral-100 p-3 shadow-(--shadow-card) ring-1 ring-(--color-border) sm:gap-3 sm:rounded-2xl sm:p-4",
+          "flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
         ]
           .filter(Boolean)
           .join(" ")}
       >
         <div className="flex gap-2 sm:gap-4 justify-between items-center">
           <button
-            className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 shrink-0 touch-manipulation"
+            className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 dark:text-gray-400 shrink-0 touch-manipulation"
             {...attributes}
             {...listeners}
             aria-label="Drag to reorder"
@@ -68,14 +68,14 @@ export function CollectionBlock({ item }: { item: Collection }) {
             ⠿
           </button>
           <p
-            className="flex flex-1 cursor-pointer justify-center gap-1 text-sm font-semibold capitalize text-neutral-600 sm:text-base"
+            className="flex flex-1 cursor-pointer items-center justify-center gap-1 text-sm font-semibold capitalize text-neutral-600 dark:text-neutral-400 sm:text-base"
             onClick={() => setIsEditing(true)}
           >
             <span className="truncate">{item.title}</span>
             <Pencil className="w-4 h-4 shrink-0" />
           </p>
           <button
-            className="p-2 rounded-full hover:bg-white/50 transition-colors touch-manipulation"
+            className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-neutral-700 transition-colors touch-manipulation"
             onClick={() => {
               setIsCreatingLink(true);
               setSelectedCollection(item.id);
@@ -85,7 +85,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
             <Plus className="w-5 h-5" />
           </button>
           <button
-            className="p-2 rounded-full hover:bg-red-50 transition-colors touch-manipulation"
+            className="p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors touch-manipulation"
             aria-label="Delete collection"
             onClick={() => setIsConfirmOpen(true)}
           >
@@ -101,11 +101,11 @@ export function CollectionBlock({ item }: { item: Collection }) {
             </div>
           ) : (
             <div className="flex gap-2 flex-col items-center justify-center p-3 sm:p-4">
-              <p className="text-sm sm:text-base font-semibold text-center">
+              <p className="text-sm sm:text-base font-semibold text-center dark:text-neutral-200">
                 Add a link to this collection
               </p>
               <button
-                className="text-sm ring-1 ring-neutral-300 px-4 py-2 bg-white rounded-full hover:bg-neutral-50 transition-colors touch-manipulation"
+                className="text-sm ring-1 ring-neutral-300 dark:ring-neutral-600 px-4 py-2 bg-white dark:bg-neutral-800 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors touch-manipulation"
                 onClick={() => {
                   setIsCreatingLink(true);
                   setSelectedCollection(item.id);

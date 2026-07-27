@@ -41,6 +41,36 @@ export const shadowStyles = {
 
 export type ShadowType = keyof typeof shadowStyles;
 
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const h = hex.replace("#", "");
+  if (h.length !== 6) return null;
+  const num = parseInt(h, 16);
+  if (isNaN(num)) return null;
+  return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+}
+
+export function getShadowStyles(color?: string | null): Record<ShadowType, { boxShadow: string; border?: string }> {
+  if (!color) return shadowStyles;
+
+  const rgb = hexToRgb(color);
+  if (!rgb) return shadowStyles;
+
+  const { r, g, b } = rgb;
+  const solid = `rgb(${r}, ${g}, ${b})`;
+  const alpha18 = `rgba(${r}, ${g}, ${b}, 0.18)`;
+  const alpha32 = `rgba(${r}, ${g}, ${b}, 0.32)`;
+  const alpha30 = `rgba(${r}, ${g}, ${b}, 0.3)`;
+  const alpha15 = `rgba(${r}, ${g}, ${b}, 0.15)`;
+
+  return {
+    none: { boxShadow: "none" },
+    soft: { boxShadow: `0 2px 8px ${alpha18}` },
+    medium: { boxShadow: `0 4px 12px ${alpha32}` },
+    hard: { boxShadow: `4px 4px 0 0 ${solid}`, border: `2px solid ${solid}` },
+    glow: { boxShadow: `0 0 20px ${alpha30}, 0 4px 12px ${alpha15}` },
+  };
+}
+
 
 export const PublictitleSizeClasses = {
   small: "text-lg",

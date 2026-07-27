@@ -22,15 +22,15 @@ export const ConfirmModal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm shadow-(--shadow-card)" onClick={onClose}>
       <div 
-        className="bg-white rounded-2xl p-6 max-w-sm w-full mx-auto"
+        className="bg-white dark:bg-neutral-900 rounded-2xl p-6 max-w-sm w-full mx-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-xl font-bold mb-2 text-black">{title}</h3>
-        <p className="text-gray-600 mb-6">{message}</p>
+        <h3 className="text-xl font-bold mb-2 text-black dark:text-white">{title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
         
         <div className="flex gap-3 justify-end w-full">
           <button 
-            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-black font-semibold rounded-full transition-colors flex-1"
+            className="px-4 py-2 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 text-black dark:text-white font-semibold rounded-full transition-colors flex-1"
             onClick={onClose}
           >
             Cancel
@@ -39,7 +39,7 @@ export const ConfirmModal = ({
             className={`px-4 py-2 font-semibold rounded-full transition-colors flex-1 ${
               destructive 
                 ? "bg-red-600 hover:bg-red-700 text-white" 
-                : "bg-black hover:bg-neutral-800 text-white"
+                : "bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white"
             }`}
             onClick={() => {
               onConfirm();

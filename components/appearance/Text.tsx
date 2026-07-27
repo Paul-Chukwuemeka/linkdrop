@@ -41,7 +41,7 @@ const Text = () => {
             return (
               <button
                 key={i}
-                className={`${title_size == t ? "ring-2 bg-black/5 ring-black/30" : "ring-1 ring-black/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
+                className={`${title_size == t ? "ring-2 bg-black/5 dark:bg-white/10 ring-black/30 dark:ring-white/30" : "ring-1 ring-black/30 dark:ring-white/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
                 onClick={() => {
                   updateCardStyle({ title_size: t });
                 }}
@@ -59,7 +59,7 @@ const Text = () => {
             return (
               <button
                 key={i}
-                className={`${text_size == t ? "ring-2 bg-black/5 ring-black/30" : "ring-1 ring-black/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
+                className={`${text_size == t ? "ring-2 bg-black/5 dark:bg-white/10 ring-black/30 dark:ring-white/30" : "ring-1 ring-black/30 dark:ring-white/30"} text-sm sm:text-base rounded-lg shrink-0 px-4 sm:px-6 h-10 sm:h-11 capitalize transition-all`}
                 onClick={() => {
                   updateCardStyle({ text_size: t });
                 }}

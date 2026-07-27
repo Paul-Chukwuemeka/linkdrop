@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useProfile } from "@/context/ProfileContext";
 import { useCard } from "@/context/CardContext";
 import { useStyle } from "@/context/StyleContext";
@@ -15,6 +15,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
   const { profile } = useProfile();
   const { currentCard, isPreview, setIsPreview } = useCard();
   const { cardStyle } = useStyle();
+  const [imgError, setImgError] = useState(false);
 
   const items = currentCard?.items_list;
 
@@ -102,7 +103,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               title_color={cardStyle.title_color || textColor}
             />
 
-            <div className="mt-8 flex flex-col gap-4">
+            <div className="mt-4 flex flex-col gap-4">
               {items?.map((item, i) =>
                 item.type === "link" ? (
                   <PublicLinkCard
@@ -130,22 +131,29 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
       className={`flex items-center flex-col justify-center relative w-full h-full md:h-auto`}
     >
       <div
-        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 ring-1 ring-black/10 overflow-hidden w-[320px] h-140`}
+        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 ring-1 ring-black/10 overflow-hidden w-[320px] h-[720px]`}
         style={backgroundStyle}
       >
         <div
-          className={`h-full overflow-y-auto preview p-2 sm:p-1 sm:pb-5 lg:p-2 ${currentFont.font.className}`}
+          className={`h-full overflow-y-auto scrollbar-hidden preview p-2 sm:p-1 sm:pb-5 lg:p-2 ${currentFont.font.className}`}
         >
-          <div className="flex flex-col items-center gap-2 sm:gap-3 h-fit py-3 sm:py-4 text-center">
-            <Image
-              src={profile?.avatar_url || "/user.svg"}
-              alt="user"
-              width={100}
-              height={100}
-              className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 object-cover"
-            />
+          <div className="flex flex-col items-center h-fit py-3 sm:py-4 text-center">
+            {profile?.avatar_url && !imgError ? (
+              <Image
+                src={profile.avatar_url}
+                alt="user"
+                width={100}
+                height={100}
+                className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 object-cover"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 flex items-center justify-center text-2xl font-black text-neutral-900">
+                {profile?.fullname?.[0]?.toUpperCase() || profile?.username?.[0]?.toUpperCase() || "?"}
+              </div>
+            )}
             <p
-              className="font-black text-lg"
+              className="mt-3 font-black text-lg"
               style={{
                 color: cardStyle.title_color
                   ? `#${cardStyle.title_color}`
@@ -157,7 +165,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               {profile?.fullname}
             </p>
             <p
-              className="font-semibold text-xs"
+              className="mt-1 font-semibold text-xs"
               style={{
                 color: cardStyle.text_color
                   ? `#${cardStyle.text_color}`
@@ -169,7 +177,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
 
             {profile?.bio && (
               <p
-                className="font-semibold text-center px-2 sm:px-4 text-xs"
+                className="mt-1 font-semibold text-center px-2 sm:px-4 text-xs"
                 style={{
                   color: cardStyle.text_color
                     ? `#${cardStyle.text_color}`

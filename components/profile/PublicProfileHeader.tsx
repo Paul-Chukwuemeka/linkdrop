@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { PublictitleSizeClasses, PublictextSizeClasses } from "@/lib/style-mappings";
 
 interface PublicProfileHeaderProps {
@@ -27,23 +28,25 @@ export function PublicProfileHeader({
   font_className,
   socialLinks = [],
 }: PublicProfileHeaderProps) {
+  const [imgError, setImgError] = useState(false);
   const textColor = text_color ? `#${text_color}` : "#ffffff";
   const titleColor = title_color ? `#${title_color}` : textColor;
 
   return (
     <header
-      className={`flex flex-col items-center gap-4 py-8 text-center ${
+      className={`flex flex-col items-center py-6 text-center ${
         font_className || ""
       }`}
     >
       {/* Avatar */}
       <div className="relative">
         <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-lg bg-white/20">
-          {avatarUrl ? (
+          {avatarUrl && !imgError ? (
             <img
               src={avatarUrl}
               alt={fullname}
               className="h-full w-full object-cover"
+              onError={() => setImgError(true)}
             />
           ) : (
             <div
@@ -60,14 +63,14 @@ export function PublicProfileHeader({
 
       {/* Name */}
       <h1
-        className={`font-black tracking-tight ${PublictitleSizeClasses[title_size]}`}
+        className={`mt-3 font-black tracking-tight ${PublictitleSizeClasses[title_size]}`}
         style={{ color: titleColor }}
       >
         {fullname}
       </h1>
 
       {/* Username / Bio */}
-      <div className="space-y-2">
+      <div className="mt-1 space-y-2">
         {bio ? (
           <p
             className={`mx-auto max-w-md font-medium text-center px-4 ${PublictextSizeClasses[text_size]}`}
@@ -87,7 +90,7 @@ export function PublicProfileHeader({
 
       {/* Social Links */}
       {socialLinks.length > 0 && (
-        <div className="flex items-center gap-4 mt-2">
+        <div className="flex items-center gap-4 mt-3">
           {socialLinks.map((social, i) => (
             <a
               key={i}

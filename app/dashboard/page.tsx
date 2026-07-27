@@ -1,12 +1,11 @@
 "use client";
-import { SetStateAction, useContext, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
 import { PenLine, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
 import { ProfileHeaderBar } from "@/components/dashboard/ProfileHeaderBar";
-import { OptionsDropdown } from "@/components/dashboard/OptionsDropdown";
 import { apiFetch } from "@/lib/api";
 import {
   SortableContext,
@@ -128,26 +127,26 @@ export default function DashboardPage() {
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
       <ProfileHeaderBar profile={profile} logout={logout} />
       {error && (
-        <div className="bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
           {error}
         </div>
       )}
       {currentCard === null && !isLoadingCard && (
-        <div className="flex flex-col items-center justify-center rounded-xl bg-white p-12 text-center">
-          <h3 className="text-lg font-semibold text-neutral-800">No cards yet</h3>
-          <p className="mt-2 text-sm text-neutral-600">
+        <div className="flex flex-col items-center justify-center rounded-xl bg-white dark:bg-neutral-900 p-12 text-center">
+          <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">No cards yet</h3>
+          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
             Create your first card to start adding links.
           </p>
           <Link
             href="/dashboard/cards"
-            className="mt-6 rounded-full bg-black px-6 py-2 text-sm font-bold text-white hover:bg-neutral-800 transition-colors"
+            className="mt-6 rounded-full bg-black dark:bg-white dark:text-black px-6 py-2 text-sm font-bold text-white hover:bg-neutral-800 dark:hover:bg-neutral-200 transition-colors"
           >
             Create your first card
           </Link>
         </div>
       )}
       <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
-        <div className="overflow-auto rounded-xl bg-white flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
+        <div className="overflow-auto rounded-xl bg-white dark:bg-neutral-900 flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
           <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
             {currentCard && (
               <>
@@ -155,7 +154,7 @@ export default function DashboardPage() {
               {isEditingName ? (
                 <input
                   autoFocus
-                  className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black w-full mr-4"
+                  className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black dark:border-white bg-transparent text-neutral-900 dark:text-neutral-100 w-full mr-4"
                   value={editedName}
                   onChange={(e) => setEditedName(e.target.value)}
                   onBlur={handleRename}
@@ -166,7 +165,7 @@ export default function DashboardPage() {
                 />
               ) : (
                 <h2
-                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group"
+                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group dark:text-neutral-100"
                   onClick={() => {
                     setEditedName(currentCard?.name || "");
                     setIsEditingName(true);
@@ -179,15 +178,15 @@ export default function DashboardPage() {
               {profile && currentCard?.id !== profile!.current_card && (
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
-                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black px-3 rounded-full text-xs md:text-md"
+                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black dark:bg-white dark:text-black px-3 rounded-full text-xs md:text-md"
                 >
                   Set as main card
                 </button>
               )}
             </div>
-            <div className="flex relative rounded-2xl sm:rounded-3xl items-center w-full border bg-black text-white h-11 sm:h-12">
+            <div className="flex rounded-2xl sm:rounded-3xl items-center w-full bg-white dark:bg-neutral-800 h-11 sm:h-12 shadow-lg shadow-black/20">
               <button
-                className="flex-1 h-full rounded-2xl sm:rounded-3xl text-sm sm:text-base font-medium"
+                className="flex-1 h-full rounded-l-2xl sm:rounded-l-3xl text-sm sm:text-base font-semibold tracking-wide"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -195,7 +194,7 @@ export default function DashboardPage() {
                 Add a new Link
               </button>
               <button
-                className="border-l rounded-l-none  h-full border-gray-400 cursor-pointer px-3 sm:px-4 touch-manipulation"
+                className="h-full border-l border-white/20 dark:border-black/20 cursor-pointer px-3 sm:px-4 touch-manipulation rounded-r-2xl sm:rounded-r-3xl hover:bg-white/10 dark:hover:bg-black/10 transition-colors"
                 onClick={() => {
                   setOptions(!options);
                 }}
@@ -206,14 +205,27 @@ export default function DashboardPage() {
                 ) : (
                   <ChevronDown className="w-5" />
                 )}
-                {options && (
-                  <OptionsDropdown
-                    setOptions={setOptions}
-                    setIsCreatingCollection={setIsCreatingCollection}
-                  />
-                )}
               </button>
             </div>
+            {options && (
+              <div className="w-full">
+                <div
+                  className="flex items-center gap-3 w-full rounded-xl bg-white dark:bg-neutral-800 p-4 shadow-lg shadow-black/10 ring-1 ring-black/5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setIsCreatingCollection(true);
+                    setOptions(false);
+                  }}
+                >
+                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300">
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                  </div>
+                  <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">Create a new collection</span>
+                </div>
+              </div>
+            )}
             {isCreatingLink && <CreateLink />}
             {isCreatingCollection && <CreateCollection />}
             <DndContext
@@ -248,7 +260,7 @@ export default function DashboardPage() {
           </div>
         </div>
         <div
-          className="md:p-2 hidden lg:flex bg-white p-2 items-center justify-center rounded-xl h-full"
+          className="md:p-2 hidden lg:flex bg-white dark:bg-neutral-900 p-2 items-center justify-center rounded-xl h-full"
         >
           <CardPreview />
         </div>

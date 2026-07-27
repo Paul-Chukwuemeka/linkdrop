@@ -5,12 +5,14 @@ import { Spinner } from "@/components/ui/Spinner";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Card } from "@/lib/types";
 import React, { useCallback, useEffect, useState } from "react";
+import { useCard } from "@/context/CardContext";
 
 export function CardsOverview() {
   const [cards, setCards] = useState<Card[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { currentCard } = useCard();
 
   const load = useCallback(async () => {
     setError(null);
@@ -65,16 +67,16 @@ export function CardsOverview() {
 
   if (isLoading) {
     return (
-      <div className="overflow-auto rounded-md bg-white flex items-center justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
+      <div className="overflow-auto rounded-md bg-white dark:bg-neutral-900 flex items-center justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
         <Spinner />
       </div>
     );
   }
 
   return (
-    <div className="overflow-auto rounded-md gap-4 bg-white flex flex-col items-start justify-start flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
+    <div className="overflow-auto rounded-md gap-4 bg-white dark:bg-neutral-900 flex flex-col items-center justify-start flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
       {error && (
-        <div className="bg-red-50 flex flex-col w-full max-w-200 gap-3 sm:gap-4 p-3 sm:p-4 rounded-md text-sm text-red-700 ring-1 ring-red-100">
+        <div className="bg-red-50 dark:bg-red-900/30 flex flex-col w-full max-w-200 gap-3 sm:gap-4 p-3 sm:p-4 rounded-md text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
           {error}
         </div>
       )}
@@ -83,6 +85,7 @@ export function CardsOverview() {
         deleteCard={deleteCard}
         onCreateCard={createCard}
         isCreating={isCreating}
+        activeCardId={currentCard?.id || null}
       />
     </div>
   );

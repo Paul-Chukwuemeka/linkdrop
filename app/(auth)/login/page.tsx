@@ -5,14 +5,14 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+    <div className="rounded-3xl bg-white dark:bg-neutral-900 p-8 shadow-(--shadow-card) ring-1 ring-(--border-color)">
       <h1
-        className="text-3xl font-extrabold tracking-tight text-(--color-dark)"
+        className="text-3xl font-extrabold tracking-tight text-(--text-primary) dark:text-white"
   
       >
         Welcome back
       </h1>
-      <p className="mt-2 text-sm text-neutral-600">
+      <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
         Log in to manage your cards, links, and collections.
       </p>
 
@@ -20,7 +20,7 @@ export default function LoginPage() {
         <LoginForm />
       </div>
 
-      <p className="mt-6 text-sm text-neutral-700">
+      <p className="mt-6 text-sm text-neutral-700 dark:text-neutral-300">
         New here?{" "}
         <Link href="/register" className="font-semibold underline">
           Create an account

@@ -8,6 +8,7 @@ export const DEFAULT_CARD_STYLE = {
   button_type: "solid",
   profile_image: null,
   shadow: null,
+  shadow_color: null,
   font_style: "inter",
   gradient: [],
   title_size: "medium",

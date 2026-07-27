@@ -1,7 +1,7 @@
 import React from "react";
 
 const base =
-  "w-full bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-(--color-dark) text-sm sm:text-base shadow-[var(--shadow-card)] ring-1 ring-(--color-border) placeholder:text-neutral-500 focus:outline-none focus:ring-2 focus:ring-[var(--color-border)] rounded-md transition-all min-h-[44px]";
+  "w-full bg-white dark:bg-neutral-900 px-3 sm:px-4 py-2.5 sm:py-3 text-(--text-primary) dark:text-neutral-100 text-sm sm:text-base shadow-[var(--shadow-card)] ring-1 ring-(--border-color) placeholder:text-neutral-500 dark:placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[var(--border-color)] rounded-md transition-all min-h-[44px]";
 
 export const Input = React.forwardRef<
   HTMLInputElement,

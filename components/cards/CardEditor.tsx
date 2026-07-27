@@ -100,7 +100,7 @@ function DroppableArea({
   return (
     <div
       ref={setNodeRef}
-      className={[className, isOver ? "ring-2 ring-(--color-dark)" : ""]
+      className={[className, isOver ? "ring-2 ring-(--accent)" : ""]
         .filter(Boolean)
         .join(" ")}
     >
@@ -544,10 +544,10 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   if (isLoading) {
     return (
-      <div className="rounded-3xl bg-white p-10 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-10 shadow-(--shadow-card) ring-1 ring-(--border-color)">
         <div className="flex items-center gap-3">
           <Spinner />
-          <div className="text-sm font-semibold text-neutral-800">
+          <div className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
             Loading card…
           </div>
         </div>
@@ -557,7 +557,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   if (!card) {
     return (
-      <div className="rounded-3xl bg-white p-6 text-sm text-neutral-800 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-800 dark:text-neutral-200 shadow-(--shadow-card) ring-1 ring-(--border-color)">
         {error || "Card not found."}
       </div>
     );
@@ -567,14 +567,14 @@ export function CardEditor({ cardId }: { cardId: string }) {
 
   return (
     <div className="flex min-w-0 flex-col gap-4">
-      <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 shadow-(--shadow-card) ring-1 ring-(--border-color)">
         <h1
-          className="text-2xl font-extrabold tracking-tight text-neutral-900"
+          className="text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100"
 
         >
           {card.name}
         </h1>
-        <p className="mt-2 text-sm text-neutral-700">
+        <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
           Edit top-level links and collections for this card.
         </p>
         {isSyncingOrder ? (
@@ -587,7 +587,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_420px]">
         <div className="flex min-w-0 flex-col gap-6">
           {error && (
-            <div className="rounded-3xl bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+            <div className="rounded-3xl bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
               {error}
             </div>
           )}
@@ -603,7 +603,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
             }}
           >
             {topSortableIds.length === 0 ? (
-              <div className="rounded-3xl bg-white p-6 text-sm text-neutral-700 shadow-(--shadow-card) ring-1 ring-(--color-border)">
+              <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-700 dark:text-neutral-300 shadow-(--shadow-card) ring-1 ring-(--border-color)">
                 No items yet. Add a link or a collection below.
               </div>
             ) : (
@@ -747,8 +747,8 @@ export function CardEditor({ cardId }: { cardId: string }) {
           </DndContext>
 
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
-              <div className="text-sm font-bold text-neutral-900">Add link</div>
+            <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+              <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">Add link</div>
               <div className="mt-3 flex flex-col gap-3">
                 <Input
                   value={newLinkTitle}
@@ -770,8 +770,8 @@ export function CardEditor({ cardId }: { cardId: string }) {
               </div>
             </div>
 
-            <div className="rounded-3xl bg-white p-6 shadow-(--shadow-card) ring-1 ring-(--color-border)">
-              <div className="text-sm font-bold text-neutral-900">
+            <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+              <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">
                 Add collection
               </div>
               <div className="mt-3 flex flex-col gap-3">
@@ -802,6 +802,7 @@ export function CardEditor({ cardId }: { cardId: string }) {
             }}
             cardName={card.name}
             items={debouncedPreviewItems}
+            cardStyle={card.style}
           />
         </div>
       </div>

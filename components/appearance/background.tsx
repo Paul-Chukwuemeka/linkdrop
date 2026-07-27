@@ -74,7 +74,7 @@ const Background = () => {
         <h2 className="text-sm sm:text-base font-semibold">Background Style</h2>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50" : "ring-1 ring-black/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "solid" })}
           >
             <div
@@ -84,7 +84,7 @@ const Background = () => {
             <p>Solid</p>
           </button>
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "gradient" ? "ring-2 ring-black/50" : "ring-1 ring-black/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "gradient" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "gradient" })}
           >
             <div
@@ -94,10 +94,10 @@ const Background = () => {
             <p>Gradient</p>
           </button>
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "image" ? "ring-2 ring-black/50" : "ring-1 ring-black/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "image" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "image" })}
           >
-            <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0 flex items-center justify-center bg-black/5">
+            <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0 flex items-center justify-center bg-black/5 dark:bg-white/10">
               <CiImageOn className="text-2xl sm:text-4xl" />
             </div>
             <p>Image</p>
@@ -107,11 +107,11 @@ const Background = () => {
 
       {/* Gradient Type & Direction - only show when gradient is selected */}
       {bg_type === "gradient" && (
-        <div className="flex flex-col gap-4 sm:gap-5 p-3 sm:p-4 bg-neutral-50 rounded-xl border border-neutral-200">
+        <div className="flex flex-col gap-4 sm:gap-5 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           {/* Gradient Colors */}
           <div>
             <h2 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Gradient Colors</h2>
-            <p className="text-xs sm:text-sm text-neutral-600 mb-2 sm:mb-3">
+            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-2 sm:mb-3">
               Add up to 6 colors. First color is from Background Color above.
             </p>
             <GradientColorsManager
@@ -121,14 +121,14 @@ const Background = () => {
             />
           </div>
 
-          <div className="border-t border-neutral-200 pt-3 sm:pt-4">
+          <div className="border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
             <h2 className="text-sm sm:text-base font-semibold">Gradient Type</h2>
             <div className="flex gap-2 sm:gap-3 mt-2">
               <button
                 className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-all touch-manipulation ${
                   gradient_type === "linear"
-                    ? "border-black bg-white"
-                    : "border-neutral-200 hover:border-neutral-300"
+                    ? "border-black dark:border-white bg-white dark:bg-neutral-800"
+                    : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
                 onClick={() => updateCardStyle({ gradient_type: "linear" })}
               >
@@ -137,8 +137,8 @@ const Background = () => {
               <button
                 className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-all touch-manipulation ${
                   gradient_type === "radial"
-                    ? "border-black bg-white"
-                    : "border-neutral-200 hover:border-neutral-300"
+                    ? "border-black dark:border-white bg-white dark:bg-neutral-800"
+                    : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
                 onClick={() => updateCardStyle({ gradient_type: "radial" })}
               >
@@ -159,8 +159,8 @@ const Background = () => {
                       key={preset.angle}
                       className={`flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all touch-manipulation ${
                         isActive
-                          ? "border-black bg-white"
-                          : "border-neutral-200 hover:border-neutral-300 bg-white/50"
+                          ? "border-black dark:border-white bg-white dark:bg-neutral-800"
+                          : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 bg-white/50 dark:bg-neutral-800/50"
                       }`}
                       onClick={() =>
                         updateCardStyle({ gradient_direction: preset.angle })
@@ -174,7 +174,7 @@ const Background = () => {
               {/* Custom angle slider */}
               <div className="mt-2">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs sm:text-sm text-neutral-600">Custom Angle</span>
+                  <span className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">Custom Angle</span>
                   <span className="text-xs sm:text-sm font-medium">
                     {gradient_direction ?? 135}°
                   </span>
@@ -190,7 +190,7 @@ const Background = () => {
                       gradient_direction: parseInt(e.target.value),
                     })
                   }
-                  className="w-full h-2 bg-neutral-200 rounded-lg appearance-none cursor-pointer accent-black"
+                  className="w-full h-2 bg-neutral-200 dark:bg-neutral-700 rounded-lg appearance-none cursor-pointer accent-black dark:accent-white"
                 />
               </div>
             </>

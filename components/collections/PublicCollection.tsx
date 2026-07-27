@@ -19,7 +19,7 @@ export function PublicCollection({
     : "#ffffff";
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 pt-1">
       {/* Collection Title */}
       <h3
         className="text-center font-bold text-lg tracking-tight px-4"

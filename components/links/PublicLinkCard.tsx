@@ -4,7 +4,7 @@
 import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
 import { getDomain } from "@/utils/validate";
-import { PublicbuttonRadiusClasses, shadowStyles } from "@/lib/style-mappings";
+import { PublicbuttonRadiusClasses, getShadowStyles } from "@/lib/style-mappings";
 
 function getButtonBgStyle(cardStyle: CardTheme): React.CSSProperties {
   if (cardStyle.button_type === "glass") {
@@ -15,9 +15,9 @@ function getButtonBgStyle(cardStyle: CardTheme): React.CSSProperties {
   }
   if (cardStyle.button_type === "outline") {
     return {
-      borderColor: cardStyle.button_color
-        ? `#${cardStyle.button_color}`
-        : "currentColor",
+      borderColor: cardStyle.button_bg
+        ? `#${cardStyle.button_bg}`
+        : "#000000",
       borderWidth: "2px",
       background: "transparent",
     };
@@ -29,9 +29,14 @@ function getButtonBgStyle(cardStyle: CardTheme): React.CSSProperties {
 }
 
 function getShadowStyle(cardStyle: CardTheme): React.CSSProperties {
-  // Use the shadow style from the card theme, or default to hard shadow
   const shadowKey = cardStyle.shadow ?? "hard";
-  return shadowStyles[shadowKey];
+  const shadowColor = cardStyle.shadow_color || cardStyle.button_color;
+  const styles = getShadowStyles(shadowColor);
+  const { border, ...rest } = styles[shadowKey];
+  if (cardStyle.button_type === "outline") {
+    return rest;
+  }
+  return styles[shadowKey];
 }
 
 export function PublicLinkCard({
@@ -52,14 +57,14 @@ export function PublicLinkCard({
   return (
     <Link
       href={link.url}
-      className={`group relative w-full px-4 h-16 font-semibold capitalize flex items-center justify-between transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]}`}
+      className={`group relative w-full px-5 h-14 font-semibold capitalize flex items-center justify-between transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]}`}
       style={{ ...buttonBgStyle, ...shadowStyle }}
       target="_blank"
       rel="noopener noreferrer"
     >
       <div className="flex items-center gap-4 flex-1 min-w-0">
         {/* Favicon */}
-        <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden border border-black/10">
+        <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden border border-black/10">
           <img
             width={40}
             height={40}

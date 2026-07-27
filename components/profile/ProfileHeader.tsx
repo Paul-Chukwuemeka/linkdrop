@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export function ProfileHeader({
   fullname,
@@ -11,15 +11,18 @@ export function ProfileHeader({
   bio: string | null;
   avatarUrl: string | null;
 }) {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <header className="flex flex-col items-center gap-3 py-8 text-center">
       <div className="h-20 w-20 overflow-hidden rounded-full bg-white/40 ring-1 ring-black/10">
-        {avatarUrl ? (
+        {avatarUrl && !imgError ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={avatarUrl}
             alt={fullname}
             className="h-full w-full object-cover"
+            onError={() => setImgError(true)}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-xl font-black text-neutral-900">

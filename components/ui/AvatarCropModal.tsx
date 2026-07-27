@@ -102,12 +102,12 @@ export function AvatarCropModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div
-        className="bg-white rounded-2xl p-6 max-w-md w-full mx-auto flex flex-col gap-4"
+        className="bg-white dark:bg-neutral-900 rounded-2xl p-6 max-w-md w-full mx-auto flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="text-xl font-bold text-black">Crop avatar</h3>
+        <h3 className="text-xl font-bold text-black dark:text-white">Crop avatar</h3>
 
-        <div className="relative w-full h-64 bg-neutral-100 rounded-xl overflow-hidden">
+        <div className="relative w-full h-64 bg-neutral-100 dark:bg-neutral-800 rounded-xl overflow-hidden">
           {imageSrc && (
             <Cropper
               image={imageSrc}
@@ -126,7 +126,7 @@ export function AvatarCropModal({
           )}
         </div>
 
-        <label className="flex flex-col gap-1 text-sm text-neutral-600">
+        <label className="flex flex-col gap-1 text-sm text-neutral-600 dark:text-neutral-400">
           Zoom
           <input
             type="range"
@@ -135,7 +135,7 @@ export function AvatarCropModal({
             step={0.1}
             value={zoom}
             onChange={(e) => setZoom(Number(e.target.value))}
-            className="w-full accent-black"
+            className="w-full accent-black dark:accent-white"
           />
         </label>
 

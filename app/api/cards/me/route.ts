@@ -9,11 +9,14 @@ export async function GET() {
 
     const cards = await prisma.card.findMany({
       where: { userId: user.id },
-      include: {
-        links: true,
-        collections: { include: { links: true } },
-      },
       orderBy: { id: "asc" },
+      select: {
+        id: true,
+        userId: true,
+        name: true,
+        bio: true,
+        style: true,
+      },
     })
 
     return NextResponse.json(
@@ -23,17 +26,7 @@ export async function GET() {
         name: card.name,
         bio: card.bio,
         style: card.style,
-        links: card.links.map((l) => ({
-          id: l.id, card_id: l.cardId, collection_id: l.collectionId,
-          title: l.title, url: l.url, position: l.position,
-        })),
-        collections: card.collections.map((c) => ({
-          id: c.id, card_id: c.cardId, title: c.title, position: c.position,
-          links: c.links.map((l) => ({
-            id: l.id, card_id: l.cardId, collection_id: l.collectionId,
-            title: l.title, url: l.url, position: l.position,
-          })),
-        })),
+        items_list: [],
       }))
     )
   } catch (e) {

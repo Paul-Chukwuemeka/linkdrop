@@ -23,7 +23,7 @@ async function getCard(username: string): Promise<Card> {
       user_id: user.id,
       name: "Untitled",
       items_list: [],
-      style: { bg_type: "solid", card_bg: "ffffff", text_color: "000000", gradient: [], gradient_type: "linear", gradient_direction: 135, button_bg: "000000", button_color: "ffffff", button_type: "solid", button_radius: "pill", text_size: "medium", title_size: "medium", font_style: "Plus Jakarta Sans", shadow: "none", title_color: null, profile_image: null },
+      style: { bg_type: "solid", card_bg: "ffffff", text_color: "000000", gradient: [], gradient_type: "linear", gradient_direction: 135, button_bg: "000000", button_color: "ffffff", button_type: "solid", button_radius: "pill", text_size: "medium", title_size: "medium", font_style: "Plus Jakarta Sans", shadow: "none", shadow_color: null, title_color: null, profile_image: null },
       user: { id: user.id, username: user.username, fullname: user.fullname, bio: user.bio, avatar_url: user.avatarUrl },
     };
   }
@@ -157,7 +157,7 @@ export default async function Page({
             title_color={cardStyle.title_color || textColor}
           />
 
-          <div className="mt-8 flex flex-col gap-4">
+          <div className="mt-4 flex flex-col gap-4">
             {items.map((item, i) =>
               item.type === "link" ? (
                 <PublicLinkCard
@@ -175,7 +175,11 @@ export default async function Page({
             )}
           </div>
 
-          <div className="mt-10 text-center">
+          <div className="mt-6 text-center">
+            <div
+              className="mx-auto mb-6 h-px w-12 opacity-20"
+              style={{ backgroundColor: `#${textColor}` }}
+            />
             <Link
               href="/"
               className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-105"

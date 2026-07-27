@@ -99,6 +99,7 @@ export async function GET() {
     avatar_url: user.avatarUrl,
     theme: user.theme,
     current_card: user.currentCard,
+    last_selected_card: user.lastSelectedCard,
     cards: user.cards.map((card) => ({
       id: card.id,
       user_id: card.userId,
@@ -192,6 +193,7 @@ export async function PATCH(request: Request) {
       avatar_url: updated.avatarUrl,
       theme: updated.theme,
       current_card: updated.currentCard,
+      last_selected_card: updated.lastSelectedCard,
     })
   } catch (error: unknown) {
     if (error && typeof error === "object" && "code" in error && error.code === "P2002") {

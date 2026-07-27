@@ -17,6 +17,7 @@ const Profile = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [urlInput, setUrlInput] = useState(profile?.avatar_url || "");
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
@@ -70,21 +71,28 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-neutral-50 rounded-2xl border border-neutral-200">
+      <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700">
         <div className="relative w-25 h-25 group">
-          <div className="w-25 h-25 sm:w-full sm:h-full rounded-full overflow-hidden border-4 border-white shadow-md bg-white">
-            <Image
-              src={getAvatarUrl(profile?.avatar_url)}
-              alt={profile?.fullname || "Avatar"}
-              width={150}
-              height={150} 
-              className="w-full h-full object-cover"
-            />
+          <div className="w-25 h-25 sm:w-full sm:h-full rounded-full overflow-hidden border-4 border-white dark:border-neutral-900 shadow-md bg-white dark:bg-neutral-700">
+            {profile?.avatar_url && !imgError ? (
+              <Image
+                src={getAvatarUrl(profile?.avatar_url)}
+                alt={profile?.fullname || "Avatar"}
+                width={150}
+                height={150}
+                className="w-full h-full object-cover"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-2xl font-black text-neutral-400">
+                {profile?.fullname?.[0]?.toUpperCase() || "U"}
+              </div>
+            )}
           </div>
         </div>
         
         <div className="flex flex-col gap-3 items-center sm:items-start">
-          <h3 className="font-bold text-lg text-neutral-800">Profile Image</h3>
+          <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200">Profile Image</h3>
           <div className="flex gap-2">
             <Button 
               variant="primary" 
@@ -107,7 +115,7 @@ const Profile = () => {
               </Button>
             )}
           </div>
-          <p className="text-xs text-neutral-500 text-center sm:text-left">
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center sm:text-left">
             JPG, PNG or GIF. Max size 2MB.
           </p>
           <input 
@@ -121,7 +129,7 @@ const Profile = () => {
       </div>
 
       <div className="flex flex-col gap-4">
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Username
           <Input
             value={profile?.username}
@@ -132,7 +140,7 @@ const Profile = () => {
           />
         </label>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Full name
           <Input
             value={profile?.fullname}
@@ -143,7 +151,7 @@ const Profile = () => {
           />
         </label>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Bio
           <Textarea
             rows={4}
@@ -155,19 +163,19 @@ const Profile = () => {
           />
         </label>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Avatar URL (Optional)
           <Input
             value={urlInput}
             onChange={(e) => setUrlInput(e.target.value)}
             placeholder="https://…"
             disabled={!!profile?.avatar_url && profile.avatar_url.includes("/avatars/")}
-            className={profile?.avatar_url && profile.avatar_url.includes("/avatars/") ? "opacity-50 cursor-not-allowed bg-neutral-100" : ""}
+            className={profile?.avatar_url && profile.avatar_url.includes("/avatars/") ? "opacity-50 cursor-not-allowed bg-neutral-100 dark:bg-neutral-800" : ""}
           />
           {profile?.avatar_url && profile.avatar_url.includes("/avatars/") ? (
-            <p className="text-xs text-neutral-500">Upload a photo or remove the current one to use a URL instead.</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Upload a photo or remove the current one to use a URL instead.</p>
           ) : !profile?.avatar_url ? (
-            <p className="text-xs text-neutral-500">Paste an image URL. It will be saved to your storage so it always loads.</p>
+            <p className="text-xs text-neutral-500 dark:text-neutral-400">Paste an image URL. It will be saved to your storage so it always loads.</p>
           ) : null}
         </label>
 

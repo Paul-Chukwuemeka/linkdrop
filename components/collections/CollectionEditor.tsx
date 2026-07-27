@@ -102,7 +102,7 @@ export function CollectionEditor({
   }
 
   return (
-    <div className="rounded-3xl bg-white p-5 shadow-[var(--shadow-card)] ring-1 ring-(--color-border)">
+    <div className="rounded-3xl bg-white dark:bg-neutral-900 p-5 shadow-[var(--shadow-card)] ring-1 ring-(--border-color)">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 text-xs font-semibold text-neutral-600">

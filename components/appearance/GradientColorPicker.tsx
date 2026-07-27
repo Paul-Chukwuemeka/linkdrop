@@ -39,7 +39,7 @@ const GradientColorPicker = ({
         />
       </div>
       <div className="flex flex-col">
-        <span className="text-xs font-medium text-neutral-600 uppercase">
+        <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400 uppercase">
           #{color}
         </span>
         {canRemove && (
@@ -127,7 +127,7 @@ export const GradientColorsManager = ({
               onChange={(e) => handleAddColor(e.target.value)}
               className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
             />
-            <button className="w-12 h-12 rounded-lg border-2 border-dashed border-neutral-300 flex items-center justify-center text-neutral-400 hover:border-black hover:text-black transition-all pointer-events-none">
+            <button className="w-12 h-12 rounded-lg border-2 border-dashed border-neutral-300 dark:border-neutral-600 flex items-center justify-center text-neutral-400 dark:text-neutral-500 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-all pointer-events-none">
               <svg
                 width="20"
                 height="20"
@@ -144,7 +144,7 @@ export const GradientColorsManager = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-neutral-500">Quick add from palette:</span>
+        <span className="text-sm text-neutral-500 dark:text-neutral-400">Quick add from palette:</span>
         <div className="flex gap-2">
           {paletteColors.map((color, index) => (
             <button

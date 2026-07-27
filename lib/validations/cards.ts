@@ -18,6 +18,7 @@ const cardStyleSchema = z.object({
   button_type: z.enum(["solid", "glass", "outline"]).optional(),
   profile_image: z.string().nullable().optional(),
   shadow: z.enum(["none", "soft", "medium", "hard", "glow"]).nullable().optional(),
+  shadow_color: z.string().nullable().optional(),
   font_style: z.string().optional(),
   gradient: z.array(z.string()).optional(),
   title_size: z.enum(["large", "medium", "small"]).optional(),

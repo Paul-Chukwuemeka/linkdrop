@@ -80,7 +80,14 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     if (profile?.current_card && profile.current_card !== currentCard?.id) {
       loadCard(profile.current_card);
     }
-  }, [profile?.current_card, loadCard, currentCard?.id]);
+  }, [profile?.current_card, loadCard]);
+
+  // Load last selected card if available (overrides the eager load above)
+  useEffect(() => {
+    if (profile?.last_selected_card && profile.last_selected_card !== currentCard?.id) {
+      loadCard(profile.last_selected_card);
+    }
+  }, [profile?.last_selected_card, loadCard]);
 
   async function saveLink(details: { url: string; title: string }) {
     const { url, title } = details;

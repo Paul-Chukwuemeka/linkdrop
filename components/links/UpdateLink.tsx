@@ -24,7 +24,7 @@ export function UpdateLink({
   const [localError, setLocalError] = useState<string | null>(null);
 
   const nestedInputClassName =
-    "rounded-xl bg-neutral-50 shadow-none ring-neutral-200 focus:ring-[var(--accent)]";
+    "rounded-xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
 
   function close() {
     if (isSaving) return;
@@ -77,7 +77,7 @@ export function UpdateLink({
       onClick={close}
     >
       <form
-        className="w-full max-w-md rounded-2xl bg-white p-4 shadow-(--shadow-card) ring-1 ring-(--color-border) sm:p-6"
+        className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:p-6"
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
           e.preventDefault();
@@ -90,20 +90,20 @@ export function UpdateLink({
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-black/5 text-neutral-800">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-black/5 dark:bg-white/10 text-neutral-800 dark:text-neutral-200">
                 <Link2 className="h-5 w-5" aria-hidden="true" />
               </span>
-              <h2 className="text-lg font-extrabold tracking-tight text-neutral-900 sm:text-xl">
+              <h2 className="text-lg font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100 sm:text-xl">
                 Edit link
               </h2>
             </div>
-            <p className="mt-2 text-sm text-neutral-700">
+            <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
               Update the title and URL.
             </p>
           </div>
           <button
             type="button"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/5 text-neutral-700 transition hover:bg-black/10"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-black/5 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 transition hover:bg-black/10 dark:hover:bg-white/20"
             onClick={close}
             aria-label="Close"
           >
@@ -113,7 +113,7 @@ export function UpdateLink({
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600">Title</div>
+            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
             <Input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -125,7 +125,7 @@ export function UpdateLink({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600">URL</div>
+            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</div>
             <Input
               type="url"
               value={url}
@@ -134,7 +134,7 @@ export function UpdateLink({
               className={nestedInputClassName}
               disabled={isSaving}
             />
-            <div className="text-xs text-neutral-500">
+            <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Tip: use a full URL (including https://).
             </div>
           </div>

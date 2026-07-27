@@ -43,7 +43,7 @@ export function LoginForm() {
         type="button"
         variant="ghost"
         onClick={() => signIn("google", { redirectTo: "/dashboard" })}
-        className="w-full flex items-center justify-center gap-2 border border-neutral-200 hover:bg-neutral-50"
+        className="w-full flex items-center justify-center gap-2 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
       >
         <FcGoogle className="h-5 w-5" />
         Sign in with Google
@@ -51,15 +51,15 @@ export function LoginForm() {
 
       <div className="relative my-2">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-neutral-200" />
+          <div className="w-full border-t border-neutral-200 dark:border-neutral-700" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-3 text-neutral-500">or continue with</span>
+          <span className="bg-white dark:bg-neutral-900 px-3 text-neutral-500 dark:text-neutral-400">or continue with</span>
         </div>
       </div>
 
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           Username
           <Input
             autoComplete="username"
@@ -70,7 +70,7 @@ export function LoginForm() {
           />
         </label>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           Password
           <Input
             autoComplete="current-password"
