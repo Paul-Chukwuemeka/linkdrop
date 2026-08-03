@@ -36,12 +36,7 @@ export const linkUpdateSchema = z.object({
   collection_id: z.string().uuid().nullable().optional(),
 })
 
-export const linkMoveSchema = z.object({
-  collection_id: z.string().uuid().nullable().optional(),
-})
-
-export const linkReorderSchema = z.object({
-  card_id: z.string().uuid("Invalid card ID"),
+export const collectionLinksReorderSchema = z.object({
   collection_id: z.string().uuid().nullable().optional(),
   items: z.array(
     z.object({
@@ -53,5 +48,4 @@ export const linkReorderSchema = z.object({
 
 export type LinkCreateInput = z.infer<typeof linkCreateSchema>
 export type LinkUpdateInput = z.infer<typeof linkUpdateSchema>
-export type LinkMoveInput = z.infer<typeof linkMoveSchema>
-export type LinkReorderInput = z.infer<typeof linkReorderSchema>
+export type CollectionLinksReorderInput = z.infer<typeof collectionLinksReorderSchema>

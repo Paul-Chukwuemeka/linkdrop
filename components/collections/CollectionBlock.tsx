@@ -1,7 +1,23 @@
 "use client";
-import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
+import {
+  useSortable,
+  defaultAnimateLayoutChanges,
+  SortableContext,
+  verticalListSortingStrategy,
+  arrayMove,
+} from "@dnd-kit/sortable";
 import type { Collection } from "@/lib/types";
 import { CSS } from "@dnd-kit/utilities";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragOverlay,
+  DragStartEvent,
+  DragEndEvent,
+} from "@dnd-kit/core";
 import { Pencil, Plus, Trash2 } from "lucide-react";
 import { useContext, useState } from "react";
 import { useCard } from "@/context/CardContext";
@@ -11,10 +27,13 @@ import { UpdateCollection } from "@/components/collections/UpdateCollection";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
 export function CollectionBlock({ item }: { item: Collection }) {
-  const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setCardError: setError } = useCard();
+  const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setCardError: setError, reorderLinks } = useCard();
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [activeLinkId, setActiveLinkId] = useState<string | null>(null);
+  const [isReordering, setIsReordering] = useState(false);
+  const sensors = useSensors(useSensor(PointerSensor));
   const {
     attributes,
     listeners,
@@ -53,17 +72,42 @@ export function CollectionBlock({ item }: { item: Collection }) {
     }
   }
 
+  function handleDragStart(e: DragStartEvent) {
+    setActiveLinkId(e.active.id as string);
+  }
+
+  function handleDragEnd(e: DragEndEvent) {
+    const { active, over } = e;
+    setActiveLinkId(null);
+    if (!over || active.id === over.id) return;
+    const oldIndex = links.findIndex((l) => l.id === active.id);
+    const newIndex = links.findIndex((l) => l.id === over.id);
+    if (oldIndex < 0 || newIndex < 0) return;
+    const reordered = arrayMove(links, oldIndex, newIndex).map((l) => l.id);
+    setIsReordering(true);
+    reorderLinks(item.id, reordered).finally(() => setIsReordering(false));
+  }
+
+  const activeLink = activeLinkId
+    ? links.find((l) => l.id === activeLinkId) ?? null
+    : null;
+
   return (
     <>
       <div
         style={style}
         ref={setNodeRef}
         className={[
-          "flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
+          "relative flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
         ]
           .filter(Boolean)
           .join(" ")}
       >
+        {isReordering && (
+          <span className="absolute top-2 right-14 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+            Saving order…
+          </span>
+        )}
         <div className="flex gap-2 sm:gap-4 justify-between items-center">
           <button
             className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 dark:text-gray-400 shrink-0 touch-manipulation"
@@ -100,11 +144,28 @@ export function CollectionBlock({ item }: { item: Collection }) {
         </div>
         <div className="h-fit w-full py-2">
           {links.length > 0 ? (
-            <div className="flex flex-col gap-2 sm:gap-3">
-              {links.map((l, i) => (
-                <DraggableLink inCollection={true} key={i} item={l} />
-              ))}
-            </div>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={links.map((l) => l.id)}
+                strategy={verticalListSortingStrategy}
+              >
+                <div className="flex flex-col gap-2 sm:gap-3">
+                  {links.map((l) => (
+                    <DraggableLink key={l.id} inCollection={true} item={l} />
+                  ))}
+                </div>
+              </SortableContext>
+              <DragOverlay>
+                {activeLink && (
+                  <DraggableLink inCollection={true} item={activeLink} />
+                )}
+              </DragOverlay>
+            </DndContext>
           ) : (
             <div className="flex gap-2 flex-col items-center justify-center py-2 px-3 sm:px-4">
               <p className="text-sm sm:text-base font-semibold text-center dark:text-neutral-200">

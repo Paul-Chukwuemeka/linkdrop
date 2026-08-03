@@ -108,10 +108,6 @@ export interface LinkUpdate {
   collection_id?: UUID | null
 }
 
-export interface LinkMove {
-  collection_id?: UUID | null
-}
-
 export type CardItem =
   | {
       type: "link"
@@ -136,15 +132,14 @@ export interface CardItemReorderRequest {
   items: CardItemReorderItem[]
 }
 
-export interface LinkReorderItem {
+export interface CollectionLinksReorderItem {
   id: UUID
   position: number
 }
 
-export interface LinkReorderRequest {
-  card_id: UUID
-  collection_id: UUID
-  items: LinkReorderItem[]
+export interface CollectionLinksReorderRequest {
+  collection_id: UUID | null
+  items: CollectionLinksReorderItem[]
 }
 
 export interface CardTheme {

@@ -28,6 +28,8 @@ type CardContextType = {
   saveLink: (details: { url: string; title: string }) => Promise<void>;
   addCollection: (title: string) => Promise<void>;
   renameCard: (newName: string) => Promise<void>;
+  moveLink: (linkId: string, collectionId: string | null) => Promise<void>;
+  reorderLinks: (collectionId: string | null, orderedIds: string[]) => Promise<void>;
 };
 
 export const CardContext = createContext<CardContextType | null>(null);
@@ -177,6 +179,42 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function moveLink(linkId: string, collectionId: string | null) {
+    if (!currentCard) return;
+    try {
+      await apiFetch(`/api/links/${linkId}`, {
+        method: "PATCH",
+        json: { collection_id: collectionId },
+      });
+      await loadCard(currentCard.id);
+      toast.success("Link moved!");
+      setCardError(null);
+    } catch (err) {
+      const msg = err instanceof ApiError ? err.message : "Failed to move link.";
+      setCardError(msg);
+      toast.error(msg);
+    }
+  }
+
+  async function reorderLinks(collectionId: string | null, orderedIds: string[]) {
+    if (!currentCard) return;
+    try {
+      await apiFetch(`/api/cards/${currentCard.id}/links/reorder`, {
+        method: "PATCH",
+        json: {
+          collection_id: collectionId,
+          items: orderedIds.map((id, index) => ({ id, position: index })),
+        },
+      });
+      await loadCard(currentCard.id);
+      setCardError(null);
+    } catch (err) {
+      const msg = err instanceof ApiError ? err.message : "Failed to save order.";
+      setCardError(msg);
+      toast.error(msg);
+    }
+  }
+
   return (
     <CardContext.Provider
       value={{
@@ -200,6 +238,8 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         saveLink,
         addCollection,
         renameCard,
+        moveLink,
+        reorderLinks,
       }}
     >
       {children}
