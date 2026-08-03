@@ -113,7 +113,7 @@ export function DraggableLink({
           .join(" ")}
       >
         <button
-          className="h-full w-8 shrink-0 cursor-grab text-sm text-gray-500 dark:text-gray-400 touch-manipulation sm:w-10"
+          className="h-full cursor-grab w-8 shrink-0  text-sm text-gray-500 dark:text-gray-400 touch-manipulation sm:w-10"
           {...attributes}
           {...listeners}
           aria-label="Drag to reorder"
