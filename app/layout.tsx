@@ -5,6 +5,7 @@ import { fontVariables , appFontClass} from "@/lib/fonts";
 import { Toaster } from "react-hot-toast";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
   title: "LinkForge",
   description: "A Linktree-style link-in-bio builder.",
 };
