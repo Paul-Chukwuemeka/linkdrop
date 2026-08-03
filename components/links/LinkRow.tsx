@@ -121,7 +121,7 @@ export function DraggableLink({
           ⠿
         </button>
         <div className="flex min-w-0 flex-1 flex-col gap-1 p-2 sm:gap-1.5 sm:p-3">
-          <p
+          <div
             className="flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100"
             onClick={() => setIsEditing(true)}
           >
@@ -184,7 +184,7 @@ export function DraggableLink({
             >
               <Trash2 className="h-4 w-4" />
             </button>
-          </p>
+          </div>
           <p
             className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-sm"
             onClick={() => setIsEditing(true)}
