@@ -6,7 +6,7 @@ import { CiImageOn } from "react-icons/ci";
 import { useContext, useMemo } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 import { GradientColorsManager } from "./GradientColorPicker";
 
 // Direction presets with icons
@@ -25,7 +25,7 @@ const Background = () => {
   const { cardStyle, updateStyle, isSavingStyle: isSaving, updateCardStyle } =
     useStyle();
   const { bg_type, gradient_type, gradient_direction, gradient, card_bg } =
-    cardStyle!;
+    cardStyle ?? {};
 
   const backgroundColor = card_bg ?? "ffffff";
   const endColor = useMemo(
@@ -54,7 +54,7 @@ const Background = () => {
     return {
       background: `linear-gradient(${angle}deg, ${colors})`,
     };
-  }, [bg_type, gradient_direction, gradientColors]);
+  }, [bg_type, gradient_type, gradient_direction, gradientColors]);
 
   const gradientStyle = gradientPreviewStyle;
 
@@ -199,7 +199,7 @@ const Background = () => {
       )}
 
       <Button className="w-full sm:w-40 mt-2" onClick={updateStyle} disabled={isSaving}>
-        {isSaving ? <Spinner /> : "Save changes"}
+        {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save changes"}
       </Button>
     </div>
   );

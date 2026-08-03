@@ -3,7 +3,7 @@
 
 import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
-import { getDomain } from "@/utils/validate";
+import { getDomain, safeHref } from "@/utils/validate";
 import { PublicbuttonRadiusClasses, getShadowStyles } from "@/lib/style-mappings";
 
 function getButtonBgStyle(cardStyle: CardTheme): React.CSSProperties {
@@ -56,7 +56,7 @@ export function PublicLinkCard({
 
   return (
     <Link
-      href={link.url}
+      href={safeHref(link.url)}
       className={`group relative w-full px-5 h-14 font-semibold capitalize flex items-center justify-between transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]}`}
       style={{ ...buttonBgStyle, ...shadowStyle }}
       target="_blank"

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { Card, LinkCreate } from "@/lib/types";
+import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
+import { Card } from "@/lib/types";
 import { apiFetch, ApiError } from "@/lib/api";
 import { useProfile } from "./ProfileContext";
 import toast from "react-hot-toast";
@@ -10,9 +10,11 @@ import { isValidUrl } from "@/utils/validate";
 type CardContextType = {
   currentCard: Card | null;
   setCurrentCard: React.Dispatch<React.SetStateAction<Card | null>>;
-  loadCard: (id: string, forceStyleSync?: boolean) => Promise<void>;
+  loadCard: (id: string) => Promise<void>;
   isLoadingCard: boolean;
   setIsLoadingCard: React.Dispatch<React.SetStateAction<boolean>>;
+  isSavingLink: boolean;
+  isSavingCollection: boolean;
   cardError: string | null;
   setCardError: React.Dispatch<React.SetStateAction<string | null>>;
   isCreatingLink: boolean;
@@ -42,32 +44,47 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
   const { profile } = useProfile();
   
   const [currentCard, setCurrentCard] = useState<Card | null>(null);
-  const [isLoadingCard, setIsLoadingCard] = useState<boolean>(false);
+  const [isLoadingCard, setIsLoadingCard] = useState<boolean>(true);
+  const [isSavingLink, setIsSavingLink] = useState(false);
+  const [isSavingCollection, setIsSavingCollection] = useState(false);
   const [cardError, setCardError] = useState<string | null>(null);
   const [isCreatingLink, setIsCreatingLink] = useState(false);
   const [isCreatingCollection, setIsCreatingCollection] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
   const [isPreview, setIsPreview] = useState<boolean>(false);
 
+  // Serializes card loads: only the most recent request may update state, so
+  // parallel loads (eager fetch, current_card, last_selected_card) can't race.
+  const loadRequestIdRef = useRef(0);
+
   const loadCard = useCallback(async (id: string) => {
+    const requestId = ++loadRequestIdRef.current;
+    setIsLoadingCard(true);
     try {
       const data = await apiFetch<Card | null>(`/api/cards/${id}/list`);
-      if (data) setCurrentCard(data);
+      if (requestId === loadRequestIdRef.current && data) setCurrentCard(data);
     } catch (error) {
-      setCardError("Failed to load card");
+      if (requestId === loadRequestIdRef.current) {
+        setCardError("Failed to load card");
+      }
+    } finally {
+      if (requestId === loadRequestIdRef.current) setIsLoadingCard(false);
     }
   }, []);
 
   // Eagerly load the current card in parallel with profile (no profile dependency)
   useEffect(() => {
     let mounted = true;
+    const requestId = ++loadRequestIdRef.current;
     (async () => {
       setIsLoadingCard(true);
       try {
         const data = await apiFetch<Card>("/api/cards/current/list");
-        if (mounted && data) setCurrentCard(data);
+        if (mounted && requestId === loadRequestIdRef.current && data) {
+          setCurrentCard(data);
+        }
       } catch {
-        // Will fall back to profile.current_card path below
+        // Will fall back to the profile-derived path below
       } finally {
         if (mounted) setIsLoadingCard(false);
       }
@@ -75,19 +92,15 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     return () => { mounted = false; };
   }, []);
 
-  // Fallback: react to profile.current_card changes (e.g. user switches active card)
+  // Once the profile arrives, prefer the last card the user selected to edit,
+  // falling back to the current (main) card. Only triggers on real changes.
   useEffect(() => {
-    if (profile?.current_card && profile.current_card !== currentCard?.id) {
-      loadCard(profile.current_card);
+    if (!profile) return;
+    const preferredCardId = profile.last_selected_card ?? profile.current_card;
+    if (preferredCardId && preferredCardId !== currentCard?.id) {
+      loadCard(preferredCardId);
     }
-  }, [profile?.current_card, loadCard]);
-
-  // Load last selected card if available (overrides the eager load above)
-  useEffect(() => {
-    if (profile?.last_selected_card && profile.last_selected_card !== currentCard?.id) {
-      loadCard(profile.last_selected_card);
-    }
-  }, [profile?.last_selected_card, loadCard]);
+  }, [profile?.last_selected_card, profile?.current_card, loadCard]);
 
   async function saveLink(details: { url: string; title: string }) {
     const { url, title } = details;
@@ -95,7 +108,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
       setCardError("Please enter a valid URL");
       return;
     }
-    setIsLoadingCard(true);
+    setIsSavingLink(true);
     try {
       await apiFetch("/api/links", {
         method: "POST",
@@ -115,12 +128,12 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
       setCardError(msg);
       toast.error(msg);
     } finally {
-      setIsLoadingCard(false);
+      setIsSavingLink(false);
     }
   }
 
   async function addCollection(title: string) {
-    setIsLoadingCard(true);
+    setIsSavingCollection(true);
     try {
       await apiFetch("/api/collections", {
         method: "POST",
@@ -134,7 +147,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
       setCardError(msg);
       toast.error(msg);
     } finally {
-      setIsLoadingCard(false);
+      setIsSavingCollection(false);
       setSelectedCollection(null);
     }
   }
@@ -172,6 +185,8 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         loadCard,
         isLoadingCard,
         setIsLoadingCard,
+        isSavingLink,
+        isSavingCollection,
         cardError,
         setCardError,
         isCreatingLink,

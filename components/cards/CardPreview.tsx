@@ -36,7 +36,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
   const backgroundStyle: React.CSSProperties = useMemo(() => {
     if (!cardStyle) return {};
     if (cardStyle.bg_type === "solid") {
-      return { background: `#${cardStyle.card_bg}` };
+      return { background: `#${cardStyle.card_bg || "ffffff"}` };
     }
     if (cardStyle.bg_type === "gradient") {
       const colors = gradientColors.map((c) => `#${c}`).join(", ");
@@ -54,7 +54,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
         backgroundPosition: "center",
       };
     }
-    return { background: `#${cardStyle.card_bg}` };
+    return { background: `#${cardStyle.card_bg || "ffffff"}` };
   }, [cardStyle, gradientColors]);
 
   const currentFont = useMemo(

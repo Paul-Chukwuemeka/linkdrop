@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect } from "react";
 import Cropper, { type Area } from "react-easy-crop";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
+import { ButtonLoader } from "@/components/ui/ButtonLoader";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { UserProfileMe } from "@/lib/types";
 
@@ -156,7 +157,7 @@ export function AvatarCropModal({
             disabled={isUploading || !imageSrc}
             className="flex-1"
           >
-            {isUploading ? <Spinner /> : "Save"}
+            {isUploading ? <ButtonLoader label="Uploading…" onDark /> : "Save"}
           </Button>
         </div>
       </div>

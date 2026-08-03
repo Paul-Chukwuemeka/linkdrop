@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { buildCardItemsList } from "@/lib/card-utils"
-import { unauthorizedResponse, notFoundResponse } from "@/lib/api-utils"
+import { unauthorizedResponse, notFoundResponse, serverErrorResponse } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function GET() {
   try {
@@ -36,7 +37,8 @@ export async function GET() {
       },
     })
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Get current card list error:", e)
+    return serverErrorResponse("Failed to load card list")
   }
 }

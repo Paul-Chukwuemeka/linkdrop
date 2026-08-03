@@ -1,15 +1,27 @@
 import { z } from "zod"
 
+const httpUrl = z
+  .string()
+  .min(1, "URL is required")
+  .max(2048, "URL must be at most 2048 characters")
+  .refine(
+    (value) => {
+      try {
+        const url = new URL(value)
+        return url.protocol === "http:" || url.protocol === "https:"
+      } catch {
+        return false
+      }
+    },
+    "URL must start with http:// or https://"
+  )
+
 export const linkCreateSchema = z.object({
   title: z
     .string()
     .min(1, "Title is required")
     .max(120, "Title must be at most 120 characters"),
-  url: z
-    .string()
-    .min(1, "URL is required")
-    .max(2048, "URL must be at most 2048 characters")
-    .url("Invalid URL format"),
+  url: httpUrl,
   card_id: z.string().uuid("Invalid card ID"),
   collection_id: z.string().uuid().nullable().optional(),
 })
@@ -20,12 +32,7 @@ export const linkUpdateSchema = z.object({
     .min(1, "Title is required")
     .max(120, "Title must be at most 120 characters")
     .optional(),
-  url: z
-    .string()
-    .min(1, "URL is required")
-    .max(2048, "URL must be at most 2048 characters")
-    .url("Invalid URL format")
-    .optional(),
+  url: httpUrl.optional(),
   collection_id: z.string().uuid().nullable().optional(),
 })
 

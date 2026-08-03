@@ -17,8 +17,10 @@ export async function deleteFromR2(avatarUrl: string) {
   if (!key) return
   try {
     await r2.send(new DeleteObjectCommand({ Bucket: R2_BUCKET, Key: key }))
-  } catch {
-    // best-effort cleanup — don't fail the request if delete fails
+  } catch (error) {
+    // best-effort cleanup — don't fail the request if delete fails,
+    // but surface it so orphans are discoverable in logs
+    console.error("deleteFromR2 failed:", { key, error })
   }
 }
 

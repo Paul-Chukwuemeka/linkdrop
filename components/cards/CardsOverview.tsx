@@ -51,7 +51,6 @@ export function CardsOverview() {
 
   async function deleteCard(id: string) {
     setError(null);
-    setIsCreating(true);
     try {
       await apiFetch<Card>(`/api/cards/${id}`, {
         method: "Delete",
@@ -60,8 +59,6 @@ export function CardsOverview() {
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
       else setError("Failed to delete card.");
-    } finally {
-      setIsCreating(false);
     }
   }
 

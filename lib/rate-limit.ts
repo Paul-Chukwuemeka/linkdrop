@@ -33,6 +33,11 @@ export function rateLimit(key: string, limit: number, windowMs: number): boolean
 }
 
 function getClientIp(request: Request): string {
+  // Note: x-forwarded-for is client-supplied and spoofable on any deployment
+  // that does not overwrite it at the proxy/edge. Trust x-real-ip (or
+  // cf-connecting-ip) first once the deployment guarantees they are
+  // proxy-populated — otherwise attackers can rotate the header to bypass
+  // the per-IP signup/login throttles.
   const forwarded = request.headers.get("x-forwarded-for")
   if (forwarded) return forwarded.split(",")[0].trim()
   const realIp = request.headers.get("x-real-ip")
@@ -43,4 +48,20 @@ function getClientIp(request: Request): string {
 export function checkRateLimit(request: Request, limit: number, windowMs: number): boolean {
   const ip = getClientIp(request)
   return rateLimit(ip, limit, windowMs)
+}
+
+const loginKey = (username: string) => `login:${username.trim().toLowerCase()}`
+
+export function checkLoginRateLimit(
+  request: Request,
+  username: string,
+  limit: number,
+  windowMs: number
+): boolean {
+  if (!checkRateLimit(request, limit, windowMs)) return false
+  return rateLimit(loginKey(username), limit, windowMs)
+}
+
+export function resetLoginRateLimit(username: string): void {
+  store.delete(loginKey(username))
 }

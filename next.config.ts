@@ -13,12 +13,40 @@ const nextConfig: NextConfig = {
         hostname: "lh3.googleusercontent.com",
         pathname: "/**",
       },
-      {
-        protocol: "https",
-        hostname: process.env.NEXT_PUBLIC_R2_HOSTNAME || "pub-e69e7deaceef4f3b83e1b59b87a30b6c.r2.dev",
-        pathname: "/avatars/**",
-      },
+      ...(process.env.NEXT_PUBLIC_R2_HOSTNAME
+        ? [
+            {
+              protocol: "https" as const,
+              hostname: process.env.NEXT_PUBLIC_R2_HOSTNAME,
+              pathname: "/avatars/**",
+            },
+          ]
+        : []),
     ],
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          {
+            key: "Content-Security-Policy",
+            value: [
+              "default-src 'self'",
+              "script-src 'self' 'unsafe-inline'",
+              "style-src 'self' 'unsafe-inline'",
+              "img-src 'self' data: blob: https:",
+              "font-src 'self' data: https:",
+              "connect-src 'self' https:",
+              "base-uri 'self'",
+              "frame-ancestors 'self'",
+              "form-action 'self'",
+            ].join("; "),
+          },
+        ],
+      },
+    ];
   },
 };
 

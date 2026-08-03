@@ -1,6 +1,6 @@
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { Spinner } from "@/components/ui/Spinner";
+import { FullScreenLoader } from "@/components/ui/FullScreenLoader";
 import React from "react";
 import CardPreview from "../cards/CardPreview";
 
@@ -9,16 +9,7 @@ const AppWrapper = ({ children }: { children: React.ReactNode }) => {
   const { isLoadingProfile } = useProfile();
 
   if (isLoadingProfile || (currentCard === null && isLoadingCard)) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-50 dark:bg-neutral-900">
-        <div className="flex flex-col items-center gap-4">
-          <Spinner />
-          <p className="text-sm font-semibold text-neutral-500 tracking-wide">
-            Loading LinkForge...
-          </p>
-        </div>
-      </div>
-    );
+    return <FullScreenLoader className="fixed inset-0 z-50" />;
   }
 
   return (

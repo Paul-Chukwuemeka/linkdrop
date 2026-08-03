@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { collectionCreateSchema } from "@/lib/validations/collections"
-import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse, serverErrorResponse } from "@/lib/api-utils"
+import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse, serverErrorResponse, readJsonBody } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function GET(request: Request) {
   try {
@@ -41,8 +42,9 @@ export async function GET(request: Request) {
       }))
     )
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("List collections error:", e)
+    return serverErrorResponse("Could not list collections")
   }
 }
 
@@ -50,7 +52,8 @@ export async function POST(request: Request) {
   try {
     const user = await requireAuth()
 
-    const body = await request.json()
+    const body = await readJsonBody(request)
+    if (body === null) return errorResponse("Invalid JSON body", 400)
     const parsed = collectionCreateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.issues[0].message, 400)
@@ -101,7 +104,7 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
     if (e && typeof e === "object" && "code" in e && e.code === "P2002") {
       return conflictResponse("Collection title already exists for this card")
     }

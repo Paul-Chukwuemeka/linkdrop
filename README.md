@@ -213,3 +213,18 @@ npm run build  # Production build
 npm run start  # Start production server
 npm run lint   # Run ESLint
 ```
+
+## Deploying
+
+Run migrations with `npx prisma migrate deploy`.
+
+**Before applying `20260802100000_add_case_insensitive_uniques`, run the pre-flight collision check.** That migration creates case-insensitive unique indexes on `users.email` and `users.username`; it fails (and aborts the deploy) if existing data already contains case-collisions. Verify none exist:
+
+```sql
+-- Emails (case-insensitive duplicates)
+SELECT LOWER(email), count(*) FROM users GROUP BY LOWER(email) HAVING count(*) > 1;
+-- Usernames (case-insensitive duplicates)
+SELECT LOWER(username), count(*) FROM users GROUP BY LOWER(username) HAVING count(*) > 1;
+```
+
+If either returns rows, reconcile them (merge duplicates, or rename the conflicting username) before running `prisma migrate deploy`. The migration itself lowercases existing emails, so post-deploy you cannot have `alice@x.com` and `Alice@x.com` as separate accounts.

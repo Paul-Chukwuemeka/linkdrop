@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { linkUpdateSchema } from "@/lib/validations/links"
-import { errorResponse, unauthorizedResponse, notFoundResponse } from "@/lib/api-utils"
+import { errorResponse, unauthorizedResponse, notFoundResponse, readJsonBody, serverErrorResponse } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 import { getMaxPosition } from "@/lib/position-utils"
 
 export async function PATCH(
@@ -13,7 +14,8 @@ export async function PATCH(
     const user = await requireAuth()
 
     const { linkId } = await params
-    const body = await request.json()
+    const body = await readJsonBody(request)
+    if (body === null) return errorResponse("Invalid JSON body", 400)
     const parsed = linkUpdateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.issues[0].message, 400)
@@ -40,6 +42,12 @@ export async function PATCH(
 
     if ("collection_id" in parsed.data) {
       const newCollectionId = parsed.data.collection_id ?? null
+      if (newCollectionId) {
+        const collection = await prisma.collection.findFirst({
+          where: { id: newCollectionId, cardId: link.cardId },
+        })
+        if (!collection) return notFoundResponse("Collection not found")
+      }
       updateData.collectionId = newCollectionId
       updateData.position = await getMaxPosition(link.cardId, newCollectionId)
     }
@@ -58,8 +66,9 @@ export async function PATCH(
       position: updated.position,
     })
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Update link error:", e)
+    return serverErrorResponse("Could not update link")
   }
 }
 
@@ -81,7 +90,8 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 })
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Delete link error:", e)
+    return serverErrorResponse("Could not delete link")
   }
 }

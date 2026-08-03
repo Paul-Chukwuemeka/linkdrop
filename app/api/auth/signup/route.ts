@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { signupSchema } from "@/lib/validations/auth"
-import { errorResponse, conflictResponse, serverErrorResponse } from "@/lib/api-utils"
+import { errorResponse, conflictResponse, serverErrorResponse, isP2002 } from "@/lib/api-utils"
 import { checkRateLimit } from "@/lib/rate-limit"
 import argon2 from "argon2"
 import { DEFAULT_CARD_STYLE } from "@/lib/constants"
@@ -12,7 +12,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json()
+    let body: unknown
+    try {
+      body = await request.json()
+    } catch {
+      return errorResponse("Invalid JSON body", 400)
+    }
     const parsed = signupSchema.safeParse(body)
 
     if (!parsed.success) {
@@ -21,12 +26,13 @@ export async function POST(request: Request) {
     }
 
     const { username, email, fullname, password } = parsed.data
+    const normalizedEmail = email.toLowerCase()
 
     const existingUser = await prisma.user.findFirst({
       where: {
         OR: [
           { username: { equals: username, mode: "insensitive" } },
-          { email: { equals: email, mode: "insensitive" } },
+          { email: { equals: normalizedEmail, mode: "insensitive" } },
         ],
       },
     })
@@ -44,7 +50,7 @@ export async function POST(request: Request) {
       const user = await tx.user.create({
         data: {
           username,
-          email,
+          email: normalizedEmail,
           fullname,
           password: hashedPassword,
         },
@@ -78,6 +84,9 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (error) {
+    if (isP2002(error)) {
+      return conflictResponse("Username or email already in use")
+    }
     console.error("Signup error:", error)
     return serverErrorResponse("Failed to create account")
   }

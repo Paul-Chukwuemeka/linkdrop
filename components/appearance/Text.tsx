@@ -3,13 +3,13 @@ import Fontpicker from "../ui/Fontpicker";
 import { useContext } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 const Text = () => {
   const { cardStyle, updateCardStyle,updateStyle,isSavingStyle: isSaving } = useStyle();
 
-  const { title_size, text_size } = cardStyle!;
+  if (!cardStyle) return null;
 
-  if (!cardStyle) return;
+  const { title_size, text_size } = cardStyle;
 
   const titleSizes = ["small", "medium", "large"] as const;
   const textSizes = ["small", "medium", "large"] as const;
@@ -71,7 +71,7 @@ const Text = () => {
         </div>
       </div>
       <Button className="w-full sm:w-40 mt-2" onClick={updateStyle} disabled={isSaving}>
-        {isSaving ? <Spinner/> : "Save changes"}
+        {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save changes"}
       </Button>
     </div>
   );

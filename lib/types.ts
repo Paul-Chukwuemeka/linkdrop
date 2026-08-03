@@ -26,7 +26,6 @@ export interface UserProfilePublic {
   bio: string | null
   avatar_url: string | null
   theme: string
-  cards: Card[]
 }
 
 export interface UserProfileMe extends UserProfilePublic {

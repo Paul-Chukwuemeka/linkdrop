@@ -61,7 +61,7 @@ function NavItem({
         mobile
           ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
           : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
-        !mobile && active ? "text-(--text-primary) bg-white dark:bg-neutral-800" : " ",
+        !mobile && active ? "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-500/10" : " ",
         // mobile && active ? "bg-black text-white dark:bg-white dark:text-black rounded-full" : "rounded-full",
       ]
         .filter(Boolean)

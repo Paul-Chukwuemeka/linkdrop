@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
-import { Spinner } from "@/components/ui/Spinner"
+import { ButtonLoader } from "@/components/ui/ButtonLoader"
 import { signIn } from "next-auth/react"
 import React, { useState } from "react"
 import { FcGoogle } from "react-icons/fc"
@@ -12,6 +12,15 @@ export function LoginForm() {
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
+
+  // Only same-site relative paths are honored (no open redirects).
+  // The initializer also runs during SSR render, so guard for window.
+  const [next] = useState(() => {
+    if (typeof window === "undefined") return "/dashboard"
+    const raw = new URLSearchParams(window.location.search).get("next")
+    return raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard"
+  })
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,7 +37,7 @@ export function LoginForm() {
       await signIn("credentials", {
         username: username.trim(),
         password,
-        redirectTo: "/dashboard",
+        redirectTo: next,
       })
     } catch {
       setError("Login failed. Please try again.")
@@ -42,24 +51,38 @@ export function LoginForm() {
       <Button
         type="button"
         variant="ghost"
-        onClick={() => signIn("google", { redirectTo: "/dashboard" })}
-        className="w-full flex items-center justify-center gap-2 border border-neutral-200 dark:border-neutral-700 hover:bg-neutral-50 dark:hover:bg-neutral-800"
+        onClick={async () => {
+          setIsGoogleSubmitting(true)
+          try {
+            await signIn("google", { redirectTo: next })
+          } finally {
+            setIsGoogleSubmitting(false)
+          }
+        }}
+        disabled={isGoogleSubmitting || isSubmitting}
+        className="w-full flex items-center justify-center gap-2 border border-neutral-200 hover:bg-neutral-50"
       >
-        <FcGoogle className="h-5 w-5" />
-        Sign in with Google
+        {isGoogleSubmitting ? (
+          <ButtonLoader label="Redirecting…" />
+        ) : (
+          <>
+            <FcGoogle className="h-5 w-5" />
+            Sign in with Google
+          </>
+        )}
       </Button>
 
       <div className="relative my-2">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-neutral-200 dark:border-neutral-700" />
+          <div className="w-full border-t border-neutral-200" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white dark:bg-neutral-900 px-3 text-neutral-500 dark:text-neutral-400">or continue with</span>
+          <span className="bg-white px-3 text-neutral-500">or continue with</span>
         </div>
       </div>
 
       <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
           Username
           <Input
             autoComplete="username"
@@ -67,10 +90,11 @@ export function LoginForm() {
             onChange={(e) => setUsername(e.target.value)}
             placeholder="yourname"
             required
+            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
           />
         </label>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
           Password
           <Input
             autoComplete="current-password"
@@ -79,6 +103,7 @@ export function LoginForm() {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
             required
+            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
           />
         </label>
 
@@ -90,10 +115,7 @@ export function LoginForm() {
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? (
-            <span className="inline-flex items-center gap-2">
-              <Spinner className="h-4 w-4 border-t-white" />
-              Logging in…
-            </span>
+            <ButtonLoader label="Logging in…" onDark />
           ) : (
             "Log in"
           )}

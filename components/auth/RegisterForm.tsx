@@ -2,9 +2,10 @@
 
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
-import { Spinner } from "@/components/ui/Spinner"
+import { ButtonLoader } from "@/components/ui/ButtonLoader"
 import { signIn } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
+import { PASSWORD_PATTERN, PASSWORD_MIN_LENGTH } from "@/lib/validations/auth"
 import React, { useState } from "react"
 
 interface FormState {
@@ -40,9 +41,10 @@ export function RegisterForm() {
       else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) msg = "Invalid email format."
     }
     if (key === "password") {
-      if (value.length > 0 && value.length < 8) msg = "Minimum 8 characters."
-      else if (value.length >= 8 && !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/.test(value)) {
-        msg = "Need uppercase, number, and special character."
+      if (value.length > 0 && value.length < PASSWORD_MIN_LENGTH) {
+        msg = `Minimum ${PASSWORD_MIN_LENGTH} characters.`
+      } else if (value.length > 0 && !PASSWORD_PATTERN.test(value)) {
+        msg = "Need an uppercase letter, a lowercase letter, and a number."
       }
     }
     setFieldErrors((prev) => ({ ...prev, [key]: msg }))
@@ -91,7 +93,7 @@ export function RegisterForm() {
 
   return (
     <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
         Username
         <Input
           autoComplete="username"
@@ -100,11 +102,12 @@ export function RegisterForm() {
           placeholder="yourname"
           required
           minLength={3}
+          className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
         />
         {fieldErrors.username && <span className="text-xs text-red-600 font-normal">{fieldErrors.username}</span>}
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
         Email
         <Input
           autoComplete="email"
@@ -113,11 +116,12 @@ export function RegisterForm() {
           onChange={(e) => update("email", e.target.value)}
           placeholder="you@example.com"
           required
+          className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
         />
         {fieldErrors.email && <span className="text-xs text-red-600 font-normal">{fieldErrors.email}</span>}
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
         Full name
         <Input
           autoComplete="name"
@@ -125,10 +129,11 @@ export function RegisterForm() {
           onChange={(e) => update("fullname", e.target.value)}
           placeholder="Jane Doe"
           required
+          className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
         />
       </label>
 
-      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
         Password
         <Input
           autoComplete="new-password"
@@ -138,6 +143,7 @@ export function RegisterForm() {
           placeholder="Minimum 8 characters"
           required
           minLength={8}
+          className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
         />
         {fieldErrors.password && <span className="text-xs text-red-600 font-normal">{fieldErrors.password}</span>}
       </label>
@@ -150,10 +156,7 @@ export function RegisterForm() {
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? (
-          <span className="inline-flex items-center gap-2">
-            <Spinner className="h-4 w-4 border-t-white" />
-            Creating account…
-          </span>
+          <ButtonLoader label="Creating account…" onDark />
         ) : (
           "Sign up"
         )}

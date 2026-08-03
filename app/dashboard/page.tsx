@@ -6,6 +6,7 @@ import { PenLine, ChevronDown, ChevronUp } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
 import { ProfileHeaderBar } from "@/components/dashboard/ProfileHeaderBar";
+import { ButtonLoader } from "@/components/ui/ButtonLoader";
 import { apiFetch } from "@/lib/api";
 import {
   SortableContext,
@@ -44,6 +45,7 @@ export default function DashboardPage() {
     setCardError,
     renameCard,
   } = useCard();
+  const { setProfile } = useProfile();
 
   const error = cardError || profileError;
   const setError = setCardError;
@@ -54,6 +56,8 @@ export default function DashboardPage() {
   const [activeId, setActiveId] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState("");
+  const [isSettingMain, setIsSettingMain] = useState(false);
+  const [isReordering, setIsReordering] = useState(false);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -88,12 +92,15 @@ export default function DashboardPage() {
         items_list: reordered,
       });
 
+      setIsReordering(true);
       try {
         await handleReorder(currentCard.id, reordered);
       } catch (err) {
         console.error("Failed to reorder items:", err);
         setError("Failed to save new order. Reverting...");
         setCurrentCard(previousCard);
+      } finally {
+        setIsReordering(false);
       }
     }
   }
@@ -103,14 +110,18 @@ export default function DashboardPage() {
     currentCard.items_list.find((item) => item.content.id === activeId);
 
   async function updateCurrentCard(id: string) {
+    setIsSettingMain(true);
     try {
       await apiFetch("/api/profile/current", {
         method: "PATCH",
         json: { card_id: id },
       });
+      setProfile((prev) => prev ? { ...prev, current_card: id } : prev);
       loadCard(id);
     } catch (error) {
       setError("Failed to update current card");
+    } finally {
+      setIsSettingMain(false);
     }
   }
 
@@ -175,16 +186,22 @@ export default function DashboardPage() {
                   <PenLine className="w-4 transition-transform group-hover:scale-110" />
                 </h2>
               )}
+              {isReordering && (
+                <span className="ml-2 shrink-0 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                  Saving order…
+                </span>
+              )}
               {profile && currentCard?.id !== profile!.current_card && (
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
-                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black dark:bg-white dark:text-black px-3 rounded-full text-xs md:text-md"
+                  disabled={isSettingMain}
+                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black dark:bg-white dark:text-black px-3 rounded-full text-xs md:text-md disabled:opacity-50"
                 >
-                  Set as main card
+                  {isSettingMain ? <ButtonLoader label="Saving…" /> : "Set as main card"}
                 </button>
               )}
             </div>
-            <div className="flex rounded-2xl sm:rounded-3xl items-center w-full bg-white dark:bg-neutral-800 h-11 sm:h-12 shadow-lg shadow-black/20">
+            <div className="flex rounded-2xl sm:rounded-3xl items-center w-full bg-white dark:bg-neutral-800 h-11 sm:h-12 shadow-[0_0_15px_rgba(0,0,0,0.15)]">
               <button
                 className="flex-1 h-full rounded-l-2xl sm:rounded-l-3xl text-sm sm:text-base font-semibold tracking-wide"
                 onClick={() => {
@@ -194,7 +211,7 @@ export default function DashboardPage() {
                 Add a new Link
               </button>
               <button
-                className="h-full border-l border-white/20 dark:border-black/20 cursor-pointer px-3 sm:px-4 touch-manipulation rounded-r-2xl sm:rounded-r-3xl hover:bg-white/10 dark:hover:bg-black/10 transition-colors"
+                className="h-full border-l border-neutral-200 dark:border-neutral-600 cursor-pointer px-3 sm:px-4 touch-manipulation rounded-r-2xl sm:rounded-r-3xl hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
                 onClick={() => {
                   setOptions(!options);
                 }}

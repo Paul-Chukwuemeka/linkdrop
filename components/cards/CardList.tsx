@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { ButtonLoader } from "@/components/ui/ButtonLoader";
 import type { Card } from "@/lib/types";
 import React, { useState } from "react";
 import { CardRow } from "./CardRow";
@@ -38,7 +39,7 @@ export function CardList({
             disabled={isCreating}
             className="shrink-0"
           >
-            Create
+            {isCreating ? <ButtonLoader label="Creating…" onDark /> : "Create"}
           </Button>
         </div>
         <div className="mt-2 text-xs text-neutral-600 dark:text-neutral-400">

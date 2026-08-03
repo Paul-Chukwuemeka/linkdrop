@@ -8,7 +8,7 @@ import { Link2, X } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 
 export function UpdateLink({
   link,
@@ -150,7 +150,7 @@ export function UpdateLink({
               Cancel
             </Button>
             <Button type="submit" disabled={isSaving}>
-              {isSaving ? <Spinner /> : "Save"}
+              {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save"}
             </Button>
           </div>
         </div>

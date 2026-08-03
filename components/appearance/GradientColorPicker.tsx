@@ -2,6 +2,7 @@
 
 import { useContext } from "react";
 import { isLight, lighten, darken } from "@/utils/colors";
+import { MAX_GRADIENT_COLORS } from "@/lib/validations/cards";
 
 interface GradientColorPickerProps {
   color: string;
@@ -94,13 +95,13 @@ export const GradientColorsManager = ({
   };
 
   const handleAddColor = (newColor: string) => {
-    if (colors.length < 6) {
+    if (colors.length < MAX_GRADIENT_COLORS) {
       onChange([...colors, newColor.replace("#", "")]);
     }
   };
 
   const handleAddFromPalette = (color: string) => {
-    if (colors.length < 6) {
+    if (colors.length < MAX_GRADIENT_COLORS) {
       onChange([...colors, color]);
     }
   };
@@ -119,7 +120,7 @@ export const GradientColorsManager = ({
             canRemove={colors.length > 2}
           />
         ))}
-        {colors.length < 6 && (
+        {colors.length < MAX_GRADIENT_COLORS && (
           <div className="relative group">
             <input
               type="color"
@@ -150,7 +151,7 @@ export const GradientColorsManager = ({
             <button
               key={index}
               onClick={() => handleAddFromPalette(color)}
-              disabled={colors.length >= 6}
+              disabled={colors.length >= MAX_GRADIENT_COLORS}
               className="w-8 h-8 rounded-md border border-neutral-200 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
               style={{ backgroundColor: `#${color}` }}
             />

@@ -6,7 +6,7 @@ import { useProfile } from "@/context/ProfileContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import { UserProfileMe } from "@/lib/types";
 import { useState } from "react";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 import Image from "next/image";
 import { Upload } from "lucide-react";
 import { AvatarCropModal } from "@/components/ui/AvatarCropModal";
@@ -18,14 +18,21 @@ const Profile = () => {
   const [cropFile, setCropFile] = useState<File | null>(null);
   const [urlInput, setUrlInput] = useState(profile?.avatar_url || "");
   const [imgError, setImgError] = useState(false);
+  const [savedUsername, setSavedUsername] = useState<string | null>(null);
 
   useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
   }, [profile?.avatar_url]);
 
+  useEffect(() => {
+    if (profile && savedUsername === null) setSavedUsername(profile.username);
+  }, [profile, savedUsername]);
+
   const getAvatarUrl = (url: string | null | undefined) => {
     if (!url) return "/user.svg";
-    if (url.startsWith("http")) return url;
+    // Absolute (re-hosted or remote) or a relative /avatars/ path rendered as-is;
+    // anything else is a legacy/garbage value we shouldn't hand to <Image>.
+    if (url.startsWith("http") || url.startsWith("/avatars/")) return url;
     return "/user.svg";
   };
 
@@ -51,15 +58,23 @@ const Profile = () => {
     setError(null);
     setIsSaving(true);
     try {
+      // Only send username when it actually changed. Always sending it breaks
+      // legacy OAuth users with short (< 3 char) usernames, because the schema
+      // rejects them and the profile could never be saved again.
+      const payload: Record<string, unknown> = {
+        fullname: profile.fullname,
+        bio: profile.bio,
+        avatar_url: urlInput || null,
+      };
+      if (savedUsername !== null && profile.username !== savedUsername) {
+        payload.username = profile.username;
+      }
+
       const updated = await apiFetch<UserProfileMe>("/api/profile/me", {
         method: "PATCH",
-        json: {
-          username: profile.username,
-          fullname: profile.fullname,
-          bio: profile.bio,
-          avatar_url: urlInput || null,
-        },
+        json: payload,
       });
+      setSavedUsername(updated.username);
       setProfile(updated);
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
@@ -116,7 +131,7 @@ const Profile = () => {
             )}
           </div>
           <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center sm:text-left">
-            JPG, PNG or GIF. Max size 2MB.
+            JPG, PNG, GIF or WebP. Max size 5MB.
           </p>
           <input 
             type="file" 
@@ -181,7 +196,7 @@ const Profile = () => {
 
         <div className="pt-2">
           <Button onClick={save} disabled={isSaving} className="w-full sm:w-auto">
-            {isSaving ? <Spinner /> : "Save changes"}
+            {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save changes"}
           </Button>
         </div>
       </div>

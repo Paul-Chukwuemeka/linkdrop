@@ -1,7 +1,7 @@
 import ColorPicker from "../ui/colorPicker";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 import { getShadowStyles, ShadowType } from "@/lib/style-mappings";
 
 const shadowOptions: { value: ShadowType; label: string }[] = [
@@ -161,7 +161,7 @@ const Buttons = () => {
       </div>
 
       <Button className="w-full sm:w-40 mt-2" onClick={updateStyle} disabled={isSaving}>
-        {isSaving ? <Spinner /> : "Save changes"}
+        {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save changes"}
       </Button>
     </div>
   );

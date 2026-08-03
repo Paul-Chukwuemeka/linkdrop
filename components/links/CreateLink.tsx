@@ -2,12 +2,12 @@ import { useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 import { isValidUrl } from "@/utils/validate";
 import { Link2, X } from "lucide-react";
 
 export function CreateLink() {
-  const { isLoadingCard: isLoading, saveLink, setIsCreatingLink, cardError: error, setCardError: setError } =
+  const { isSavingLink: isSaving, saveLink, setIsCreatingLink, cardError: error, setCardError: setError } =
     useCard();
 
   const [title, setTitle] = useState<string>("");
@@ -19,7 +19,7 @@ export function CreateLink() {
     "rounded-xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
 
   function close() {
-    if (isLoading) return;
+    if (isSaving) return;
     setLocalError(null);
     setHasSubmitted(false);
     setError(null);
@@ -87,7 +87,7 @@ export function CreateLink() {
               onChange={(e) => setTitle(e.currentTarget.value)}
               placeholder="e.g. My portfolio"
               className={nestedInputClassName}
-              disabled={isLoading}
+              disabled={isSaving}
               autoFocus
             />
           </div>
@@ -100,7 +100,7 @@ export function CreateLink() {
               onChange={(e) => setUrl(e.currentTarget.value)}
               placeholder="https://…"
               className={nestedInputClassName}
-              disabled={isLoading}
+              disabled={isSaving}
             />
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Tip: use a full URL (including https://).
@@ -114,11 +114,11 @@ export function CreateLink() {
           ) : null}
 
           <div className="flex items-center justify-end gap-2 pt-1">
-            <Button type="button" variant="ghost" onClick={close} disabled={isLoading}>
+            <Button type="button" variant="ghost" onClick={close} disabled={isSaving}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? <Spinner /> : "Save"}
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save"}
             </Button>
           </div>
         </div>

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
-import { Spinner } from "../ui/Spinner";
+import { ButtonLoader } from "../ui/ButtonLoader";
 import { FolderPlus, X } from "lucide-react";
 
 export function CreateCollection() {
-  const { isLoadingCard: isLoading, setIsCreatingCollection, addCollection, cardError: error, setCardError: setError } =
+  const { isSavingCollection: isSaving, setIsCreatingCollection, addCollection, cardError: error, setCardError: setError } =
     useCard();
 
   const [title, setTitle] = useState<string>("");
@@ -17,7 +17,7 @@ export function CreateCollection() {
     "rounded-xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
 
   function close() {
-    if (isLoading) return;
+    if (isSaving) return;
     setLocalError(null);
     setHasSubmitted(false);
     setError(null);
@@ -80,7 +80,7 @@ export function CreateCollection() {
               onChange={(e) => setTitle(e.currentTarget.value)}
               placeholder="e.g. Projects"
               className={nestedInputClassName}
-              disabled={isLoading}
+              disabled={isSaving}
               autoFocus
             />
           </div>
@@ -92,11 +92,11 @@ export function CreateCollection() {
           ) : null}
 
           <div className="flex items-center justify-end gap-2 pt-1">
-            <Button type="button" variant="ghost" onClick={close} disabled={isLoading}>
+            <Button type="button" variant="ghost" onClick={close} disabled={isSaving}>
               Cancel
             </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? <Spinner /> : "Save"}
+            <Button type="submit" disabled={isSaving}>
+              {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save"}
             </Button>
           </div>
         </div>

@@ -2,13 +2,10 @@
 import { useSortable, defaultAnimateLayoutChanges } from "@dnd-kit/sortable";
 import { Link as LinkType } from "@/lib/types";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Pencil, Trash2 } from "lucide-react";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import React, { useState } from "react";
 import { useCard } from "@/context/CardContext";
-import { Button } from "../ui/Button";
-import { Input } from "../ui/Input";
 import { apiFetch, ApiError } from "@/lib/api";
-import { isValidUrl } from "@/utils/validate";
 import { UpdateLink } from "@/components/links/UpdateLink";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 
@@ -22,15 +19,21 @@ export function DraggableLink({
   const { setCardError: setError, loadCard, currentCard } = useCard();
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   async function executeDeleteLink() {
     setError(null);
+    setIsDeleting(true);
     try {
       await apiFetch<void>(`/api/links/${item.id}`, { method: "DELETE" });
-      loadCard(currentCard!.id);
+      if (currentCard?.id) void loadCard(currentCard.id);
+      setIsConfirmOpen(false);
     } catch (err) {
+      setIsConfirmOpen(false);
       if (err instanceof ApiError) setError(err.message);
       else setError("Failed to delete link.");
+    } finally {
+      setIsDeleting(false);
     }
   }
   const {
@@ -110,151 +113,8 @@ export function DraggableLink({
         onConfirm={executeDeleteLink}
         title="Delete Link"
         message="Are you sure you want to permanently delete this link?"
+        isPending={isDeleting}
       />
     </>
-  );
-}
-
-export function LinkRow({
-  link,
-  onUpdated,
-  onDeleted,
-  compact,
-  dragHandle,
-}: {
-  link: LinkType;
-  onUpdated: (next: LinkType) => void;
-  onDeleted?: (id: string) => void;
-  compact?: boolean;
-  dragHandle?: { attributes: unknown; listeners: unknown };
-}) {
-  const [title, setTitle] = useState(link.title);
-  const [url, setUrl] = useState(link.url);
-  const [error, setError] = useState<string | null>(null);
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const saving = useRef(false);
-
-  useEffect(() => {
-    setTitle(link.title);
-    setUrl(link.url);
-  }, [link.id, link.title, link.url]);
-
-  const nestedInputClassName =
-    "rounded-2xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
-
-  async function savePatch(patch: Partial<Pick<LinkType, "title" | "url">>) {
-    if (saving.current) return;
-    saving.current = true;
-    setError(null);
-    try {
-      const updated = await apiFetch<LinkType>(`/api/links/${link.id}`, {
-        method: "PATCH",
-        json: patch,
-      });
-      onUpdated(updated);
-    } catch (err) {
-      if (err instanceof ApiError) setError(err.message);
-      else setError("Failed to update link.");
-    } finally {
-      saving.current = false;
-    }
-  }
-
-  async function executeDeleteLink() {
-    setError(null);
-    try {
-      await apiFetch<void>(`/api/links/${link.id}`, { method: "DELETE" });
-      onDeleted?.(link.id);
-    } catch (err) {
-      if (err instanceof ApiError) setError(err.message);
-      else setError("Failed to delete link.");
-    }
-  }
-
-  return (
-    <div
-      className={[
-        "rounded-3xl bg-white dark:bg-neutral-900 shadow-(--shadow-card) ring-1 ring-(--border-color)",
-        compact ? "p-3" : "p-4",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
-      <div className="flex items-start gap-3">
-        {dragHandle ? (
-          <button
-            type="button"
-            className="inline-flex h-11 w-11 cursor-grab items-center justify-center rounded-2xl bg-neutral-50 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 ring-1 ring-neutral-200 dark:ring-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-700 active:cursor-grabbing"
-            aria-label="Drag link"
-            {...(dragHandle.attributes as React.HTMLAttributes<HTMLButtonElement>)}
-            {...(dragHandle.listeners as React.HTMLAttributes<HTMLButtonElement>)}
-          >
-            <GripVertical className="h-5 w-5" aria-hidden="true" />
-          </button>
-        ) : null}
-
-        <div className="min-w-0 flex-1">
-          <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Link</div>
-          <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Title"
-              className={nestedInputClassName}
-              onBlur={() => {
-                const next = title.trim();
-                if (next && next !== link.title) void savePatch({ title: next });
-                else setTitle(link.title);
-              }}
-              aria-label="Link title"
-            />
-            <Input
-              value={url}
-              type="url"
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://…"
-              className={nestedInputClassName}
-              onBlur={() => {
-                const next = url.trim();
-                if (!next) {
-                  setUrl(link.url);
-                  return;
-                }
-                if (!isValidUrl(next)) {
-                  setError("Please enter a valid URL.");
-                  setUrl(link.url);
-                  return;
-                }
-                if (next !== link.url) void savePatch({ url: next });
-              }}
-              aria-label="Link URL"
-            />
-          </div>
-        </div>
-
-        <Button
-          variant="danger"
-          size="sm"
-          className="rounded-2xl"
-          type="button"
-          onClick={() => setIsConfirmOpen(true)}
-        >
-          Delete
-        </Button>
-      </div>
-
-      {error ? (
-        <div className="mt-3 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
-          {error}
-        </div>
-      ) : null}
-      <ConfirmModal
-        isOpen={isConfirmOpen}
-        onClose={() => setIsConfirmOpen(false)}
-        onConfirm={executeDeleteLink}
-        title="Delete Link"
-        message="Are you sure you want to permanently delete this link?"
-      />
-    </div>
   );
 }

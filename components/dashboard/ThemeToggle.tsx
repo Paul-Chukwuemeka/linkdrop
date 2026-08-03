@@ -11,12 +11,18 @@ export function ThemeToggle({ className }: { className?: string }) {
   const { profile, setProfile } = useProfile()
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    const frame = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(frame)
+  }, [])
 
   // Sync DB theme preference with next-themes on mount
   useEffect(() => {
     if (profile?.theme && mounted) {
-      setTheme(profile.theme)
+      const valid = ["light", "dark", "system"].includes(profile.theme)
+        ? profile.theme
+        : null
+      if (valid) setTheme(valid)
     }
   }, [profile?.theme, mounted, setTheme])
 
@@ -25,7 +31,7 @@ export function ThemeToggle({ className }: { className?: string }) {
   function cycle() {
     const next = theme === "light" ? "dark" : theme === "dark" ? "system" : "light"
     setTheme(next)
-    apiFetch("/api/profile", {
+    apiFetch("/api/profile/me", {
       method: "PATCH",
       json: { theme: next },
     }).catch(() => {})

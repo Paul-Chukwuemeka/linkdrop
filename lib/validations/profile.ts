@@ -23,6 +23,18 @@ export const profileUpdateSchema = z.object({
   avatar_url: z
     .string()
     .max(2048, "Avatar URL must be at most 2048 characters")
+    .refine(
+      (value) => {
+        if (value === "") return true
+        try {
+          const url = new URL(value)
+          return url.protocol === "http:" || url.protocol === "https:"
+        } catch {
+          return value.startsWith("/avatars/")
+        }
+      },
+      "Avatar URL must be http(s) or a relative /avatars/ path"
+    )
     .nullable()
     .optional(),
   theme: z.string().max(50).optional(),

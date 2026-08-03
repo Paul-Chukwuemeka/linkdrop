@@ -14,6 +14,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
   const { setSelectedCollection, setIsCreatingLink, currentCard, loadCard, setCardError: setError } = useCard();
   const [isEditing, setIsEditing] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const {
     attributes,
     listeners,
@@ -38,12 +39,17 @@ export function CollectionBlock({ item }: { item: Collection }) {
 
   async function executeDeleteCollection() {
     setError(null);
+    setIsDeleting(true);
     try {
       await apiFetch<void>(`/api/collections/${item.id}`, { method: "DELETE" });
       if (currentCard?.id) void loadCard(currentCard.id);
+      setIsConfirmOpen(false);
     } catch (err) {
+      setIsConfirmOpen(false);
       if (err instanceof ApiError) setError(err.message);
       else setError("Failed to delete collection.");
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -100,7 +106,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
               ))}
             </div>
           ) : (
-            <div className="flex gap-2 flex-col items-center justify-center p-3 sm:p-4">
+            <div className="flex gap-2 flex-col items-center justify-center py-2 px-3 sm:px-4">
               <p className="text-sm sm:text-base font-semibold text-center dark:text-neutral-200">
                 Add a link to this collection
               </p>
@@ -129,6 +135,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
         onConfirm={executeDeleteCollection}
         title="Delete Collection"
         message="Are you sure you want to delete this collection? This will permanently delete all links inside it."
+        isPending={isDeleting}
       />
     </>
   );

@@ -3,8 +3,7 @@
 import CardPreview from "@/components/cards/CardPreview";
 
 import { Spinner } from "@/components/ui/Spinner";
-import { Dispatch, SetStateAction, useState } from "react";
-import { useContext } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useProfile } from "@/context/ProfileContext";
 import { useCard } from "@/context/CardContext";
 import Link from "next/link";
@@ -14,14 +13,25 @@ import Buttons from "@/components/appearance/buttons";
 import Background from "@/components/appearance/background";
 import Presets from "@/components/appearance/preset";
 
-const route = window.location.href.split("#")[1];
-
 export default function AppearancePage() {
   const { profile, isLoadingProfile, profileError } = useProfile();
   const { currentCard, isLoadingCard, cardError } = useCard();
   const isLoading = isLoadingProfile || isLoadingCard;
   const error = profileError || cardError;
-  const [current, setCurrent] = useState<string>(route ?? "profile");
+  const [current, setCurrent] = useState<string>("profile");
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const route = window.location.hash.slice(1);
+      if (route) setCurrent(route);
+    };
+    const t = window.setTimeout(onHashChange, 0);
+    window.addEventListener("hashchange", onHashChange);
+    return () => {
+      window.clearTimeout(t);
+      window.removeEventListener("hashchange", onHashChange);
+    };
+  }, []);
 
   if (isLoading) {
     return (

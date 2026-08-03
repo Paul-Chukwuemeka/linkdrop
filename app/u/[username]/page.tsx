@@ -9,8 +9,10 @@ import { fonts } from "@/lib/fonts";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
+import { DEFAULT_CARD_STYLE } from "@/lib/constants";
 
-async function getCard(username: string): Promise<Card> {
+const getCard = cache(async (username: string): Promise<Card> => {
   const user = await prisma.user.findFirst({
     where: { username: { equals: username, mode: "insensitive" } },
   });
@@ -41,8 +43,8 @@ async function getCard(username: string): Promise<Card> {
     items_list: itemsList as unknown as Card["items_list"],
     style: card.style as unknown as Card["style"],
     user: { id: user.id, username: user.username, fullname: user.fullname, bio: user.bio, avatar_url: user.avatarUrl },
-  };
-}
+  }
+});
 
 export async function generateMetadata({
   params,
@@ -56,7 +58,7 @@ export async function generateMetadata({
     const title = `${card.user?.fullname || username} | LinkForge`;
     const description = card.bio || `Links by @${username}`;
     
-    const ogImage = card.user?.avatar_url || "https://linkforge.example.com/og-image.jpg";
+    const ogImage = card.user?.avatar_url;
 
     return {
       title,
@@ -65,21 +67,27 @@ export async function generateMetadata({
         title,
         description,
         type: "profile",
-        images: [
-          {
-            url: ogImage,
-            width: 800,
-            height: 800,
-            alt: `${username}'s profile image`,
-          },
-        ],
+        ...(ogImage
+          ? {
+              images: [
+                {
+                  url: ogImage,
+                  width: 800,
+                  height: 800,
+                  alt: `${username}'s profile image`,
+                },
+              ],
+            }
+          : {}),
       },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description,
-        images: [ogImage],
-      },
+      twitter: ogImage
+        ? {
+            card: "summary_large_image",
+            title,
+            description,
+            images: [ogImage],
+          }
+        : { card: "summary", title, description },
     };
   } catch {
     return { title: "LinkForge" };
@@ -94,7 +102,7 @@ export default async function Page({
   const { username } = await params;
   const card = await getCard(username);
 
-  const cardStyle = card.style;
+  const cardStyle = { ...DEFAULT_CARD_STYLE, ...card.style } as Card["style"];
   const items = card.items_list || [];
 
   const gradientColors =
@@ -175,9 +183,9 @@ export default async function Page({
             )}
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-4 text-center">
             <div
-              className="mx-auto mb-6 h-px w-12 opacity-20"
+              className="mx-auto mb-6 h-px w-16 opacity-20"
               style={{ backgroundColor: `#${textColor}` }}
             />
             <Link

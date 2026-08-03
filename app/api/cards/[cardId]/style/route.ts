@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { cardStyleUpdateSchema } from "@/lib/validations/cards"
-import { unauthorizedResponse, notFoundResponse, errorResponse } from "@/lib/api-utils"
+import { unauthorizedResponse, notFoundResponse, errorResponse, readJsonBody, serverErrorResponse } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function PATCH(
   request: Request,
@@ -12,7 +13,8 @@ export async function PATCH(
     const user = await requireAuth()
 
     const { cardId } = await params
-    const body = await request.json()
+    const body = await readJsonBody(request)
+    if (body === null) return errorResponse("Invalid JSON body", 400)
     const parsed = cardStyleUpdateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.issues[0].message, 400)
@@ -38,7 +40,8 @@ export async function PATCH(
       collections: [],
     })
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Update card style error:", e)
+    return serverErrorResponse("Could not update card style")
   }
 }

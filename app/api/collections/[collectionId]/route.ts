@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { collectionUpdateSchema } from "@/lib/validations/collections"
-import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse } from "@/lib/api-utils"
+import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse, readJsonBody, serverErrorResponse, isP2002 } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function PATCH(
   request: Request,
@@ -12,7 +13,8 @@ export async function PATCH(
     const user = await requireAuth()
 
     const { collectionId } = await params
-    const body = await request.json()
+    const body = await readJsonBody(request)
+    if (body === null) return errorResponse("Invalid JSON body", 400)
     const parsed = collectionUpdateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.issues[0].message, 400)
@@ -50,14 +52,16 @@ export async function PATCH(
         })),
       })
     } catch (error: unknown) {
-      if (error && typeof error === "object" && "code" in error && error.code === "P2002") {
+      if (isP2002(error)) {
         return conflictResponse("Collection title already exists for this card")
       }
-      throw error
+      console.error("Update collection error:", error)
+      return serverErrorResponse("Could not update collection")
     }
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Update collection error:", e)
+    return serverErrorResponse("Could not update collection")
   }
 }
 
@@ -79,7 +83,8 @@ export async function DELETE(
 
     return new NextResponse(null, { status: 204 })
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Delete collection error:", e)
+    return serverErrorResponse("Could not delete collection")
   }
 }

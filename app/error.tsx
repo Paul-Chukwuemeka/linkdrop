@@ -18,7 +18,7 @@ export default function GlobalError({
       <div className="rounded-2xl border bg-white p-8 shadow-(--shadow-card) max-w-md">
         <h2 className="mb-4 text-2xl font-bold text-red-600">Something went wrong!</h2>
         <p className="mb-6 text-neutral-600">
-          We experienced an unexpected error. Don't worry, your data is safe.
+          We experienced an unexpected error. Don&apos;t worry, your data is safe.
         </p>
         <button
           onClick={() => reset()}

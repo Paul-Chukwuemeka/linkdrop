@@ -2,7 +2,8 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { linkCreateSchema } from "@/lib/validations/links"
-import { errorResponse, unauthorizedResponse, notFoundResponse } from "@/lib/api-utils"
+import { errorResponse, unauthorizedResponse, notFoundResponse, readJsonBody, serverErrorResponse } from "@/lib/api-utils"
+import { UnauthorizedError } from "@/lib/api-utils"
 import { getMaxPosition } from "@/lib/position-utils"
 
 export async function GET(request: Request) {
@@ -45,8 +46,9 @@ export async function GET(request: Request) {
       }))
     )
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("List links error:", e)
+    return serverErrorResponse("Could not list links")
   }
 }
 
@@ -54,7 +56,8 @@ export async function POST(request: Request) {
   try {
     const user = await requireAuth()
 
-    const body = await request.json()
+    const body = await readJsonBody(request)
+    if (body === null) return errorResponse("Invalid JSON body", 400)
     const parsed = linkCreateSchema.safeParse(body)
     if (!parsed.success) {
       return errorResponse(parsed.error.issues[0].message, 400)
@@ -98,7 +101,8 @@ export async function POST(request: Request) {
       { status: 201 }
     )
   } catch (e) {
-    if (e instanceof Error && e.message === "UNAUTHORIZED") return unauthorizedResponse()
-    throw e
+    if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    console.error("Create link error:", e)
+    return serverErrorResponse("Could not create link")
   }
 }

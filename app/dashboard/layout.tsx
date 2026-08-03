@@ -1,6 +1,6 @@
 "use client"
 import { NavBar, Sidebar } from "@/components/dashboard/Sidebar"
-import { Spinner } from "@/components/ui/Spinner"
+import { FullScreenLoader } from "@/components/ui/FullScreenLoader"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import React, { useEffect } from "react"
@@ -22,11 +22,7 @@ export default function DashboardLayout({
   }, [status, router])
 
   if (status === "loading") {
-    return (
-      <div className="flex min-h-dvh items-center justify-center bg-neutral-50 dark:bg-neutral-900">
-        <Spinner />
-      </div>
-    )
+    return <FullScreenLoader className="min-h-dvh w-full" />
   }
 
   if (!session) return null
