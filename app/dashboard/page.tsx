@@ -2,7 +2,7 @@
 import { useContext, useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { PenLine, ChevronDown, ChevronUp } from "lucide-react";
+import { PenLine, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
 import { ProfileHeaderBar } from "@/components/dashboard/ProfileHeaderBar";
@@ -186,10 +186,18 @@ export default function DashboardPage() {
                   <PenLine className="w-4 transition-transform group-hover:scale-110" />
                 </h2>
               )}
-              {isReordering && (
-                <span className="ml-2 shrink-0 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                  Saving order…
-                </span>
+              {(isLoadingCard || isReordering) && (
+                <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+                  <Loader2
+                    className="h-4 w-4 animate-spin text-neutral-500 dark:text-neutral-400"
+                    aria-label="Loading card"
+                  />
+                  {isReordering && (
+                    <span className="shrink-0 text-xs font-medium text-neutral-500 dark:text-neutral-400">
+                      Saving order…
+                    </span>
+                  )}
+                </div>
               )}
               {profile && currentCard?.id !== profile!.current_card && (
                 <button
