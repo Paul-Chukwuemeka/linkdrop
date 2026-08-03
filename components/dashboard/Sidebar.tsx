@@ -10,7 +10,7 @@ import { PiEyesLight, PiEyeBold } from "react-icons/pi"
 import { FaPaintbrush } from "react-icons/fa6"
 import { IoIdCardSharp } from "react-icons/io5"
 import { signOut } from "next-auth/react"
-import { Home } from "lucide-react"
+import { Home, Settings } from "lucide-react"
 import { ThemeToggle } from "./ThemeToggle"
 
 function PreviewToggle() {
@@ -92,6 +92,7 @@ export function Sidebar() {
         <NavItem href="/dashboard" label="Links" />
         <NavItem href="/dashboard/cards" label="Cards" />
         <NavItem href="/dashboard/appearance" label="Appearance" />
+        <NavItem href="/dashboard/settings" label="Settings" />
       </nav>
 
       <div className="mt-auto flex flex-col gap-2">
@@ -123,6 +124,7 @@ export function NavBar() {
   const isLinkActive = pathname === "/dashboard"
   const isCardsActive = pathname.toLowerCase().includes("cards")
   const isAppearanceActive = pathname.toLowerCase().includes("appearance")
+  const isSettingsActive = pathname.toLowerCase().includes("settings")
 
   return (
     <nav className="fixed md:hidden bottom-0 inset-x-0 z-50 bg-white/95 dark:bg-neutral-900/95 backdrop-blur-sm border-t border-neutral-200 dark:border-neutral-700 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)] safe-area-bottom">
@@ -162,6 +164,18 @@ export function NavBar() {
             aria-label="Appearance"
           >
             <FaPaintbrush className="text-xl" />
+          </Link>
+
+          <Link
+            href="/dashboard/settings"
+            className={`flex items-center justify-center w-11 h-11 rounded-xl transition-colors touch-manipulation ${
+              isSettingsActive
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+            }`}
+            aria-label="Settings"
+          >
+            <Settings className="text-xl" />
           </Link>
         </div>
 

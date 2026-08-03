@@ -9,6 +9,7 @@ interface ConfirmModalProps {
   destructive?: boolean;
   isPending?: boolean;
   pendingLabel?: string;
+  children?: React.ReactNode;
 }
 
 export const ConfirmModal = ({
@@ -20,6 +21,7 @@ export const ConfirmModal = ({
   destructive = true,
   isPending = false,
   pendingLabel = "Deleting…",
+  children,
 }: ConfirmModalProps) => {
   if (!isOpen) return null;
 
@@ -35,7 +37,9 @@ export const ConfirmModal = ({
         <h3 className="text-xl font-bold mb-2 text-black dark:text-white">{title}</h3>
         <p className="text-gray-600 dark:text-gray-400 mb-6">{message}</p>
 
-        <div className="flex gap-3 justify-end w-full">
+        {children}
+
+        <div className="flex gap-3 justify-end w-full mt-6">
           <button
             className="px-4 py-2 bg-gray-100 dark:bg-neutral-800 hover:bg-gray-200 dark:hover:bg-neutral-700 text-black dark:text-white font-semibold rounded-full transition-colors flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onClose}
@@ -51,8 +55,10 @@ export const ConfirmModal = ({
             }`}
             disabled={isPending}
             onClick={() => {
-              onConfirm();
-              onClose();
+              void (async () => {
+                await onConfirm();
+                onClose();
+              })();
             }}
           >
             {isPending ? (

@@ -15,12 +15,19 @@ export async function GET() {
         username: true,
         email: true,
         fullname: true,
+        password: true,
       },
     })
 
     if (!dbUser) return notFoundResponse("User not found")
 
-    return NextResponse.json(dbUser)
+    return NextResponse.json({
+      id: dbUser.id,
+      username: dbUser.username,
+      email: dbUser.email,
+      fullname: dbUser.fullname,
+      has_password: dbUser.password !== null,
+    })
   } catch (e) {
     if (e instanceof UnauthorizedError) return unauthorizedResponse()
     console.error("Auth me error:", e)
