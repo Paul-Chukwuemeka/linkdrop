@@ -25,6 +25,8 @@ type CardContextType = {
   setSelectedCollection: React.Dispatch<React.SetStateAction<string | null>>;
   isPreview: boolean;
   setIsPreview: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoadingReorder: boolean;
+  setIsLoadingReorder: React.Dispatch<React.SetStateAction<boolean>>;
   saveLink: (details: { url: string; title: string }) => Promise<void>;
   addCollection: (title: string) => Promise<void>;
   renameCard: (newName: string) => Promise<void>;
@@ -54,6 +56,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
   const [isCreatingCollection, setIsCreatingCollection] = useState(false);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
   const [isPreview, setIsPreview] = useState<boolean>(false);
+  const [isLoadingReorder, setIsLoadingReorder] = useState(false);
 
   // Serializes card loads: only the most recent request may update state, so
   // parallel loads (eager fetch, current_card, last_selected_card) can't race.
@@ -182,6 +185,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
   async function moveLink(linkId: string, collectionId: string | null) {
     if (!currentCard) return;
     const previousCard = currentCard;
+    setIsLoadingReorder(true);
 
     const findLink = () => {
       for (const item of currentCard.items_list) {
@@ -267,6 +271,8 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
       const msg = err instanceof ApiError ? err.message : "Failed to move link.";
       setCardError(msg);
       toast.error(msg);
+    } finally {
+      setIsLoadingReorder(false);
     }
   }
 
@@ -274,6 +280,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     if (!currentCard) return;
     const previousCard = currentCard;
     const items = orderedIds.map((id, index) => ({ id, position: index }));
+    setIsLoadingReorder(true);
 
     const nextItems: ItemFromList[] = currentCard.items_list.map((item) => {
       if (collectionId) {
@@ -304,6 +311,8 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
       const msg = err instanceof ApiError ? err.message : "Failed to save order.";
       setCardError(msg);
       toast.error(msg);
+    } finally {
+      setIsLoadingReorder(false);
     }
   }
 
@@ -327,6 +336,8 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         setSelectedCollection,
         isPreview,
         setIsPreview,
+        isLoadingReorder,
+        setIsLoadingReorder,
         saveLink,
         addCollection,
         renameCard,

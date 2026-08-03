@@ -37,6 +37,8 @@ export default function DashboardPage() {
     setCurrentCard,
     loadCard,
     isLoadingCard,
+    isLoadingReorder,
+    setIsLoadingReorder,
     isCreatingLink,
     isCreatingCollection,
     setIsCreatingCollection,
@@ -57,7 +59,6 @@ export default function DashboardPage() {
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [isSettingMain, setIsSettingMain] = useState(false);
-  const [isReordering, setIsReordering] = useState(false);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -92,7 +93,7 @@ export default function DashboardPage() {
         items_list: reordered,
       });
 
-      setIsReordering(true);
+      setIsLoadingReorder(true);
       try {
         await handleReorder(currentCard.id, reordered);
       } catch (err) {
@@ -100,7 +101,7 @@ export default function DashboardPage() {
         setError("Failed to save new order. Reverting...");
         setCurrentCard(previousCard);
       } finally {
-        setIsReordering(false);
+        setIsLoadingReorder(false);
       }
     }
   }
@@ -186,18 +187,11 @@ export default function DashboardPage() {
                   <PenLine className="w-4 transition-transform group-hover:scale-110" />
                 </h2>
               )}
-              {(isLoadingCard || isReordering) && (
-                <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-                  <Loader2
-                    className="h-4 w-4 animate-spin text-neutral-500 dark:text-neutral-400"
-                    aria-label="Loading card"
-                  />
-                  {isReordering && (
-                    <span className="shrink-0 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-                      Saving order…
-                    </span>
-                  )}
-                </div>
+              {(isLoadingCard || isLoadingReorder) && (
+                <Loader2
+                  className="h-4 w-4 animate-spin shrink-0 text-neutral-500 dark:text-neutral-400"
+                  aria-label="Loading card"
+                />
               )}
               {profile && currentCard?.id !== profile!.current_card && (
                 <button

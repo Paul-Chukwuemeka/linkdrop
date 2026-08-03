@@ -19,7 +19,7 @@ import {
   DragEndEvent,
 } from "@dnd-kit/core";
 import { Pencil, Plus, Trash2 } from "lucide-react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import { DraggableLink } from "../links/LinkRow";
@@ -32,7 +32,6 @@ export function CollectionBlock({ item }: { item: Collection }) {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeLinkId, setActiveLinkId] = useState<string | null>(null);
-  const [isReordering, setIsReordering] = useState(false);
   const sensors = useSensors(useSensor(PointerSensor));
   const {
     attributes,
@@ -84,8 +83,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
     const newIndex = links.findIndex((l) => l.id === over.id);
     if (oldIndex < 0 || newIndex < 0) return;
     const reordered = arrayMove(links, oldIndex, newIndex).map((l) => l.id);
-    setIsReordering(true);
-    reorderLinks(item.id, reordered).finally(() => setIsReordering(false));
+    reorderLinks(item.id, reordered);
   }
 
   const activeLink = activeLinkId
@@ -98,16 +96,11 @@ export function CollectionBlock({ item }: { item: Collection }) {
         style={style}
         ref={setNodeRef}
         className={[
-          "relative flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
+          "flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
         ]
           .filter(Boolean)
           .join(" ")}
       >
-        {isReordering && (
-          <span className="absolute top-2 right-14 text-xs font-medium text-neutral-500 dark:text-neutral-400">
-            Saving order…
-          </span>
-        )}
         <div className="flex gap-2 sm:gap-4 justify-between items-center">
           <button
             className="h-10 w-8 sm:w-10 cursor-grab text-sm text-gray-500 dark:text-gray-400 shrink-0 touch-manipulation"
