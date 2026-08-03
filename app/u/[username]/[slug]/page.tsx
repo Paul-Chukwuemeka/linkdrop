@@ -1,17 +1,17 @@
-import { getPublicCard } from "@/lib/public-card";
+import { getPublishedCard } from "@/lib/public-card";
 import { PublicCardView } from "@/components/profile/PublicCardView";
 import { Metadata } from "next";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ username: string }>;
+  params: Promise<{ username: string; slug: string }>;
 }): Promise<Metadata> {
-  const { username } = await params;
+  const { username, slug } = await params;
   try {
-    const card = await getPublicCard(username);
+    const card = await getPublishedCard(username, slug);
 
-    const title = `${card.user?.fullname || username} | LinkForge`;
+    const title = `${card.name} | LinkForge`;
     const description = card.bio || `Links by @${username}`;
 
     return {
@@ -36,10 +36,10 @@ export async function generateMetadata({
 export default async function Page({
   params,
 }: {
-  params: Promise<{ username: string }>;
+  params: Promise<{ username: string; slug: string }>;
 }) {
-  const { username } = await params;
-  const card = await getPublicCard(username);
+  const { username, slug } = await params;
+  const card = await getPublishedCard(username, slug);
 
   return <PublicCardView card={card} />;
 }

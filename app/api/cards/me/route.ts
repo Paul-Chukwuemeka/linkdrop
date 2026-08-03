@@ -16,6 +16,8 @@ export async function GET() {
         userId: true,
         name: true,
         bio: true,
+        slug: true,
+        isPublic: true,
         style: true,
       },
     })
@@ -26,6 +28,8 @@ export async function GET() {
         user_id: card.userId,
         name: card.name,
         bio: card.bio,
+        slug: card.slug,
+        is_public: card.isPublic,
         style: card.style,
         items_list: [],
       }))

@@ -38,6 +38,8 @@ export interface Card {
   id: UUID
   user_id: UUID
   name: string
+  slug?: string | null
+  is_public?: boolean
   links?: Link[]
   collections?: Collection[]
   items_list: ItemFromList[]
@@ -63,6 +65,8 @@ export interface CardCreate {
 
 export interface CardUpdate {
   name?: string | null
+  bio?: string | null
+  is_public?: boolean
 }
 
 export interface Collection {

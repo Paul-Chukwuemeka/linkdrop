@@ -30,6 +30,10 @@ type CardContextType = {
   saveLink: (details: { url: string; title: string }) => Promise<void>;
   addCollection: (title: string) => Promise<void>;
   renameCard: (newName: string) => Promise<void>;
+  updateCardMeta: (meta: {
+    bio?: string | null;
+    is_public?: boolean;
+  }) => Promise<void>;
   moveLink: (linkId: string, collectionId: string | null) => Promise<void>;
   reorderLinks: (collectionId: string | null, orderedIds: string[]) => Promise<void>;
 };
@@ -154,6 +158,48 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsSavingCollection(false);
       setSelectedCollection(null);
+    }
+  }
+
+  async function updateCardMeta(meta: {
+    bio?: string | null;
+    is_public?: boolean;
+  }) {
+    if (!currentCard) return;
+    const previousCard = currentCard;
+
+    const nextCard: Card = {
+      ...currentCard,
+      bio:
+        meta.bio !== undefined
+          ? meta.bio?.trim() || null
+          : currentCard.bio,
+      is_public:
+        meta.is_public !== undefined
+          ? meta.is_public
+          : currentCard.is_public,
+    };
+
+    setCurrentCard(nextCard);
+    setCardError(null);
+
+    try {
+      const updated = await apiFetch<Card>(`/api/cards/${currentCard.id}`, {
+        method: "PATCH",
+        json: {
+          ...(meta.bio !== undefined ? { bio: meta.bio?.trim() || null } : {}),
+          ...(meta.is_public !== undefined
+            ? { is_public: meta.is_public }
+            : {}),
+        },
+      });
+      setCurrentCard((prev) => (prev ? { ...prev, ...updated } : prev));
+      toast.success(meta.is_public ? "Card published!" : "Card updated!");
+    } catch (err) {
+      setCurrentCard(previousCard);
+      const msg = err instanceof ApiError ? err.message : "Failed to update card.";
+      setCardError(msg);
+      toast.error(msg);
     }
   }
 
@@ -341,6 +387,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         saveLink,
         addCollection,
         renameCard,
+        updateCardMeta,
         moveLink,
         reorderLinks,
       }}

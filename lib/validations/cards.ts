@@ -10,6 +10,8 @@ export const cardCreateSchema = z.object({
 
 export const cardUpdateSchema = z.object({
   name: z.string().max(100).optional(),
+  bio: z.string().max(500).nullable().optional(),
+  is_public: z.boolean().optional(),
 })
 
 const color = z.string().regex(/^[a-fA-F0-9]{6}$/, "must be a 6-digit hex color")

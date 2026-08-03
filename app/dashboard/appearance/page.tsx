@@ -8,6 +8,7 @@ import { useProfile } from "@/context/ProfileContext";
 import { useCard } from "@/context/CardContext";
 import Link from "next/link";
 import Profile from "@/components/appearance/profile";
+import { CardBioAndPublish } from "@/components/appearance/CardBioAndPublish";
 import Text from "@/components/appearance/Text";
 import Buttons from "@/components/appearance/buttons";
 import Background from "@/components/appearance/background";
@@ -92,7 +93,12 @@ export default function AppearancePage() {
         <div className="overflow-auto rounded-xl bg-white dark:bg-neutral-900 flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
           <div className="w-full max-w-200 text-xs sm:text-sm md:text-base flex flex-col gap-3 md:gap-4">
             <Links setCurrent={setCurrent} current={current} />
-            {current === "profile" && <Profile />}
+            {current === "profile" && (
+              <>
+                <Profile />
+                <CardBioAndPublish />
+              </>
+            )}
             {current === "text" && <Text />}
             {current === "buttons" && <Buttons />}
             {current === "background" && <Background />}

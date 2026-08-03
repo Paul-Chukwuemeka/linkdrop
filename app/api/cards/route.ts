@@ -4,6 +4,7 @@ import { requireAuth } from "@/lib/auth-helpers"
 import { cardCreateSchema } from "@/lib/validations/cards"
 import { unauthorizedResponse, errorResponse, serverErrorResponse } from "@/lib/api-utils"
 import { DEFAULT_CARD_STYLE } from "@/lib/constants"
+import { getUniqueCardSlug } from "@/lib/slug"
 import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function POST(request: Request) {
@@ -23,11 +24,13 @@ export async function POST(request: Request) {
     }
 
     const name = parsed.data.name?.trim() || "Untitled"
+    const slug = await getUniqueCardSlug(user.id, name)
 
     const card = await prisma.card.create({
       data: {
         userId: user.id,
         name,
+        slug,
         style: DEFAULT_CARD_STYLE,
       },
     })
@@ -38,6 +41,8 @@ export async function POST(request: Request) {
         user_id: card.userId,
         name: card.name,
         bio: card.bio,
+        slug: card.slug,
+        is_public: card.isPublic,
         style: card.style,
         links: [],
         collections: [],

@@ -76,6 +76,8 @@ model Card {
   id        String   @id @default(uuid()) @db.Uuid
   name      String   @default("Untitled")
   bio       String?
+  slug      String?  @map("slug")
+  isPublic  Boolean  @default(false) @map("is_public")
   userId    String   @map("user_id") @db.Uuid
   style     Json     @default("{}")
   createdAt DateTime @default(now()) @map("created_at")
@@ -85,6 +87,7 @@ model Card {
   links       Link[]
   collections Collection[]
 
+  @@unique([userId, slug])
   @@index([userId])
   @@map("cards")
 }

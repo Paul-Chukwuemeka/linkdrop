@@ -11,6 +11,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { username: true, updatedAt: true },
   });
 
+  const publishedCards = await prisma.card.findMany({
+    where: { isPublic: true },
+    select: {
+      slug: true,
+      updatedAt: true,
+      user: { select: { username: true } },
+    },
+  });
+
   return [
     {
       url: baseUrl,
@@ -21,6 +30,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...users.map((user) => ({
       url: `${baseUrl}/u/${user.username}`,
       lastModified: user.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+    ...publishedCards.map((card) => ({
+      url: `${baseUrl}/u/${card.user.username}/${card.slug}`,
+      lastModified: card.updatedAt,
       changeFrequency: "weekly" as const,
       priority: 0.8,
     })),

@@ -3,7 +3,8 @@ import { prisma } from "@/lib/db"
 import { requireAuth } from "@/lib/auth-helpers"
 import { buildCardItemsList } from "@/lib/card-utils"
 import { cardUpdateSchema } from "@/lib/validations/cards"
-import { errorResponse, unauthorizedResponse, notFoundResponse, readJsonBody, serverErrorResponse } from "@/lib/api-utils"
+import { getUniqueCardSlug } from "@/lib/slug"
+import { errorResponse, unauthorizedResponse, notFoundResponse, conflictResponse, readJsonBody, serverErrorResponse, isP2002 } from "@/lib/api-utils"
 import { UnauthorizedError } from "@/lib/api-utils"
 
 export async function GET(
@@ -27,6 +28,8 @@ export async function GET(
       user_id: card.userId,
       name: card.name,
       bio: card.bio,
+      slug: card.slug,
+      is_public: card.isPublic,
       items_list: itemsList,
       style: card.style,
       user: card.user
@@ -65,14 +68,39 @@ export async function PATCH(
     })
     if (!card) return notFoundResponse("Card not found")
 
+    const data: {
+      name?: string
+      bio?: string | null
+      isPublic?: boolean
+      slug?: string
+    } = {}
+
     if (parsed.data.name !== undefined) {
       const name = parsed.data.name.trim()
       if (!name) return errorResponse("Card name cannot be empty", 422)
+      data.name = name
+      // Only re-derive the slug from the name while the card is unpublished;
+      // once published the URL is stable and renames must not break it.
+      if (!card.isPublic) {
+        data.slug = await getUniqueCardSlug(user.id, name, card.id)
+      }
+    }
+
+    if (parsed.data.bio !== undefined) {
+      data.bio = parsed.data.bio?.trim() || null
+    }
+
+    if (parsed.data.is_public !== undefined) {
+      data.isPublic = parsed.data.is_public
+      // First publish: assign a slug if the card has none yet.
+      if (data.isPublic && !card.slug) {
+        data.slug = await getUniqueCardSlug(user.id, card.name, card.id)
+      }
     }
 
     const updated = await prisma.card.update({
       where: { id: cardId },
-      data: parsed.data.name !== undefined ? { name: parsed.data.name.trim() } : {},
+      data,
     })
 
     return NextResponse.json({
@@ -80,12 +108,15 @@ export async function PATCH(
       user_id: updated.userId,
       name: updated.name,
       bio: updated.bio,
+      slug: updated.slug,
+      is_public: updated.isPublic,
       style: updated.style,
       links: [],
       collections: [],
     })
   } catch (e) {
     if (e instanceof UnauthorizedError) return unauthorizedResponse()
+    if (isP2002(e)) return conflictResponse("A card with this slug already exists")
     console.error("Update card error:", e)
     return serverErrorResponse("Could not update card")
   }
