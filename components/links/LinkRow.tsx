@@ -53,10 +53,10 @@ export function DraggableLink({
     }
   }
   async function executeMoveLink(targetId: string | null) {
+    setMenuOpen(false);
     setIsMoving(true);
     try {
       await moveLink(item.id, targetId);
-      setMenuOpen(false);
     } finally {
       setIsMoving(false);
     }

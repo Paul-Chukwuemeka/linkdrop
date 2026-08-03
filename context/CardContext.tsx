@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
-import { Card } from "@/lib/types";
+import { Card, ItemFromList } from "@/lib/types";
 import { apiFetch, ApiError } from "@/lib/api";
 import { useProfile } from "./ProfileContext";
 import toast from "react-hot-toast";
@@ -181,15 +181,89 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
 
   async function moveLink(linkId: string, collectionId: string | null) {
     if (!currentCard) return;
+    const previousCard = currentCard;
+
+    const findLink = () => {
+      for (const item of currentCard.items_list) {
+        if (item.type === "link" && item.content.id === linkId) {
+          return item.content;
+        }
+        if (item.type === "collection") {
+          const link = item.content.links.find((l) => l.id === linkId);
+          if (link) return link;
+        }
+      }
+      return undefined;
+    };
+
+    const link = findLink();
+    if (!link) return;
+
+    const scopeMaxPosition = (): number => {
+      if (collectionId) {
+        const target = currentCard.items_list.find(
+          (i): i is Extract<ItemFromList, { type: "collection" }> =>
+            i.type === "collection" && i.content.id === collectionId,
+        );
+        const positions = target?.content.links.map((l) => l.position) ?? [];
+        return positions.length ? Math.max(...positions) + 1 : 0;
+      }
+      const positions: number[] = [];
+      for (const item of currentCard.items_list) {
+        positions.push(item.type === "link" ? item.content.position : item.position);
+      }
+      return positions.length ? Math.max(...positions) + 1 : 0;
+    };
+
+    const targetPosition = scopeMaxPosition();
+
+    const nextItems: ItemFromList[] = currentCard.items_list.flatMap(
+      (item): ItemFromList[] => {
+        if (item.type === "link") {
+          return item.content.id === linkId ? [] : [item];
+        }
+        const links = item.content.links.filter((l) => l.id !== linkId);
+        return [{ ...item, content: { ...item.content, links } }];
+      },
+    );
+
+    if (collectionId) {
+      const targetIndex = nextItems.findIndex(
+        (i): i is Extract<ItemFromList, { type: "collection" }> =>
+          i.type === "collection" && i.content.id === collectionId,
+      );
+      if (targetIndex >= 0) {
+        const target = nextItems[targetIndex] as Extract<ItemFromList, { type: "collection" }>;
+        nextItems[targetIndex] = {
+          ...target,
+          content: {
+            ...target.content,
+            links: [
+              ...target.content.links,
+              { ...link, collection_id: collectionId, position: targetPosition },
+            ],
+          },
+        };
+      }
+    } else {
+      nextItems.push({
+        type: "link",
+        position: targetPosition,
+        content: { ...link, collection_id: null, position: targetPosition },
+      });
+    }
+
+    setCurrentCard({ ...currentCard, items_list: nextItems });
+    setCardError(null);
+
     try {
       await apiFetch(`/api/links/${linkId}`, {
         method: "PATCH",
         json: { collection_id: collectionId },
       });
-      await loadCard(currentCard.id);
       toast.success("Link moved!");
-      setCardError(null);
     } catch (err) {
+      setCurrentCard(previousCard);
       const msg = err instanceof ApiError ? err.message : "Failed to move link.";
       setCardError(msg);
       toast.error(msg);
@@ -198,17 +272,35 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
 
   async function reorderLinks(collectionId: string | null, orderedIds: string[]) {
     if (!currentCard) return;
+    const previousCard = currentCard;
+    const items = orderedIds.map((id, index) => ({ id, position: index }));
+
+    const nextItems: ItemFromList[] = currentCard.items_list.map((item) => {
+      if (collectionId) {
+        if (item.type !== "collection" || item.content.id !== collectionId) return item;
+        const positionMap = new Map(items.map((x) => [x.id, x.position]));
+        const links = item.content.links
+          .filter((l) => positionMap.has(l.id))
+          .map((l) => ({ ...l, position: positionMap.get(l.id)! }))
+          .sort((a, b) => a.position - b.position);
+        return { ...item, content: { ...item.content, links } };
+      }
+      if (item.type !== "link") return item;
+      const positionMap = new Map(items.map((x) => [x.id, x.position]));
+      if (!positionMap.has(item.content.id)) return item;
+      return { ...item, position: positionMap.get(item.content.id)! };
+    });
+
+    setCurrentCard({ ...currentCard, items_list: nextItems });
+    setCardError(null);
+
     try {
       await apiFetch(`/api/cards/${currentCard.id}/links/reorder`, {
         method: "PATCH",
-        json: {
-          collection_id: collectionId,
-          items: orderedIds.map((id, index) => ({ id, position: index })),
-        },
+        json: { collection_id: collectionId, items },
       });
-      await loadCard(currentCard.id);
-      setCardError(null);
     } catch (err) {
+      setCurrentCard(previousCard);
       const msg = err instanceof ApiError ? err.message : "Failed to save order.";
       setCardError(msg);
       toast.error(msg);
