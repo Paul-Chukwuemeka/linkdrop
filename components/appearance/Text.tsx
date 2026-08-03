@@ -1,6 +1,5 @@
 import ColorPicker from "../ui/colorPicker";
 import Fontpicker from "../ui/Fontpicker";
-import { useContext } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { ButtonLoader } from "../ui/ButtonLoader";

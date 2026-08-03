@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { PublictitleSizeClasses, PublictextSizeClasses } from "@/lib/style-mappings";
 
 interface PublicProfileHeaderProps {
@@ -42,9 +43,11 @@ export function PublicProfileHeader({
       <div className="relative">
         <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-lg bg-white/20">
           {avatarUrl && !imgError ? (
-            <img
+            <Image
               src={avatarUrl}
               alt={fullname}
+              width={96}
+              height={96}
               className="h-full w-full object-cover"
               onError={() => setImgError(true)}
             />

@@ -30,9 +30,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   const [isSavingStyle, setIsSavingStyle] = useState(false);
 
   useEffect(() => {
-    if (currentCard) {
-      setCardStyle(currentCard.style);
-    }
+    setCardStyle(currentCard?.style ?? null);
   }, [currentCard?.id, currentCard?.style]);
 
   function updateCardStyle(updates: Partial<CardTheme>) {
@@ -48,7 +46,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
         json: { style: cardStyle },
       });
       toast.success("Card style saved!");
-    } catch (error) {
+    } catch {
       setCardError("Failed to save style");
       toast.error("Failed to save style");
     } finally {

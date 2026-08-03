@@ -1,6 +1,5 @@
 "use client";
 
-import { useContext } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "@/components/ui/Button";
 import { CardTheme } from "@/lib/types";

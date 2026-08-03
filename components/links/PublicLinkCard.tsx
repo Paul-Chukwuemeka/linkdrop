@@ -56,9 +56,9 @@ function getShadowStyle(cardStyle: CardTheme): React.CSSProperties {
   const shadowKey = cardStyle.shadow ?? "hard";
   const shadowColor = cardStyle.shadow_color || cardStyle.button_color;
   const styles = getShadowStyles(shadowColor);
-  const { border, ...rest } = styles[shadowKey];
   if (cardStyle.button_type === "outline") {
-    return rest;
+    const { boxShadow } = styles[shadowKey];
+    return { boxShadow };
   }
   return styles[shadowKey];
 }

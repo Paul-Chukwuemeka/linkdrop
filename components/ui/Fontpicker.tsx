@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import { fonts } from "@/lib/fonts";
 import { FontType } from "@/lib/types";

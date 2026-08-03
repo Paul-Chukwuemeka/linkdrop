@@ -12,13 +12,6 @@ declare module "next-auth" {
 
 export type UUID = string
 
-export interface UserAuth {
-  id: UUID
-  username: string
-  email: string
-  fullname: string
-}
-
 export interface UserProfilePublic {
   id: UUID
   username: string
@@ -57,10 +50,6 @@ export interface PublicCardUser {
   fullname: string | null
   id: string | null
   username: string | null
-}
-
-export interface CardCreate {
-  name?: string | null
 }
 
 export interface CardUpdate {
@@ -110,40 +99,6 @@ export interface LinkUpdate {
   title?: string | null
   url?: string | null
   collection_id?: UUID | null
-}
-
-export type CardItem =
-  | {
-      type: "link"
-      position: number
-      link: Link
-      collection?: null
-    }
-  | {
-      type: "collection"
-      position: number
-      collection: Collection
-      link?: null
-    }
-
-export interface CardItemReorderItem {
-  type: "link" | "collection"
-  id: UUID
-  position: number
-}
-
-export interface CardItemReorderRequest {
-  items: CardItemReorderItem[]
-}
-
-export interface CollectionLinksReorderItem {
-  id: UUID
-  position: number
-}
-
-export interface CollectionLinksReorderRequest {
-  collection_id: UUID | null
-  items: CollectionLinksReorderItem[]
 }
 
 export interface CardTheme {

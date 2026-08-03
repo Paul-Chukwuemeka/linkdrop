@@ -3,7 +3,7 @@
 import ColorPicker from "../ui/colorPicker";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { CiImageOn } from "react-icons/ci";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { ButtonLoader } from "../ui/ButtonLoader";
@@ -54,7 +54,7 @@ const Background = () => {
     return {
       background: `linear-gradient(${angle}deg, ${colors})`,
     };
-  }, [bg_type, gradient_type, gradient_direction, gradientColors]);
+  }, [gradient_type, gradient_direction, gradientColors]);
 
   const gradientStyle = gradientPreviewStyle;
 

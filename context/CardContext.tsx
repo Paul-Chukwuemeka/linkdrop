@@ -72,7 +72,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     try {
       const data = await apiFetch<Card | null>(`/api/cards/${id}/list`);
       if (requestId === loadRequestIdRef.current && data) setCurrentCard(data);
-    } catch (error) {
+    } catch {
       if (requestId === loadRequestIdRef.current) {
         setCardError("Failed to load card");
       }
@@ -109,7 +109,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
     if (preferredCardId && preferredCardId !== currentCard?.id) {
       loadCard(preferredCardId);
     }
-  }, [profile?.last_selected_card, profile?.current_card, loadCard]);
+  }, [profile, profile?.last_selected_card, profile?.current_card, currentCard?.id, loadCard]);
 
   async function saveLink(details: { url: string; title: string }) {
     const { url, title } = details;

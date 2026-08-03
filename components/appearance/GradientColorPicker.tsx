@@ -1,6 +1,5 @@
 "use client";
 
-import { useContext } from "react";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { MAX_GRADIENT_COLORS } from "@/lib/validations/cards";
 

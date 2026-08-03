@@ -4,7 +4,7 @@ import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Collection } from "@/lib/types";
 import { Folder, X } from "lucide-react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";

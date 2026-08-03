@@ -1,6 +1,5 @@
 import { useStyle } from "@/context/StyleContext";
 import { CardTheme } from "@/lib/types";
-import { useContext, useState } from "react";
 
 const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
   const { cardStyle, updateCardStyle } = useStyle();

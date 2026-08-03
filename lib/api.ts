@@ -13,7 +13,6 @@ export class ApiError extends Error {
 type ApiFetchOptions = Omit<RequestInit, "headers"> & {
   headers?: HeadersInit
   json?: unknown
-  skipAuth?: boolean
 }
 
 async function readErrorPayload(res: Response): Promise<{ message: string; details?: unknown }> {
@@ -45,7 +44,7 @@ async function readErrorPayload(res: Response): Promise<{ message: string; detai
 }
 
 export async function apiFetch<T>(path: string, options: ApiFetchOptions = {}): Promise<T> {
-  const { json, skipAuth: _, headers, ...rest } = options
+  const { json, headers, ...rest } = options
 
   const finalHeaders = new Headers(headers)
   finalHeaders.set("Accept", "application/json")

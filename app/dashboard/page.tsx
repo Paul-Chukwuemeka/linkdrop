@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
 import { PenLine, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
@@ -119,7 +119,7 @@ export default function DashboardPage() {
       });
       setProfile((prev) => prev ? { ...prev, current_card: id } : prev);
       loadCard(id);
-    } catch (error) {
+    } catch {
       setError("Failed to update current card");
     } finally {
       setIsSettingMain(false);
