@@ -21,6 +21,7 @@ export async function GET(
       user_id: user.id,
       name: "Untitled",
       items_list: [],
+      bio: user.bio,
       style: {},
       user: {
         id: user.id,
@@ -45,7 +46,7 @@ export async function GET(
       id: card.id,
       user_id: card.userId,
       name: card.name,
-      bio: card.bio,
+      bio: card.bio ?? user.bio,
       items_list: itemsList,
       style: card.style,
       user: {
