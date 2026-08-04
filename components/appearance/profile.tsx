@@ -16,6 +16,8 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
+  const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [urlInput, setUrlInput] = useState(profile?.avatar_url || "");
   const [imgError, setImgError] = useState(false);
   const [savedUsername, setSavedUsername] = useState<string | null>(null);
@@ -27,6 +29,16 @@ const Profile = () => {
   useEffect(() => {
     if (profile && savedUsername === null) setSavedUsername(profile.username);
   }, [profile, savedUsername]);
+
+  useEffect(() => {
+    if (!avatarBlob) {
+      setAvatarPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(avatarBlob);
+    setAvatarPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [avatarBlob]);
 
   const getAvatarUrl = (url: string | null | undefined) => {
     if (!url) return "/user.svg";
@@ -42,8 +54,8 @@ const Profile = () => {
     setCropFile(file);
   }
 
-  function handleCropComplete(updated: UserProfileMe) {
-    setProfile(updated);
+  function handleCropComplete(blob: Blob) {
+    setAvatarBlob(blob);
     setCropFile(null);
     if (fileInputRef.current) fileInputRef.current.value = "";
   }
@@ -58,13 +70,27 @@ const Profile = () => {
     setError(null);
     setIsSaving(true);
     try {
+      let avatarUrl: string | null = urlInput || null;
+
+      if (avatarBlob) {
+        const formData = new FormData();
+        formData.append("file", avatarBlob, "avatar.png");
+        const uploaded = await apiFetch<UserProfileMe>(
+          "/api/profile/upload-avatar",
+          { method: "POST", body: formData },
+        );
+        avatarUrl = uploaded.avatar_url;
+        setUrlInput(uploaded.avatar_url || "");
+        setAvatarBlob(null);
+      }
+
       // Only send username when it actually changed. Always sending it breaks
       // legacy OAuth users with short (< 3 char) usernames, because the schema
       // rejects them and the profile could never be saved again.
       const payload: Record<string, unknown> = {
         fullname: profile.fullname,
         bio: profile.bio,
-        avatar_url: urlInput || null,
+        avatar_url: avatarUrl,
       };
       if (savedUsername !== null && profile.username !== savedUsername) {
         payload.username = profile.username;
@@ -89,7 +115,12 @@ const Profile = () => {
       <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700">
         <div className="relative w-25 h-25 group">
           <div className="w-25 h-25 sm:w-full sm:h-full rounded-full overflow-hidden border-4 border-white dark:border-neutral-900 shadow-md bg-white dark:bg-neutral-700">
-            {profile?.avatar_url && !imgError ? (
+            {avatarPreview ? (
+              <div
+                className="h-full w-full rounded-full bg-cover bg-center ring-2 ring-(--accent)"
+                style={{ backgroundImage: `url(${avatarPreview})` }}
+              />
+            ) : profile?.avatar_url && !imgError ? (
               <Image
                 src={getAvatarUrl(profile?.avatar_url)}
                 alt={profile?.fullname || "Avatar"}
@@ -117,11 +148,15 @@ const Profile = () => {
               <Upload className="w-4 h-4" />
               Upload Photo
             </Button>
-            {profile?.avatar_url && (
+            {(profile?.avatar_url || avatarPreview) && (
               <Button 
                 variant="ghost" 
                 className="text-red-600 hover:text-red-700 hover:bg-red-50"
                 onClick={() => {
+                  if (avatarPreview) {
+                    setAvatarBlob(null);
+                    return;
+                  }
                   setProfile(p => p ? { ...p, avatar_url: null } : p);
                   setUrlInput("");
                 }}
@@ -133,6 +168,11 @@ const Profile = () => {
           <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center sm:text-left">
             JPG, PNG, GIF or WebP. Max size 5MB.
           </p>
+          {avatarPreview && (
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center sm:text-left">
+              New photo selected — uploads when you click Save changes.
+            </p>
+          )}
           <input 
             type="file" 
             ref={fileInputRef} 

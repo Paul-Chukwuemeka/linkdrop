@@ -3,7 +3,7 @@
 import ColorPicker from "../ui/colorPicker";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { CiImageOn } from "react-icons/ci";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
@@ -31,29 +31,53 @@ const Background = () => {
   const { bg_type, gradient_type, gradient_direction, gradient, card_bg } =
     cardStyle ?? {};
   const [imageUrl, setImageUrl] = useState("");
-  const [isUploading, setIsUploading] = useState(false);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [pendingPreview, setPendingPreview] = useState<string | null>(null);
+  const [isPublishingBg, setIsPublishingBg] = useState(false);
 
-  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    if (!pendingFile) {
+      setPendingPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(pendingFile);
+    setPendingPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [pendingFile]);
+
+  function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
-    if (!file || !currentCard) return;
-    setIsUploading(true);
+    if (!file) return;
+    setPendingFile(file);
+  }
+
+  async function uploadPendingImage(): Promise<string | null> {
+    if (!pendingFile || !currentCard) return null;
+    setIsPublishingBg(true);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", pendingFile);
       const res = await apiFetch<{ url: string }>(
         `/api/cards/${currentCard.id}/background`,
         { method: "POST", body: formData },
       );
-      updateCardStyle({ bg_type: "image", profile_image: res.url });
-      toast.success("Background image set");
+      setPendingFile(null);
+      return res.url;
     } catch (err) {
       toast.error(
         err instanceof ApiError ? err.message : "Failed to upload image",
       );
+      return null;
     } finally {
-      setIsUploading(false);
+      setIsPublishingBg(false);
     }
+  }
+
+  async function handleSave() {
+    const url = await uploadPendingImage();
+    if (url) updateCardStyle({ bg_type: "image", profile_image: url });
+    await updateStyle();
   }
 
   function handleApplyUrl() {
@@ -251,7 +275,18 @@ const Background = () => {
               Upload an image or paste an image URL. It applies to this card only.
             </p>
 
-            {cardStyle?.profile_image && (
+            {pendingPreview && (
+              <div className="mb-4">
+                <div
+                  className="aspect-video w-full rounded-lg ring-2 ring-(--accent) bg-cover bg-center"
+                  style={{ backgroundImage: `url(${pendingPreview})` }}
+                />
+                <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                  New image selected — uploads when you click Save changes.
+                </p>
+              </div>
+            )}
+            {!pendingPreview && cardStyle?.profile_image && (
               <div
                 className="mb-4 aspect-video w-full rounded-lg ring-1 ring-black/10 bg-cover bg-center"
                 style={{ backgroundImage: `url(${cardStyle.profile_image})` }}
@@ -265,10 +300,10 @@ const Background = () => {
                   accept="image/jpeg,image/png,image/gif,image/webp"
                   className="hidden"
                   onChange={handleUpload}
-                  disabled={isUploading}
+                  disabled={isPublishingBg}
                 />
                 <span className="flex items-center justify-center w-full rounded-lg border border-dashed border-neutral-300 dark:border-neutral-600 px-4 py-3 text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                  {isUploading ? "Uploading…" : "Upload image"}
+                  {pendingFile ? "Change image" : "Upload image"}
                 </span>
               </label>
 
@@ -290,10 +325,16 @@ const Background = () => {
                 </button>
               </div>
 
-              {cardStyle?.profile_image && (
+              {(pendingPreview || cardStyle?.profile_image) && (
                 <button
                   type="button"
-                  onClick={() => updateCardStyle({ profile_image: null })}
+                  onClick={() => {
+                    if (pendingFile) {
+                      setPendingFile(null);
+                      return;
+                    }
+                    updateCardStyle({ profile_image: null });
+                  }}
                   className="self-start text-sm font-semibold text-red-600 hover:underline"
                 >
                   Remove image
@@ -304,8 +345,18 @@ const Background = () => {
         </div>
       )}
 
-      <Button className="w-full sm:w-40 mt-2" onClick={updateStyle} disabled={isSaving}>
-        {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save changes"}
+      <Button
+        className="w-full sm:w-40 mt-2"
+        onClick={handleSave}
+        disabled={isSaving || isPublishingBg}
+      >
+        {isSaving ? (
+          <ButtonLoader label="Saving…" onDark />
+        ) : isPublishingBg ? (
+          <ButtonLoader label="Uploading…" onDark />
+        ) : (
+          "Save changes"
+        )}
       </Button>
     </div>
   );

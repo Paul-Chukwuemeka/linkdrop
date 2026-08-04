@@ -5,12 +5,10 @@ import Cropper, { type Area } from "react-easy-crop";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
-import { apiFetch, ApiError } from "@/lib/api";
-import type { UserProfileMe } from "@/lib/types";
 
 interface AvatarCropModalProps {
   file: File | null;
-  onComplete: (profile: UserProfileMe) => void;
+  onComplete: (blob: Blob) => void;
   onCancel: () => void;
 }
 
@@ -58,7 +56,7 @@ export function AvatarCropModal({
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
+  const [isCropping, setIsCropping] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Read file on mount
@@ -78,23 +76,15 @@ export function AvatarCropModal({
 
   async function handleSave() {
     if (!imageSrc || !croppedAreaPixels) return;
-    setIsUploading(true);
+    setIsCropping(true);
     setError(null);
     try {
       const blob = await getCroppedImg(imageSrc, croppedAreaPixels);
-      const formData = new FormData();
-      formData.append("file", blob, "avatar.png");
-
-      const updated = await apiFetch<UserProfileMe>(
-        "/api/profile/upload-avatar",
-        { method: "POST", body: formData }
-      );
-      onComplete(updated);
+      onComplete(blob);
     } catch (err) {
-      if (err instanceof ApiError) setError(err.message);
-      else setError("Failed to upload image.");
+      setError(err instanceof Error ? err.message : "Failed to crop image.");
     } finally {
-      setIsUploading(false);
+      setIsCropping(false);
     }
   }
 
@@ -120,7 +110,7 @@ export function AvatarCropModal({
               onCropComplete={onCropComplete}
             />
           )}
-          {isUploading && (
+          {isCropping && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30">
               <Spinner />
             </div>
@@ -146,7 +136,7 @@ export function AvatarCropModal({
           <Button
             variant="ghost"
             onClick={onCancel}
-            disabled={isUploading}
+            disabled={isCropping}
             className="flex-1"
           >
             Cancel
@@ -154,10 +144,10 @@ export function AvatarCropModal({
           <Button
             variant="primary"
             onClick={handleSave}
-            disabled={isUploading || !imageSrc}
+            disabled={isCropping || !imageSrc}
             className="flex-1"
           >
-            {isUploading ? <ButtonLoader label="Uploading…" onDark /> : "Save"}
+            {isCropping ? <ButtonLoader label="Cropping…" onDark /> : "Save"}
           </Button>
         </div>
       </div>

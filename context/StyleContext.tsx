@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import { CardTheme } from "@/lib/types";
 import { apiFetch } from "@/lib/api";
 import { useCard } from "./CardContext";
@@ -29,13 +29,21 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   const [cardStyle, setCardStyle] = useState<CardTheme | null>(null);
   const [isSavingStyle, setIsSavingStyle] = useState(false);
 
+  // Authoritative copy of the style that is always current, even within a
+  // single tick. updateStyle reads this so a value (e.g. an uploaded
+  // background image URL) set just before saving is included in the request.
+  const cardStyleRef = useRef<CardTheme | null>(null);
+
   useEffect(() => {
+    cardStyleRef.current = currentCard?.style ?? null;
     setCardStyle(currentCard?.style ?? null);
   }, [currentCard?.id, currentCard?.style]);
 
   function updateCardStyle(updates: Partial<CardTheme>) {
-    if (!cardStyle) return;
-    setCardStyle({ ...cardStyle, ...updates } as CardTheme);
+    if (!cardStyleRef.current) return;
+    const next = { ...cardStyleRef.current, ...updates } as CardTheme;
+    cardStyleRef.current = next;
+    setCardStyle(next);
   }
 
   async function updateStyle() {
@@ -43,7 +51,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
     try {
       await apiFetch(`/api/cards/${currentCard?.id}/style`, {
         method: "PATCH",
-        json: { style: cardStyle },
+        json: { style: cardStyleRef.current },
       });
       toast.success("Card style saved!");
     } catch {
