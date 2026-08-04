@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { BIO_MAX_LENGTH } from "@/lib/validations/cards"
 
 export const profileUpdateSchema = z.object({
   username: z
@@ -17,7 +18,7 @@ export const profileUpdateSchema = z.object({
     .optional(),
   bio: z
     .string()
-    .max(500, "Bio must be at most 500 characters")
+    .max(BIO_MAX_LENGTH, `Bio must be at most ${BIO_MAX_LENGTH} characters`)
     .nullable()
     .optional(),
   avatar_url: z

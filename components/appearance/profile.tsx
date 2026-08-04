@@ -10,6 +10,7 @@ import { ButtonLoader } from "../ui/ButtonLoader";
 import Image from "next/image";
 import { Upload } from "lucide-react";
 import { AvatarCropModal } from "@/components/ui/AvatarCropModal";
+import { BIO_MAX_LENGTH } from "@/lib/validations/cards";
 
 const Profile = () => {
   const { profile, setProfile, setProfileError: setError } = useProfile();
@@ -210,12 +211,16 @@ const Profile = () => {
           Bio
           <Textarea
             rows={4}
+            maxLength={BIO_MAX_LENGTH}
             value={profile?.bio || ""}
             onChange={(e) =>
               setProfile((p) => (p ? { ...p, bio: e.target.value } : p))
             }
             placeholder="Tell visitors what you do…"
           />
+          <span className="text-xs text-neutral-500 dark:text-neutral-400 text-right">
+            {(profile?.bio ?? "").length}/{BIO_MAX_LENGTH}
+          </span>
         </label>
 
         <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
 import { useState, useEffect } from "react";
 import { Copy } from "lucide-react";
+import { BIO_MAX_LENGTH } from "@/lib/validations/cards";
 
 export function CardBioAndPublish() {
   const { currentCard, updateCardMeta, cardError } = useCard();
@@ -73,11 +74,15 @@ export function CardBioAndPublish() {
         Card bio
         <Textarea
           rows={4}
+          maxLength={BIO_MAX_LENGTH}
           value={bio}
           onChange={(e) => setBio(e.target.value)}
           placeholder="Leave empty to use your profile bio."
           disabled={isSaving}
         />
+        <span className="text-xs text-neutral-500 dark:text-neutral-400 text-right">
+          {bio.length}/{BIO_MAX_LENGTH}
+        </span>
       </label>
       <p className="text-xs text-neutral-500 dark:text-neutral-400">
         {bio ? "Saved per-card." : "Using your profile bio."}

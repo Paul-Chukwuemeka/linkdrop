@@ -4,13 +4,15 @@ import { z } from "zod"
 // colors, and the API must accept exactly what the UI produces.
 export const MAX_GRADIENT_COLORS = 6
 
+export const BIO_MAX_LENGTH = 500
+
 export const cardCreateSchema = z.object({
   name: z.string().max(100).optional(),
 })
 
 export const cardUpdateSchema = z.object({
   name: z.string().max(100).optional(),
-  bio: z.string().max(500).nullable().optional(),
+  bio: z.string().max(BIO_MAX_LENGTH).nullable().optional(),
   is_public: z.boolean().optional(),
 })
 
