@@ -23,7 +23,7 @@ export function PublicCollection({
 
   return (
     <div
-      className="flex flex-col rounded-[14px] px-[10px] pt-[14px] pb-[10px]"
+      className="flex flex-col rounded-[14px] px-[10px] pt-[14px] pb-[10px] overflow-visible"
       style={buttonBgStyle}
     >
       {/* Collection Title */}

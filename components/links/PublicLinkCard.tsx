@@ -154,7 +154,7 @@ export function PublicLinkCard({
         {menuOpen && (
           <div
             role="menu"
-            className="absolute right-0 top-full mt-2 z-20 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
+            className="absolute right-0 top-full mt-2 z-50 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
           >
             <button
               role="menuitem"
