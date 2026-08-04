@@ -12,12 +12,19 @@ const shadowOptions: { value: ShadowType; label: string }[] = [
   { value: "glow", label: "Glow" },
 ];
 
+const glassOptions: { value: "glass-light" | "glass" | "glass-heavy"; label: string; preview: string }[] = [
+  { value: "glass-light", label: "Light", preview: "bg-white/15" },
+  { value: "glass", label: "Medium", preview: "bg-white/30" },
+  { value: "glass-heavy", label: "Heavy", preview: "bg-white/50" },
+];
+
 const Buttons = () => {
   const { cardStyle, updateCardStyle, updateStyle, isSavingStyle: isSaving } =
     useStyle();
 
   if (!cardStyle) return;
   const { button_radius, button_type, shadow } = cardStyle;
+  const isGlass = button_type.startsWith("glass");
   return (
     <div className="flex flex-col gap-5 sm:gap-6 w-full">
       <div>
@@ -34,12 +41,12 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${button_type == "glass" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+            className={`${isGlass && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_type: "glass" });
             }}
           >
-            <div className="w-full h-9 sm:h-12 flex items-center justify-center font-bold text-xs sm:text-sm bg-white/10 backdrop-blur-lg text-neutral-900 dark:text-neutral-100 shadow-(--shadow-card) rounded-full">
+            <div className="w-full h-9 sm:h-12 flex items-center justify-center font-bold text-xs sm:text-sm bg-white/30 backdrop-blur-lg text-neutral-900 dark:text-neutral-100 shadow-(--shadow-card) rounded-full">
               <p>Glass</p>
             </div>
           </button>
@@ -55,6 +62,29 @@ const Buttons = () => {
           </button>
         </div>
       </div>
+
+      {isGlass && (
+        <div>
+          <h2 className="text-sm sm:text-base font-semibold">Glass Intensity</h2>
+          <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
+            {glassOptions.map((option) => (
+              <button
+                key={option.value}
+                className={`${button_type == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-32 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+                onClick={() => {
+                  updateCardStyle({ button_type: option.value });
+                }}
+              >
+                <div
+                  className={`w-full h-9 sm:h-12 flex items-center justify-center font-bold text-xs sm:text-sm ${option.preview} backdrop-blur-lg text-neutral-900 dark:text-neutral-100 shadow-(--shadow-card) rounded-full`}
+                >
+                  <p>{option.label}</p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div>
         <h2 className="text-sm sm:text-base font-semibold">Button Corner</h2>
@@ -103,7 +133,7 @@ const Buttons = () => {
       </div>
 
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-sm sm:text-base">Button background color</p>
+        <p className="text-sm sm:text-base">Button {button_type === "outline" ? "outline" : "background"} color</p>
         <div className="w-full sm:w-70">
           <ColorPicker property="button_bg" />
         </div>

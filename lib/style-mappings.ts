@@ -95,12 +95,31 @@ export const PublicbuttonRadiusClasses = {
   rounder: "rounded-2xl",
 };
 
+const glassStyles: Record<
+  "glass-light" | "glass" | "glass-heavy",
+  CSSProperties
+> = {
+  "glass-light": {
+    background: "rgba(255,255,255,0.15)",
+    backdropFilter: "blur(3px)",
+  },
+  glass: {
+    background: "rgba(255,255,255,0.3)",
+    backdropFilter: "blur(5px)",
+  },
+  "glass-heavy": {
+    background: "rgba(255,255,255,0.5)",
+    backdropFilter: "blur(10px)",
+  },
+};
+
 export function getButtonBgStyle(cardStyle: CardTheme): CSSProperties {
-  if (cardStyle.button_type === "glass") {
-    return {
-      background: "rgba(255,255,255,0.3)",
-      backdropFilter: "blur(5px)",
-    };
+  if (
+    cardStyle.button_type === "glass-light" ||
+    cardStyle.button_type === "glass" ||
+    cardStyle.button_type === "glass-heavy"
+  ) {
+    return glassStyles[cardStyle.button_type];
   }
   if (cardStyle.button_type === "outline") {
     return {

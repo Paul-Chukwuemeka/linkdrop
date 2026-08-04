@@ -2,6 +2,7 @@
 
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "@/components/ui/Button";
+import { getButtonBgStyle } from "@/lib/style-mappings";
 import { CardTheme } from "@/lib/types";
 
 const STYLE_PRESETS: CardTheme[] = [
@@ -199,11 +200,14 @@ function getButtonStyle(preset: CardTheme): React.CSSProperties {
     };
   }
 
-  if (preset.button_type === "glass") {
+  if (
+    preset.button_type === "glass-light" ||
+    preset.button_type === "glass" ||
+    preset.button_type === "glass-heavy"
+  ) {
     return {
       ...base,
-      background: "rgba(255,255,255,0.3)",
-      backdropFilter: "blur(5px)",
+      ...getButtonBgStyle(preset),
       color: `#${preset.button_color}`,
     };
   }

@@ -37,7 +37,7 @@ const cardStyleSchema = z.object({
   button_radius: z.enum(["pill", "round", "square", "rounder"]).optional(),
   button_bg: color.optional(),
   button_color: color.optional(),
-  button_type: z.enum(["solid", "glass", "outline"]).optional(),
+  button_type: z.enum(["solid", "glass-light", "glass", "glass-heavy", "outline"]).optional(),
   profile_image: profileImageUrl,
   shadow: z.enum(["none", "soft", "medium", "hard", "glow"]).nullable().optional(),
   shadow_color: color.nullable().optional(),
