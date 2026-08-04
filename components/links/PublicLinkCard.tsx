@@ -6,7 +6,7 @@ import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { getDomain, safeHref } from "@/utils/validate";
-import { PublicbuttonRadiusClasses, getShadowStyles } from "@/lib/style-mappings";
+import { PublicbuttonRadiusClasses, getShadowStyles, getButtonBgStyle } from "@/lib/style-mappings";
 
 async function copyToClipboard(text: string): Promise<boolean> {
   try {
@@ -28,28 +28,6 @@ async function copyToClipboard(text: string): Promise<boolean> {
       return false;
     }
   }
-}
-
-function getButtonBgStyle(cardStyle: CardTheme): React.CSSProperties {
-  if (cardStyle.button_type === "glass") {
-    return {
-      background: "rgba(255,255,255,0.3)",
-      backdropFilter: "blur(5px)",
-    };
-  }
-  if (cardStyle.button_type === "outline") {
-    return {
-      borderColor: cardStyle.button_bg
-        ? `#${cardStyle.button_bg}`
-        : "#000000",
-      borderWidth: "2px",
-      background: "transparent",
-    };
-  }
-  if (cardStyle.button_bg) {
-    return { backgroundColor: `#${cardStyle.button_bg}` };
-  }
-  return { backgroundColor: "#ffffff" };
 }
 
 function getShadowStyle(cardStyle: CardTheme): React.CSSProperties {

@@ -2,7 +2,7 @@
 
 import { Collection, CardTheme } from "@/lib/types";
 import { PublicLinkCard } from "../links/PublicLinkCard";
-import { isLight, lighten, darken } from "@/utils/colors";
+import { getButtonBgStyle } from "@/lib/style-mappings";
 
 export function PublicCollection({
   collection,
@@ -19,18 +19,12 @@ export function PublicCollection({
     ? `#${cardStyle.text_color}`
     : "#ffffff";
 
-  const bgColor = cardStyle.card_bg || "ffffff";
-  const pageLight = isLight(bgColor);
-  const wrapperBg = pageLight ? darken(bgColor, 0.05) : lighten(bgColor, 0.1);
-  const borderColor = pageLight ? "#d0d0d0" : "#454545";
+  const buttonBgStyle = getButtonBgStyle(cardStyle);
 
   return (
     <div
       className="flex flex-col rounded-[14px] px-[10px] pt-[14px] pb-[10px]"
-      style={{
-        backgroundColor: `#${wrapperBg}`,
-        border: `0.5px solid ${borderColor}`,
-      }}
+      style={buttonBgStyle}
     >
       {/* Collection Title */}
       <h3

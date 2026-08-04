@@ -1,3 +1,6 @@
+import type { CSSProperties } from "react";
+import type { CardTheme } from "@/lib/types";
+
 // Size mappings for text elements
 export const titleSizeClasses = {
   small: "text-base",
@@ -91,3 +94,25 @@ export const PublicbuttonRadiusClasses = {
   square: "rounded-none",
   rounder: "rounded-2xl",
 };
+
+export function getButtonBgStyle(cardStyle: CardTheme): CSSProperties {
+  if (cardStyle.button_type === "glass") {
+    return {
+      background: "rgba(255,255,255,0.3)",
+      backdropFilter: "blur(5px)",
+    };
+  }
+  if (cardStyle.button_type === "outline") {
+    return {
+      borderColor: cardStyle.button_bg
+        ? `#${cardStyle.button_bg}`
+        : "#000000",
+      borderWidth: "2px",
+      background: "transparent",
+    };
+  }
+  if (cardStyle.button_bg) {
+    return { backgroundColor: `#${cardStyle.button_bg}` };
+  }
+  return { backgroundColor: "#ffffff" };
+}
