@@ -1,7 +1,7 @@
 "use client";
 /* eslint-disable @next/next/no-img-element */
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
@@ -53,28 +53,27 @@ export function PublicLinkCard({
   const shadowStyle = getShadowStyle(cardStyle);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [menuPos, setMenuPos] = useState<{ top: number; right: number } | null>(null);
 
   const textColor = cardStyle.button_color
     ? `#${cardStyle.button_color}`
     : "#000000";
 
+  const positionMenu = useCallback(() => {
+    if (!triggerRef.current) return;
+    const rect = triggerRef.current.getBoundingClientRect();
+    setMenuPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+  }, []);
+
   useEffect(() => {
     if (!menuOpen) return;
-    function onPointerDown(e: MouseEvent | TouchEvent) {
-      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape") setMenuOpen(false);
-    }
-    document.addEventListener("mousedown", onPointerDown);
-    document.addEventListener("touchstart", onPointerDown);
-    document.addEventListener("keydown", onKeyDown);
+    const onScroll = () => setMenuOpen(false);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     return () => {
-      document.removeEventListener("mousedown", onPointerDown);
-      document.removeEventListener("touchstart", onPointerDown);
-      document.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [menuOpen]);
 
@@ -128,11 +127,13 @@ export function PublicLinkCard({
       {/* Three dots menu */}
       <div ref={menuRef} className="relative shrink-0">
         <button
+          ref={triggerRef}
           className="p-2 opacity-60 hover:opacity-100 transition-opacity"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
             setMenuOpen((open) => !open);
+            if (!menuOpen) positionMenu();
           }}
           aria-label="More options"
           aria-haspopup="menu"
@@ -151,10 +152,11 @@ export function PublicLinkCard({
           </svg>
         </button>
 
-        {menuOpen && (
+        {menuOpen && menuPos && (
           <div
             role="menu"
-            className="absolute right-0 top-full mt-2 z-50 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
+            className="fixed z-50 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
+            style={{ top: menuPos.top, right: menuPos.right }}
           >
             <button
               role="menuitem"
