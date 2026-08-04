@@ -1,78 +1,111 @@
 "use client";
 
-import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useProfile } from "@/context/ProfileContext";
 import { useCard } from "@/context/CardContext";
 import { useStyle } from "@/context/StyleContext";
-import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
-import { PublicLinkCard } from "@/components/links/PublicLinkCard";
-import { PublicCollection } from "@/components/collections/PublicCollection";
+import { CardContent } from "@/components/cards/CardContent";
 import { fonts } from "@/lib/fonts";
-import { isLight, darken, lighten } from "@/utils/colors";
+import { DEFAULT_CARD_STYLE } from "@/lib/constants";
+import { buildCardBackground } from "@/lib/style-utils";
+import { apiFetch } from "@/lib/api";
+import { Smartphone, Monitor, X, Loader2 } from "lucide-react";
+import type { Card, CardTheme } from "@/lib/types";
+import toast from "react-hot-toast";
 
-const CardPreview = ({ mobile }: { mobile?: boolean }) => {
+const CardPreview = ({
+  mobile,
+  card,
+}: {
+  mobile?: boolean;
+  card?: Card;
+}) => {
   const { profile } = useProfile();
   const { currentCard, isPreview, setIsPreview } = useCard();
   const { cardStyle } = useStyle();
-  const [imgError, setImgError] = useState(false);
 
-  const items = currentCard?.items_list;
+  const [cards, setCards] = useState<Card[] | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [previewed, setPreviewed] = useState<Card | null>(null);
+  const [loadingPreview, setLoadingPreview] = useState(false);
+  const [showFrame, setShowFrame] = useState(true);
 
-  const backgroundColor = cardStyle?.card_bg ?? "ffffff";
+  const activeCard = card ?? previewed;
 
-  const gradientColors = useMemo(() => {
-    if (cardStyle?.gradient && cardStyle.gradient.length >= 2) {
-      return cardStyle.gradient;
-    }
-    return [
-      backgroundColor,
-      isLight(backgroundColor)
-        ? darken(backgroundColor, 0.8)
-        : lighten(backgroundColor, 0.8),
-    ];
-  }, [backgroundColor, cardStyle?.gradient]);
+  const resolvedStyle: CardTheme | null = activeCard
+    ? ({ ...DEFAULT_CARD_STYLE, ...activeCard.style } as CardTheme)
+    : cardStyle
+      ? ({ ...DEFAULT_CARD_STYLE, ...cardStyle } as CardTheme)
+      : null;
 
-  const backgroundStyle: React.CSSProperties = useMemo(() => {
-    if (!cardStyle) return {};
-    if (cardStyle.bg_type === "solid") {
-      return { background: `#${cardStyle.card_bg || "ffffff"}` };
-    }
-    if (cardStyle.bg_type === "gradient") {
-      const colors = gradientColors.map((c) => `#${c}`).join(", ");
-      if (cardStyle.gradient_type === "radial") {
-        return { background: `radial-gradient(circle at center, ${colors})` };
-      }
-      return {
-        background: `linear-gradient(${cardStyle.gradient_direction ?? 135}deg, ${colors})`,
-      };
-    }
-    if (cardStyle.bg_type === "image" && cardStyle.profile_image) {
-      return {
-        backgroundImage: `url(${cardStyle.profile_image})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      };
-    }
-    return { background: `#${cardStyle.card_bg || "ffffff"}` };
-  }, [cardStyle, gradientColors]);
+  const items = activeCard?.items_list ?? currentCard?.items_list ?? [];
+  const bio = activeCard
+    ? activeCard.bio ?? null
+    : currentCard?.bio ?? profile?.bio ?? null;
 
   const currentFont = useMemo(
     () =>
       fonts.find(
-        (f) => f.name.toLowerCase() === cardStyle?.font_style?.toLowerCase(),
+        (f) =>
+          f.name.toLowerCase() === resolvedStyle?.font_style?.toLowerCase(),
       ) ?? fonts[0],
-    [cardStyle?.font_style],
+    [resolvedStyle?.font_style],
   );
 
-  const textColor = cardStyle?.text_color || "ffffff";
+  useEffect(() => {
+    if (mobile) return;
+    let ignore = false;
+    apiFetch<Card[]>("/api/cards/me")
+      .then((data) => {
+        if (!ignore) setCards(data);
+      })
+      .catch(() => {});
+    return () => {
+      ignore = true;
+    };
+  }, [mobile]);
 
-  if (!cardStyle) return null;
+  async function handleSelect(id: string) {
+    if (!id) {
+      setSelectedId(null);
+      setPreviewed(null);
+      return;
+    }
+    setSelectedId(id);
+    setLoadingPreview(true);
+    try {
+      const data = await apiFetch<Card>(`/api/cards/${id}/list`);
+      setPreviewed(data);
+    } catch {
+      toast.error("Could not load card preview");
+      setSelectedId(null);
+      setPreviewed(null);
+    } finally {
+      setLoadingPreview(false);
+    }
+  }
+
+  if (!resolvedStyle) return null;
+
+  const headerProps = {
+    fullname: profile?.fullname || "",
+    username: profile?.username || "",
+    bio,
+    avatarUrl: profile?.avatar_url || null,
+  };
+  const cardBody = (
+    <CardContent
+      {...headerProps}
+      items={items}
+      cardStyle={resolvedStyle}
+      interactive={false}
+    />
+  );
 
   if (mobile) {
     return (
       <div
-        className={`flex items-center flex-col justify-center relative w-full h-auto max-h-[85vh]`}
+        className="flex items-center flex-col justify-center relative w-full h-auto max-h-[85vh]"
         onClick={() => setIsPreview(false)}
       >
         {isPreview && (
@@ -88,133 +121,119 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
           </button>
         )}
         <div
-          className={`w-full max-w-94 h-full min-h-200 rounded-xl overflow-hidden ring-1 ring-black/10 ${currentFont?.font?.className || ""}`}
-          style={backgroundStyle}
+          className={`w-full max-w-94 h-full min-h-200 overflow-hidden rounded-xl ring-1 ring-black/10 ${
+            currentFont?.font?.className || ""
+          }`}
+          style={buildCardBackground(resolvedStyle)}
         >
-          <div className="rounded-3xl w-full p-6">
-            <PublicProfileHeader
-              fullname={profile?.fullname || ""}
-              username={profile?.username || ""}
-              bio={profile?.bio || null}
-              avatarUrl={profile?.avatar_url || null}
-              title_size={cardStyle.title_size}
-              text_size={cardStyle.text_size}
-              text_color={textColor}
-              title_color={cardStyle.title_color || textColor}
-            />
-
-            <div className="mt-4 flex flex-col gap-4">
-              {items?.map((item, i) =>
-                item.type === "link" ? (
-                  <PublicLinkCard
-                    key={i}
-                    link={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ) : (
-                  <PublicCollection
-                    key={i}
-                    collection={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ),
-              )}
-            </div>
+          <div
+            className={`h-full overflow-y-auto scrollbar-hidden px-4 py-8 ${
+              currentFont?.font?.className || ""
+            }`}
+          >
+            {cardBody}
           </div>
         </div>
       </div>
     );
   }
 
+  const others = (cards ?? []).filter((c) => c.id !== currentCard?.id);
+
   return (
-    <div
-      className={`flex items-center flex-col justify-center relative w-full h-full md:h-auto`}
-    >
-      <div
-        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 ring-1 ring-black/10 overflow-hidden w-[320px] h-[720px]`}
-        style={backgroundStyle}
-      >
-        <div
-          className={`h-full overflow-y-auto scrollbar-hidden preview p-2 sm:p-1 sm:pb-5 lg:p-2 ${currentFont.font.className}`}
+    <div className="flex flex-col items-center gap-3 w-full h-full">
+      <div className="flex items-center gap-2 w-full">
+        <select
+          value={selectedId ?? ""}
+          onChange={(e) => void handleSelect(e.target.value)}
+          aria-label="Preview card"
+          className="flex-1 min-w-0 h-9 rounded-lg bg-white dark:bg-neutral-800 px-2 text-sm font-semibold ring-1 ring-black/10 dark:ring-white/10 outline-none"
         >
-          <div className="flex flex-col items-center h-fit py-3 sm:py-4 text-center">
-            {profile?.avatar_url && !imgError ? (
-              <Image
-                src={profile.avatar_url}
-                alt="user"
-                width={100}
-                height={100}
-                className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 object-cover"
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              <div className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 flex items-center justify-center text-2xl font-black text-neutral-900">
-                {profile?.fullname?.[0]?.toUpperCase() || profile?.username?.[0]?.toUpperCase() || "?"}
-              </div>
-            )}
-            <p
-              className="mt-3 font-black text-lg"
-              style={{
-                color: cardStyle.title_color
-                  ? `#${cardStyle.title_color}`
-                  : cardStyle.text_color
-                    ? `#${cardStyle.text_color}`
-                    : undefined,
-              }}
-            >
-              {profile?.fullname}
-            </p>
-            <p
-              className="mt-1 font-semibold text-xs"
-              style={{
-                color: cardStyle.text_color
-                  ? `#${cardStyle.text_color}`
-                  : undefined,
-              }}
-            >
-              @{profile?.username}
-            </p>
+          <option value="">Current card</option>
+          {others.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+        <button
+          onClick={() => setShowFrame((f) => !f)}
+          aria-pressed={showFrame}
+          aria-label={showFrame ? "Hide device frame" : "Show device frame"}
+          title={showFrame ? "Hide device frame" : "Show device frame"}
+          className="flex items-center justify-center w-9 h-9 shrink-0 rounded-lg bg-white dark:bg-neutral-800 ring-1 ring-black/10 dark:ring-white/10 text-neutral-700 dark:text-neutral-200"
+        >
+          {showFrame ? (
+            <Smartphone className="w-4" />
+          ) : (
+            <Monitor className="w-4" />
+          )}
+        </button>
+      </div>
 
-            {profile?.bio && (
-              <p
-                className="mt-1 font-semibold text-center px-2 sm:px-4 text-xs"
-                style={{
-                  color: cardStyle.text_color
-                    ? `#${cardStyle.text_color}`
-                    : undefined,
+      {activeCard && (
+        <div className="flex items-center gap-2 w-full max-w-[336px] rounded-full bg-neutral-100 dark:bg-neutral-800 px-3 py-1.5 text-xs font-semibold text-neutral-700 dark:text-neutral-200 ring-1 ring-black/5 dark:ring-white/10">
+          {loadingPreview ? (
+            <>
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              Loading preview…
+            </>
+          ) : (
+            <>
+              <span className="flex-1 truncate">Previewing {activeCard.name}</span>
+              <button
+                onClick={() => {
+                  setSelectedId(null);
+                  setPreviewed(null);
                 }}
+                aria-label="Back to editing current card"
+                className="flex items-center gap-1 rounded-full bg-white dark:bg-neutral-900 px-2 py-1 hover:opacity-80"
               >
-                {profile.bio}
-              </p>
-            )}
+                <X className="w-3 h-3" /> Back
+              </button>
+            </>
+          )}
+        </div>
+      )}
 
+      {showFrame ? (
+        <div className="relative shrink-0 rounded-[3rem] bg-neutral-900 dark:bg-neutral-800 p-3 ring-1 ring-black/20 shadow-2xl">
+          <div className="absolute left-[-4px] top-24 h-12 w-[4px] rounded-full bg-neutral-700/80 dark:bg-neutral-500/70" />
+          <div className="absolute left-[-4px] top-40 h-8 w-[4px] rounded-full bg-neutral-700/80 dark:bg-neutral-500/70" />
+          <div className="absolute right-[-4px] top-28 h-10 w-[4px] rounded-full bg-neutral-700/80 dark:bg-neutral-500/70" />
+          <div className="absolute top-2.5 left-1/2 -translate-x-1/2 w-24 h-5 rounded-full bg-black z-10" />
+          <div
+            className={`overflow-hidden rounded-[2rem] ring-1 ring-black/10 ${
+              currentFont?.font?.className || ""
+            }`}
+            style={buildCardBackground(resolvedStyle)}
+          >
             <div
-              className="w-full flex gap-2 sm:gap-2.5 p-1 sm:p-2 flex-col flex-1 text-xs"
-              style={{
-                color: cardStyle.text_color
-                  ? `#${cardStyle.text_color}`
-                  : undefined,
-              }}
+              className={`w-[320px] h-[720px] overflow-y-auto scrollbar-hidden px-4 py-8 ${
+                currentFont?.font?.className || ""
+              }`}
             >
-              {items?.map((item, i) => {
-                return item.type == "link" ? (
-                  <PublicLinkCard
-                    key={i}
-                    link={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ) : (
-                  <PublicCollection
-                    key={i}
-                    collection={item.content}
-                    cardStyle={cardStyle}
-                  />
-                );
-              })}
+              {cardBody}
             </div>
           </div>
+          <div className="mx-auto mt-2 w-24 h-1 rounded-full bg-white/60" />
         </div>
-      </div>
+      ) : (
+        <div
+          className={`w-[320px] shrink-0 rounded-xl ring-1 ring-black/10 overflow-hidden ${
+            currentFont?.font?.className || ""
+          }`}
+          style={buildCardBackground(resolvedStyle)}
+        >
+          <div
+            className={`h-[720px] overflow-y-auto scrollbar-hidden px-4 py-8 ${
+              currentFont?.font?.className || ""
+            }`}
+          >
+            {cardBody}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
