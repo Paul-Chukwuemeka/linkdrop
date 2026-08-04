@@ -3,11 +3,14 @@
 import ColorPicker from "../ui/colorPicker";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { CiImageOn } from "react-icons/ci";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useStyle } from "@/context/StyleContext";
+import { useCard } from "@/context/CardContext";
+import { apiFetch, ApiError } from "@/lib/api";
 import { Button } from "../ui/Button";
 import { ButtonLoader } from "../ui/ButtonLoader";
 import { GradientColorsManager } from "./GradientColorPicker";
+import toast from "react-hot-toast";
 
 // Direction presets with icons
 const directionPresets = [
@@ -24,8 +27,49 @@ const directionPresets = [
 const Background = () => {
   const { cardStyle, updateStyle, isSavingStyle: isSaving, updateCardStyle } =
     useStyle();
+  const { currentCard } = useCard();
   const { bg_type, gradient_type, gradient_direction, gradient, card_bg } =
     cardStyle ?? {};
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+
+  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file || !currentCard) return;
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await apiFetch<{ url: string }>(
+        `/api/cards/${currentCard.id}/background`,
+        { method: "POST", body: formData },
+      );
+      updateCardStyle({ bg_type: "image", profile_image: res.url });
+      toast.success("Background image set");
+    } catch (err) {
+      toast.error(
+        err instanceof ApiError ? err.message : "Failed to upload image",
+      );
+    } finally {
+      setIsUploading(false);
+    }
+  }
+
+  function handleApplyUrl() {
+    const value = imageUrl.trim();
+    if (!value) return;
+    try {
+      const u = new URL(value);
+      if (u.protocol !== "http:" && u.protocol !== "https:") throw new Error();
+    } catch {
+      toast.error("Enter a valid http(s) URL");
+      return;
+    }
+    updateCardStyle({ bg_type: "image", profile_image: value });
+    toast.success("Background image set");
+    setImageUrl("");
+  }
 
   const backgroundColor = card_bg ?? "ffffff";
   const endColor = useMemo(
@@ -195,6 +239,68 @@ const Background = () => {
               </div>
             </>
           )}
+        </div>
+      )}
+
+      {/* Background Image - only show when image is selected */}
+      {bg_type === "image" && (
+        <div className="flex flex-col gap-4 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
+          <div>
+            <h2 className="text-sm sm:text-base font-semibold mb-2">Background Image</h2>
+            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+              Upload an image or paste an image URL. It applies to this card only.
+            </p>
+
+            {cardStyle?.profile_image && (
+              <div
+                className="mb-4 aspect-video w-full rounded-lg ring-1 ring-black/10 bg-cover bg-center"
+                style={{ backgroundImage: `url(${cardStyle.profile_image})` }}
+              />
+            )}
+
+            <div className="flex flex-col gap-3">
+              <label className="block cursor-pointer">
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/webp"
+                  className="hidden"
+                  onChange={handleUpload}
+                  disabled={isUploading}
+                />
+                <span className="flex items-center justify-center w-full rounded-lg border border-dashed border-neutral-300 dark:border-neutral-600 px-4 py-3 text-sm font-semibold hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                  {isUploading ? "Uploading…" : "Upload image"}
+                </span>
+              </label>
+
+              <div className="flex flex-col gap-2 sm:flex-row">
+                <input
+                  type="text"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  placeholder="Paste image URL"
+                  className="flex-1 rounded-lg bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none ring-1 ring-neutral-200 dark:ring-neutral-700 focus:ring-(--accent)"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyUrl}
+                  disabled={!imageUrl.trim()}
+                  className="rounded-lg bg-black dark:bg-white dark:text-black px-4 py-2 text-sm font-semibold text-white disabled:opacity-50"
+                >
+                  Apply
+                </button>
+              </div>
+
+              {cardStyle?.profile_image && (
+                <button
+                  type="button"
+                  onClick={() => updateCardStyle({ profile_image: null })}
+                  className="self-start text-sm font-semibold text-red-600 hover:underline"
+                >
+                  Remove image
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       )}
 
