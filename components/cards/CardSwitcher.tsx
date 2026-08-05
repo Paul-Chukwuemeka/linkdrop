@@ -5,7 +5,7 @@ import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
 import { apiFetch } from "@/lib/api";
 import type { Card } from "@/lib/types";
-import { Check, Layers, Loader2 } from "lucide-react";
+import { ArrowLeftRight, Check, Loader2 } from "lucide-react";
 
 export function CardSwitcher() {
   const { currentCard, loadCard } = useCard();
@@ -66,13 +66,13 @@ export function CardSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isSwitching}
-        className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50"
+        className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50"
         aria-label="Switch card"
       >
         {isSwitching ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
+          <Loader2 className="h-5 w-5 animate-spin" />
         ) : (
-          <Layers className="h-4 w-4 text-neutral-600 dark:text-neutral-300" />
+          <ArrowLeftRight className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
         )}
       </button>
 
