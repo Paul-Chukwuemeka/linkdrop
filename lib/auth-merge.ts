@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/db"
 import { isP2002 } from "@/lib/api-utils"
+import { DEFAULT_CARD_STYLE } from "@/lib/constants"
 
 export type GoogleAccountPayload = {
   providerAccountId?: string | null
@@ -59,6 +60,7 @@ export async function linkGoogleUser({
   account,
 }: LinkGoogleUserArgs): Promise<LinkedGoogleUser | null> {
   let user = await prisma.user.findUnique({ where: { email } })
+  const userAtStart = user
 
   if (user?.password) {
     return null
@@ -95,6 +97,20 @@ export async function linkGoogleUser({
       }
     }
     if (!user) throw lastError
+  }
+
+  if (!userAtStart) {
+    const card = await prisma.card.create({
+      data: {
+        userId: user.id,
+        name: "Untitled",
+        style: DEFAULT_CARD_STYLE,
+      },
+    })
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { currentCard: card.id },
+    })
   }
 
   const providerAccountId = account?.providerAccountId
