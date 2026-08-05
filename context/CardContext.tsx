@@ -163,6 +163,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
 
   async function updateCardMeta(meta: {
     bio?: string | null;
+    use_profile_bio?: boolean;
     is_public?: boolean;
   }) {
     if (!currentCard) return;
@@ -174,6 +175,10 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         meta.bio !== undefined
           ? meta.bio?.trim() || null
           : currentCard.bio,
+      use_profile_bio:
+        meta.use_profile_bio !== undefined
+          ? meta.use_profile_bio
+          : currentCard.use_profile_bio,
       is_public:
         meta.is_public !== undefined
           ? meta.is_public
@@ -188,6 +193,7 @@ export function CardProvider({ children }: { children: React.ReactNode }) {
         method: "PATCH",
         json: {
           ...(meta.bio !== undefined ? { bio: meta.bio?.trim() || null } : {}),
+          ...(meta.use_profile_bio !== undefined ? { use_profile_bio: meta.use_profile_bio } : {}),
           ...(meta.is_public !== undefined
             ? { is_public: meta.is_public }
             : {}),

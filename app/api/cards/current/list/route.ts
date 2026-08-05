@@ -29,6 +29,7 @@ export async function GET() {
       user_id: card.userId,
       name: card.name,
       bio: card.bio,
+      use_profile_bio: card.useProfileBio,
       slug: card.slug,
       is_public: card.isPublic,
       items_list: itemsList,

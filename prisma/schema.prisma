@@ -73,15 +73,16 @@ model User {
 }
 
 model Card {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String   @default("Untitled")
-  bio       String?
-  slug      String?  @map("slug")
-  isPublic  Boolean  @default(false) @map("is_public")
-  userId    String   @map("user_id") @db.Uuid
-  style     Json     @default("{}")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id            String   @id @default(uuid()) @db.Uuid
+  name          String   @default("Untitled")
+  bio           String?
+  useProfileBio Boolean  @default(true) @map("use_profile_bio")
+  slug          String?  @map("slug")
+  isPublic      Boolean  @default(false) @map("is_public")
+  userId        String   @map("user_id") @db.Uuid
+  style         Json     @default("{}")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   links       Link[]

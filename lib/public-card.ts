@@ -18,6 +18,7 @@ function serializePublicCard(
     id: string;
     name: string;
     bio: string | null;
+    useProfileBio: boolean;
     slug: string | null;
     isPublic: boolean;
     style: unknown;
@@ -30,7 +31,7 @@ function serializePublicCard(
     id: card.id,
     user_id: user.id,
     name: card.name || fallbackName,
-    bio: card.bio ?? user.bio,
+    bio: card.useProfileBio ? user.bio : card.bio,
     slug: card.slug,
     is_public: card.isPublic,
     items_list: itemsList as Card["items_list"],
@@ -58,6 +59,7 @@ export const getPublicCard = cache(async (username: string): Promise<Card> => {
         id: null as unknown as string,
         name: "",
         bio: null,
+        useProfileBio: true,
         slug: null,
         isPublic: false,
         style: {},

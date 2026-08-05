@@ -33,6 +33,7 @@ export interface Card {
   name: string
   slug?: string | null
   is_public?: boolean
+  use_profile_bio?: boolean
   links?: Link[]
   collections?: Collection[]
   items_list: ItemFromList[]
@@ -55,6 +56,7 @@ export interface PublicCardUser {
 export interface CardUpdate {
   name?: string | null
   bio?: string | null
+  use_profile_bio?: boolean
   is_public?: boolean
 }
 

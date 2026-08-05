@@ -13,6 +13,7 @@ export const cardCreateSchema = z.object({
 export const cardUpdateSchema = z.object({
   name: z.string().max(100).optional(),
   bio: z.string().max(BIO_MAX_LENGTH).nullable().optional(),
+  use_profile_bio: z.boolean().optional(),
   is_public: z.boolean().optional(),
 })
 

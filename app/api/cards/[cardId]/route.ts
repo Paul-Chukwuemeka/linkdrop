@@ -28,6 +28,7 @@ export async function GET(
       user_id: card.userId,
       name: card.name,
       bio: card.bio,
+      use_profile_bio: card.useProfileBio,
       slug: card.slug,
       is_public: card.isPublic,
       items_list: itemsList,
@@ -71,6 +72,7 @@ export async function PATCH(
     const data: {
       name?: string
       bio?: string | null
+      useProfileBio?: boolean
       isPublic?: boolean
       slug?: string
     } = {}
@@ -88,6 +90,10 @@ export async function PATCH(
 
     if (parsed.data.bio !== undefined) {
       data.bio = parsed.data.bio?.trim() || null
+    }
+
+    if (parsed.data.use_profile_bio !== undefined) {
+      data.useProfileBio = parsed.data.use_profile_bio
     }
 
     if (parsed.data.is_public !== undefined) {
@@ -108,6 +114,7 @@ export async function PATCH(
       user_id: updated.userId,
       name: updated.name,
       bio: updated.bio,
+      use_profile_bio: updated.useProfileBio,
       slug: updated.slug,
       is_public: updated.isPublic,
       style: updated.style,

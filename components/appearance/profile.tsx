@@ -25,14 +25,14 @@ const Profile = () => {
   const [imgError, setImgError] = useState(false);
   const [savedUsername, setSavedUsername] = useState<string | null>(null);
   const [useProfileBio, setUseProfileBio] = useState<boolean>(
-    !currentCard?.bio,
+    currentCard?.use_profile_bio ?? true,
   );
   const [cardBio, setCardBio] = useState<string>(currentCard?.bio ?? "");
 
   useEffect(() => {
-    setUseProfileBio(!currentCard?.bio);
+    setUseProfileBio(currentCard?.use_profile_bio ?? true);
     setCardBio(currentCard?.bio ?? "");
-  }, [currentCard?.id, currentCard?.bio]);
+  }, [currentCard?.id, currentCard?.bio, currentCard?.use_profile_bio]);
 
   useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
@@ -117,8 +117,10 @@ const Profile = () => {
 
       if (currentCard) {
         const nextBio = useProfileBio ? null : cardBio;
-        if (nextBio !== currentCard.bio) {
-          await updateCardMeta({ bio: nextBio });
+        const bioChanged = nextBio !== currentCard.bio;
+        const toggleChanged = useProfileBio !== currentCard.use_profile_bio;
+        if (bioChanged || toggleChanged) {
+          await updateCardMeta({ bio: nextBio, use_profile_bio: useProfileBio });
         }
       }
     } catch (err) {
@@ -240,7 +242,7 @@ const Profile = () => {
             <button
               onClick={() => setUseProfileBio((v) => !v)}
               disabled={isSaving}
-              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+              className={`relative h-6 w-12 shrink-0 rounded-full transition-colors ${
                 useProfileBio
                   ? "bg-black dark:bg-white"
                   : "bg-neutral-300 dark:bg-neutral-600"
@@ -249,8 +251,8 @@ const Profile = () => {
               role="switch"
             >
               <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white dark:bg-black transition-transform ${
-                  useProfileBio ? "translate-x-5" : "translate-x-0.5"
+                className={`absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white dark:bg-black transition-transform ${
+                  useProfileBio ? "translate-x-6.5" : "translate-x-0.5"
                 }`}
               />
             </button>
