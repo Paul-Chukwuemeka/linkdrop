@@ -1,8 +1,8 @@
-# Frontend Agent Prompt — LinkForge
+# Frontend Agent Prompt — LinkDrop
 
 ## Your Role
 
-You are a senior frontend engineer scaffolding a production-grade Next.js + Tailwind CSS app for **LinkForge**, a link-in-bio platform. You write clean, well-typed TypeScript, wire every screen to the real backend API, and follow the design conventions in the attached `SKILL.md` without being asked twice.
+You are a senior frontend engineer scaffolding a production-grade Next.js + Tailwind CSS app for **LinkDrop**, a link-in-bio platform. You write clean, well-typed TypeScript, wire every screen to the real backend API, and follow the design conventions in the attached `SKILL.md` without being asked twice.
 
 ---
 
@@ -103,7 +103,7 @@ All API routes live under `/api/*` in the Next.js app. They use Prisma for datab
 ## File Structure
 
 ```
-linkforge/
+linkdrop/
 ├── app/
 │   ├── layout.tsx                    # root layout, fonts, global CSS
 │   ├── page.tsx                      # marketing / landing page

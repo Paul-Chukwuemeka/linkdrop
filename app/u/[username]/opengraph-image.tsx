@@ -1,7 +1,7 @@
 import { getPublicCard } from "@/lib/public-card";
 import { buildCardOGImage, ogSize } from "@/components/profile/PublicCardOpenGraph";
 
-export const alt = "LinkForge profile";
+export const alt = "LinkDrop profile";
 export const size = ogSize;
 export const contentType = "image/png";
 

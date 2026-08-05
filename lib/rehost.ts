@@ -46,7 +46,7 @@ export async function reHostAvatarUrl(url: string): Promise<string> {
   try {
     response = await fetchWithTimeout(
       url,
-      { headers: { "User-Agent": "LinkForge/1.0" } },
+      { headers: { "User-Agent": "LinkDrop/1.0" } },
       FETCH_TIMEOUT
     )
   } catch (error) {

@@ -1,6 +1,6 @@
-# LinkForge
+# LinkDrop
 
-LinkForge is a link-in-bio platform where users can create a public profile page and organize links into cards and collections.
+LinkDrop is a link-in-bio platform where users can create a public profile page and organize links into cards and collections.
 
 This is a full-stack Next.js application — the backend API routes live alongside the frontend in the same project.
 
@@ -149,7 +149,7 @@ This is a full-stack Next.js application — the backend API routes live alongsi
 ## Project Structure
 
 ```text
-linkforge/
+linkdrop/
 ├── app/
 │   ├── api/                    # API routes (30 endpoints)
 │   ├── (auth)/                 # Login, register pages

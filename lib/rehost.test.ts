@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest"
 vi.mock("@/lib/s3", () => ({
   r2: { send: vi.fn() },
   R2_BUCKET: "bucket",
-  R2_PUBLIC_URL: "https://cdn.linkforge.example",
+  R2_PUBLIC_URL: "https://cdn.linkdrop.example",
 }))
 
 vi.mock("@/lib/http", () => ({
@@ -34,7 +34,7 @@ describe("reHostAvatarUrl", () => {
   })
 
   it("returns URLs already on our own storage untouched", async () => {
-    const hosted = "https://cdn.linkforge.example/avatars/abc.jpg"
+    const hosted = "https://cdn.linkdrop.example/avatars/abc.jpg"
     const relative = "/avatars/abc.jpg"
 
     expect(await reHostAvatarUrl(hosted)).toBe(hosted)
@@ -78,7 +78,7 @@ describe("reHostAvatarUrl", () => {
 
     const result = await reHostAvatarUrl("https://lh3.googleusercontent.com/g")
 
-    expect(result).toMatch(/^https:\/\/cdn\.linkforge\.example\/avatars\/[a-f0-9]{64}\.png$/)
+    expect(result).toMatch(/^https:\/\/cdn\.linkdrop\.example\/avatars\/[a-f0-9]{64}\.png$/)
     expect(r2.send).toHaveBeenCalledTimes(1)
   })
 })

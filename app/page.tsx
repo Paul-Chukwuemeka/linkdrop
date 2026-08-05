@@ -13,7 +13,7 @@ export default function Home() {
             href="/"
             className="text-lg sm:text-xl font-extrabold tracking-tight text-(--text-primary)"
           >
-            LinkForge
+            LinkDrop
           </Link>
 
           <div className="flex items-center gap-2 sm:gap-3">

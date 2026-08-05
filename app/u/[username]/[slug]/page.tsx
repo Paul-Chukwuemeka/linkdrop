@@ -11,7 +11,7 @@ export async function generateMetadata({
   try {
     const card = await getPublishedCard(username, slug);
 
-    const title = `${card.name} | LinkForge`;
+    const title = `${card.name} | LinkDrop`;
     const description = card.bio || `Links by @${username}`;
 
     return {
@@ -29,7 +29,7 @@ export async function generateMetadata({
       },
     };
   } catch {
-    return { title: "LinkForge" };
+    return { title: "LinkDrop" };
   }
 }
 

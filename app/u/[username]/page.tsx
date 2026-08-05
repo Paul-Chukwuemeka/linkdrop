@@ -11,7 +11,7 @@ export async function generateMetadata({
   try {
     const card = await getPublicCard(username);
 
-    const title = `${card.user?.fullname || username} | LinkForge`;
+    const title = `${card.user?.fullname || username} | LinkDrop`;
     const description = card.bio || `Links by @${username}`;
 
     return {
@@ -29,7 +29,7 @@ export async function generateMetadata({
       },
     };
   } catch {
-    return { title: "LinkForge" };
+    return { title: "LinkDrop" };
   }
 }
 

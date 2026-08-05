@@ -1,4 +1,4 @@
-# LinkForge
+# LinkDrop
 
 Full-stack link-in-bio page builder built with Next.js 16 (App Router) + Prisma + Auth.js v5.
 
@@ -128,7 +128,7 @@ User
 ## Project Structure
 
 ```
-linkforge/
+linkdrop/
 ├── app/
 │   ├── layout.tsx              # Root layout (fonts, providers)
 │   ├── page.tsx                # Landing page

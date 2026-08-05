@@ -1,5 +1,5 @@
 ---
-name: linktree-clone
+name: linkdrop
 description: >
   Build a Linktree-style link-in-bio page builder product. Use this skill whenever
   the user asks to build, scaffold, design, or extend a link-in-bio app, Linktree

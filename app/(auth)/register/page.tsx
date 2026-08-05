@@ -12,7 +12,7 @@ export default function RegisterPage() {
         className="text-3xl font-extrabold tracking-tight text-(--text-primary)"
   
       >
-        Create your LinkForge
+        Create your LinkDrop
       </h1>
       <p className="mt-2 text-sm text-neutral-600">
         Claim your username and start building your public page.
