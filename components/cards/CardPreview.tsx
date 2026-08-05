@@ -96,7 +96,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
             <PublicProfileHeader
               fullname={profile?.fullname || ""}
               username={profile?.username || ""}
-              bio={profile?.bio || null}
+              bio={currentCard?.bio || profile?.bio || null}
               avatarUrl={profile?.avatar_url || null}
               title_size={cardStyle.title_size}
               text_size={cardStyle.text_size}
@@ -177,7 +177,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               @{profile?.username}
             </p>
 
-            {profile?.bio && (
+            {(currentCard?.bio || profile?.bio) && (
               <p
                 className={`mt-1 font-semibold text-center px-2 sm:px-4 ${previewTextSizeClasses[cardStyle.text_size ?? "medium"]}`}
                 style={{
@@ -186,7 +186,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
                     : undefined,
                 }}
               >
-                {profile.bio}
+                {currentCard?.bio || profile?.bio}
               </p>
             )}
 
