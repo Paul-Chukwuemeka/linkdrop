@@ -78,7 +78,7 @@ export function Sidebar() {
   const user = session?.user
 
   return (
-    <aside className="hidden md:flex h-full w-full flex-col gap-4 rounded-xl bg-white/60 dark:bg-neutral-900/60 p-4 shadow-(--shadow-nav) ring-1 ring-(--border-color) backdrop-blur">
+    <aside className="hidden md:flex h-full w-full flex-col gap-4 rounded-xl bg-white/60 dark:bg-neutral-900/60 p-4 shadow-(--shadow-nav)    backdrop-blur">
       <div className="flex items-center justify-between">
         <Link
           href="/"

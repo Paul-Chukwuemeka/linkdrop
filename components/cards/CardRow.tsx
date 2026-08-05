@@ -51,7 +51,7 @@ export function CardRow({
   }
 
   return (
-    <div className="flex items-center justify-between gap-3 bg-white dark:bg-neutral-900 p-3 sm:p-4 rounded-xl shadow-(--shadow-card) ring-1 ring-(--border-color)">
+    <div className="flex items-center justify-between gap-3 bg-white dark:bg-neutral-900 p-3 sm:p-4 rounded-xl shadow-(--shadow-card)   ">
       <div className="min-w-0 flex-1">
         <div className="truncate text-sm font-bold text-neutral-900 dark:text-neutral-100">
           {card.name}

@@ -52,12 +52,12 @@ export function CardBioAndPublish() {
       </div>
 
       {cardError && (
-        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
+        <div className="rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/30 dark:text-red-300  ring-red-100 dark:ring-red-800/50">
           {cardError}
         </div>
       )}
 
-      <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-4 ring-1 ring-black/5">
+      <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-4  ring-black/5">
         <div>
           <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
             Public page
@@ -71,15 +71,15 @@ export function CardBioAndPublish() {
         <button
           onClick={handleTogglePublish}
           disabled={isSaving}
-          className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+          className={`relative h-6 w-12 shrink-0 rounded-full transition-colors ${
             published ? "bg-black dark:bg-white" : "bg-neutral-300 dark:bg-neutral-600"
           }`}
           aria-checked={published}
           role="switch"
         >
           <span
-            className={`absolute top-0.5 h-5 w-5 rounded-full bg-white dark:bg-black transition-transform ${
-              published ? "translate-x-5" : "translate-x-0.5"
+            className={`absolute left-0 top-0.5 h-5 w-5 rounded-full bg-white dark:bg-black transition-transform ${
+              published ? "translate-x-6.5" : "translate-x-0.5"
             }`}
           />
         </button>

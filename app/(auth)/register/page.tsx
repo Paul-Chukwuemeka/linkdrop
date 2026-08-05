@@ -7,7 +7,7 @@ import { Suspense } from "react";
 
 export default function RegisterPage() {
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+    <div className="rounded-3xl bg-white p-8 shadow-(--shadow-card)   ">
       <h1
         className="text-3xl font-extrabold tracking-tight text-(--text-primary)"
   

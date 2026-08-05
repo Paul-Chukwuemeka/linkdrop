@@ -42,7 +42,7 @@ const Fontpicker = () => {
                 return (
                   <button
                     key={i}
-                    className={`h-12 sm:h-14 px-4 ring-1 rounded-lg transition-all touch-manipulation ${font.font.className} ${
+                    className={`h-12 sm:h-14 px-4  rounded-lg transition-all touch-manipulation ${font.font.className} ${
                       isSelected
                         ? "ring-2 ring-black dark:ring-white bg-black/5 dark:bg-white/10"
                         : "ring-black/20 dark:ring-white/20 hover:ring-black/40 dark:hover:ring-white/40"

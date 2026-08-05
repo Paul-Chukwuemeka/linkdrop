@@ -22,7 +22,7 @@ const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
         className="w-full outline-none bg-transparent ml-1 text-sm sm:text-base dark:text-neutral-100"
         maxLength={6}
       />
-      <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 flex overflow-hidden rounded-full justify-center items-center ring-1 ring-black/30 dark:ring-white/30 ml-2">
+      <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 flex overflow-hidden rounded-full justify-center items-center  ring-black/30 dark:ring-white/30 ml-2">
         <input
           type="color"
           value={`#${value}`}

@@ -15,7 +15,7 @@ export const ProfileHeaderBar = ({
   const [imgError, setImgError] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-neutral-900 p-3 sm:p-4 lg:p-5 flex gap-3 items-center shadow-(--shadow-card) ring-1 ring-(--border-color) rounded-xl">
+    <div className="bg-white dark:bg-neutral-900 p-3 sm:p-4 lg:p-5 flex gap-3 items-center shadow-(--shadow-card)    rounded-xl">
       <div
         className={`${!profile?.avatar_url && "p-2"} w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-gray-600/50 dark:ring-gray-400/50 lg:w-14 lg:h-14 overflow-hidden flex items-center justify-center bg-gray-200 dark:bg-gray-700 shrink-0`}
       >

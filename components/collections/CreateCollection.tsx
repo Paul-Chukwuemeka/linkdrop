@@ -30,7 +30,7 @@ export function CreateCollection() {
       onClick={close}
     >
       <form
-        className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:p-6"
+        className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card)    sm:p-6"
         onClick={(e) => e.stopPropagation()}
         onSubmit={(e) => {
           e.preventDefault();
@@ -86,7 +86,7 @@ export function CreateCollection() {
           </div>
 
           {localError || (hasSubmitted ? error : null) ? (
-            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-700 ring-1 ring-red-100">
+            <div className="rounded-xl bg-red-50 p-3 text-sm text-red-700  ring-red-100">
               {localError || error}
             </div>
           ) : null}

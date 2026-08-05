@@ -107,7 +107,7 @@ export function DraggableLink({
         style={style}
         ref={setNodeRef}
         className={[
-          "flex w-full items-center rounded-lg bg-white dark:bg-neutral-900 p-2 py-2 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:rounded-xl sm:p-3 md:p-4",
+          "flex w-full items-center rounded-lg bg-white dark:bg-neutral-900 p-2 py-2 shadow-(--shadow-card)    sm:rounded-xl sm:p-3 md:p-4",
         ]
           .filter(Boolean)
           .join(" ")}

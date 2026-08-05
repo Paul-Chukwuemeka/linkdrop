@@ -89,7 +89,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
           </button>
         )}
         <div
-          className={`w-full max-w-94 h-full min-h-200 rounded-xl overflow-hidden ring-1 ring-black/10 ${currentFont?.font?.className || ""}`}
+          className={`w-full max-w-94 h-full min-h-200 rounded-xl overflow-hidden  ring-black/10 ${currentFont?.font?.className || ""}`}
           style={backgroundStyle}
         >
           <div className="rounded-3xl w-full p-6">
@@ -133,7 +133,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
       className={`flex items-center flex-col justify-center relative w-full h-full md:h-auto`}
     >
       <div
-        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2 ring-1 ring-black/10 overflow-hidden w-[320px] h-180`}
+        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2  ring-black/10 overflow-hidden w-[320px] h-180`}
         style={backgroundStyle}
       >
         <div
@@ -146,11 +146,11 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
                 alt="user"
                 width={100}
                 height={100}
-                className="h-20 w-20 shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 object-cover"
+                className="h-20 w-20 shrink-0 rounded-full bg-white/40  ring-black/10 object-cover"
                 onError={() => setImgError(true)}
               />
             ) : (
-              <div className="h-20 w-20  shrink-0 rounded-full bg-white/40 ring-1 ring-black/10 flex items-center justify-center text-2xl font-black text-neutral-900">
+              <div className="h-20 w-20  shrink-0 rounded-full bg-white/40  ring-black/10 flex items-center justify-center text-2xl font-black text-neutral-900">
                 {profile?.fullname?.[0]?.toUpperCase() || profile?.username?.[0]?.toUpperCase() || "?"}
               </div>
             )}

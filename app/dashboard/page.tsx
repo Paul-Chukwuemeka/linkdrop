@@ -140,7 +140,7 @@ export default function DashboardPage() {
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
       <ProfileHeaderBar profile={profile} logout={logout} />
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
+        <div className="bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300  ring-red-100 dark:ring-red-800/50">
           {error}
         </div>
       )}
@@ -233,7 +233,7 @@ export default function DashboardPage() {
             {options && (
               <div className="w-full">
                 <div
-                  className="flex items-center gap-3 w-full rounded-xl bg-white dark:bg-neutral-800 p-4 shadow-lg shadow-black/10 ring-1 ring-black/5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
+                  className="flex items-center gap-3 w-full rounded-xl bg-white dark:bg-neutral-800 p-4 shadow-lg shadow-black/10  ring-black/5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
                   onClick={(e) => {
                     e.stopPropagation();
                     setIsCreatingCollection(true);

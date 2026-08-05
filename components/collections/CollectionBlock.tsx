@@ -96,7 +96,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
         style={style}
         ref={setNodeRef}
         className={[
-          "flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card) ring-1 ring-(--border-color) sm:gap-3 sm:rounded-2xl sm:p-4",
+          "flex flex-col gap-2 rounded-xl bg-neutral-100 dark:bg-neutral-800 p-3 shadow-(--shadow-card)    sm:gap-3 sm:rounded-2xl sm:p-4",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -165,7 +165,7 @@ export function CollectionBlock({ item }: { item: Collection }) {
                 Add a link to this collection
               </p>
               <button
-                className="text-sm ring-1 ring-neutral-300 dark:ring-neutral-600 px-4 py-2 bg-white dark:bg-neutral-800 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors touch-manipulation"
+                className="text-sm  ring-neutral-300 dark:ring-neutral-600 px-4 py-2 bg-white dark:bg-neutral-800 rounded-full hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors touch-manipulation"
                 onClick={() => {
                   setIsCreatingLink(true);
                   setSelectedCollection(item.id);

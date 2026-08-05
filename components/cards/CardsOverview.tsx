@@ -73,7 +73,7 @@ export function CardsOverview() {
   return (
     <div className="overflow-auto rounded-md gap-4 bg-white dark:bg-neutral-900 flex flex-col items-center justify-start flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/30 flex flex-col w-full max-w-200 gap-3 sm:gap-4 p-3 sm:p-4 rounded-md text-sm text-red-700 dark:text-red-300 ring-1 ring-red-100 dark:ring-red-800/50">
+        <div className="bg-red-50 dark:bg-red-900/30 flex flex-col w-full max-w-200 gap-3 sm:gap-4 p-3 sm:p-4 rounded-md text-sm text-red-700 dark:text-red-300  ring-red-100 dark:ring-red-800/50">
           {error}
         </div>
       )}

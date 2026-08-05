@@ -289,7 +289,7 @@ const Background = () => {
             )}
             {!pendingPreview && cardStyle?.profile_image && (
               <div
-                className="mb-4 aspect-video w-full rounded-lg ring-1 ring-black/10 bg-cover bg-center"
+                className="mb-4 aspect-video w-full rounded-lg  ring-black/10 bg-cover bg-center"
                 style={{ backgroundImage: `url(${cardStyle.profile_image})` }}
               />
             )}
@@ -314,7 +314,7 @@ const Background = () => {
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="Paste image URL"
-                  className="flex-1 rounded-lg bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none ring-1 ring-neutral-200 dark:ring-neutral-700 focus:ring-(--accent)"
+                  className="flex-1 rounded-lg bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none  ring-neutral-200 dark:ring-neutral-700 focus:ring-(--accent)"
                 />
                 <button
                   type="button"

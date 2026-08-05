@@ -41,7 +41,7 @@ export function DeleteAccount({
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl bg-red-50/60 dark:bg-red-950/20 p-4 sm:p-5 shadow-(--shadow-card)">
+    <div className="flex flex-col gap-4 rounded-lg bg-red-100/20 dark:bg-red-950/20 p-4 sm:p-5 shadow-(--shadow-card)">
       <div>
         <h3 className="text-base font-bold text-red-700 dark:text-red-300">
           Delete account

@@ -36,7 +36,7 @@ export default function AppearancePage() {
 
   if (isLoading) {
     return (
-      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-10 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-10 shadow-(--shadow-card)   ">
         <div className="flex items-center gap-3">
           <Spinner />
           <div className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
@@ -49,7 +49,7 @@ export default function AppearancePage() {
 
   if (!profile) {
     return (
-      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-800 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-800 shadow-(--shadow-card)   ">
         {error || "Profile unavailable."}
       </div>
     );
@@ -57,7 +57,7 @@ export default function AppearancePage() {
 
   if (!currentCard) {
     return (
-      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-800 dark:text-neutral-200 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="rounded-3xl bg-white dark:bg-neutral-900 p-6 text-sm text-neutral-800 dark:text-neutral-200 shadow-(--shadow-card)   ">
         <h3 className="text-lg font-semibold text-neutral-800 dark:text-neutral-200">No cards yet</h3>
         <p className="mt-2 text-neutral-600 dark:text-neutral-400">
           Create a card first to customize its appearance.
@@ -84,7 +84,7 @@ export default function AppearancePage() {
       </div>
 
       {error && (
-        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-700  ring-red-100">
           {error}
         </div>
       )}

@@ -27,7 +27,10 @@ export default function SettingsPage() {
         const data = await apiFetch<MeResponse>("/api/auth/me");
         if (mounted) setMe(data);
       } catch (err) {
-        if (mounted) setError(err instanceof ApiError ? err.message : "Failed to load settings.");
+        if (mounted)
+          setError(
+            err instanceof ApiError ? err.message : "Failed to load settings.",
+          );
       } finally {
         if (mounted) setIsLoading(false);
       }
@@ -39,7 +42,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-3 rounded-xl bg-white dark:bg-neutral-900 p-10 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="flex items-center gap-3 rounded-xl bg-white dark:bg-neutral-900 p-10 shadow-(--shadow-card)   ">
         <Spinner />
         <div className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           Loading settings…
@@ -50,7 +53,7 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col gap-3 sm:gap-4">
-      <div className="bg-white dark:bg-neutral-900 p-4 sm:p-5 md:p-6 rounded-xl shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="bg-white dark:bg-neutral-900 p-4 sm:p-5 md:p-6 rounded-lg shadow-(--shadow-card)">
         <h1 className="text-lg sm:text-xl lg:text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
           Settings
         </h1>
@@ -60,23 +63,25 @@ export default function SettingsPage() {
       </div>
 
       {error && (
-        <div className="rounded-xl bg-red-50 p-4 text-sm text-red-700 ring-1 ring-red-100">
+        <div className="rounded-lg bg-red-50 p-4 text-sm text-red-700  ring-red-100">
           {error}
         </div>
       )}
 
-      <div className="flex flex-col gap-3 sm:gap-4">
-        {me?.has_password ? (
-          <ChangePassword />
-        ) : (
-          <div className="rounded-xl bg-white dark:bg-neutral-900 p-4 sm:p-5 text-sm text-neutral-700 dark:text-neutral-300 shadow-(--shadow-card) ring-1 ring-(--border-color)">
-            You sign in with a provider and don’t use a password.
-          </div>
-        )}
-        <DeleteAccount
-          hasPassword={me?.has_password === true}
-          email={me?.email ?? ""}
-        />
+      <div className="flex pb-5 pt-2 justify-center rounded-lg gap-3 flex-1 bg-white dark:bg-neutral-900 sm:gap-4">
+        <div className="max-w-200 w-full">
+          {me?.has_password ? (
+            <ChangePassword />
+          ) : (
+            <div className="p-4 sm:p-5 text-sm text-neutral-700 dark:text-neutral-300">
+              You sign in with a provider and don’t use a password.
+            </div>
+          )}
+          <DeleteAccount
+            hasPassword={me?.has_password === true}
+            email={me?.email ?? ""}
+          />
+        </div>
       </div>
     </div>
   );

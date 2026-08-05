@@ -15,7 +15,7 @@ export function ChangePassword() {
 
   const passwordHint = `At least ${PASSWORD_MIN_LENGTH} characters with an uppercase letter, a lowercase letter, and a number.`;
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SubmitEvent) {
     e.preventDefault();
     if (!currentPassword || !newPassword) {
       toast.error("Fill in both password fields.");
@@ -43,9 +43,9 @@ export function ChangePassword() {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-xl bg-white dark:bg-neutral-900 p-4 sm:p-5 shadow-(--shadow-card) ring-1 ring-(--border-color)">
+    <div className="flex flex-col gap-4 p-4 sm:p-5">
       <div>
-        <h3 className="text-base font-bold text-neutral-900 dark:text-neutral-100">
+        <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
           Change password
         </h3>
         <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">

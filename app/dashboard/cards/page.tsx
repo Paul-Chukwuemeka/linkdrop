@@ -5,7 +5,7 @@ import CardPreview from "@/components/cards/CardPreview";
 export default function DashboardCardsPage() {
   return (
     <div className="flex min-w-0 h-full flex-col gap-3 sm:gap-4 items-center">
-      <div className="bg-white dark:bg-neutral-900 w-full p-4 sm:p-5 md:p-6 rounded-xl shadow-(--shadow-card) ring-1 ring-(--border-color)">
+      <div className="bg-white dark:bg-neutral-900 w-full p-4 sm:p-5 md:p-6 rounded-xl shadow-(--shadow-card)   ">
         <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
           Cards
         </h1>

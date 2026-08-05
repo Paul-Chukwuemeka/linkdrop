@@ -242,7 +242,7 @@ const Profile = () => {
         </label>
 
         <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-3 ring-1 ring-black/5">
+          <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-3  ring-black/5">
             <div>
               <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
                 Use profile bio
