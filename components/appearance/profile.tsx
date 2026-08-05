@@ -42,6 +42,13 @@ const Profile = () => {
   }, [useProfileBio, currentCard?.use_profile_bio, setCurrentCard]);
 
   useEffect(() => {
+    if (!currentCard || useProfileBio) return;
+    if (cardBio !== currentCard.bio) {
+      setCurrentCard((prev) => prev ? { ...prev, bio: cardBio || null } : prev);
+    }
+  }, [cardBio, currentCard?.bio, useProfileBio, setCurrentCard]);
+
+  useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
   }, [profile?.avatar_url]);
 
