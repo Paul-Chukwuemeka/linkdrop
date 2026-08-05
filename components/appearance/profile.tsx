@@ -35,6 +35,13 @@ const Profile = () => {
   }, [currentCard?.id, currentCard?.bio, currentCard?.use_profile_bio]);
 
   useEffect(() => {
+    if (!currentCard) return;
+    if (useProfileBio !== currentCard.use_profile_bio) {
+      setCurrentCard((prev) => prev ? { ...prev, use_profile_bio: useProfileBio } : prev);
+    }
+  }, [useProfileBio, currentCard?.use_profile_bio, setCurrentCard]);
+
+  useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
   }, [profile?.avatar_url]);
 
@@ -240,11 +247,7 @@ const Profile = () => {
               </div>
             </div>
             <button
-              onClick={() => setUseProfileBio((v) => {
-                const next = !v;
-                setCurrentCard((prev) => prev ? { ...prev, use_profile_bio: next } : prev);
-                return next;
-              })}
+              onClick={() => setUseProfileBio((v) => !v)}
               disabled={isSaving}
               className={`relative h-6 w-12 shrink-0 rounded-full transition-colors ${
                 useProfileBio
