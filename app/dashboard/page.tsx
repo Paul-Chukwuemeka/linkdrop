@@ -28,6 +28,7 @@ import { DraggableLink } from "../../components/links/LinkRow";
 import { CreateLink } from "@/components/links/CreateLink";
 import { CreateCollection } from "@/components/collections/CreateCollection";
 import { CollectionBlock } from "@/components/collections/CollectionBlock";
+import { CardSwitcher } from "@/components/cards/CardSwitcher";
 import { signOut } from "next-auth/react";
 
 export default function DashboardPage() {
@@ -187,6 +188,7 @@ export default function DashboardPage() {
                   <PenLine className="w-4 transition-transform group-hover:scale-110" />
                 </h2>
               )}
+              <div className="flex items-center gap-1">
               {(isLoadingCard || isLoadingReorder) && (
                 <Loader2
                   className="h-4 w-4 animate-spin shrink-0 text-neutral-500 dark:text-neutral-400"
@@ -202,6 +204,8 @@ export default function DashboardPage() {
                   {isSettingMain ? <ButtonLoader label="Saving…" /> : "Set as main card"}
                 </button>
               )}
+              <CardSwitcher />
+              </div>
             </div>
             <div className="flex rounded-2xl sm:rounded-3xl items-center w-full bg-white dark:bg-neutral-800 h-11 sm:h-12 shadow-[0_0_15px_rgba(0,0,0,0.15)]">
               <button
