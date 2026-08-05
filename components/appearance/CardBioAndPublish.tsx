@@ -2,23 +2,14 @@
 
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { Textarea } from "@/components/ui/Textarea";
-import { Button } from "@/components/ui/Button";
-import { ButtonLoader } from "@/components/ui/ButtonLoader";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Copy } from "lucide-react";
-import { BIO_MAX_LENGTH } from "@/lib/validations/cards";
 
 export function CardBioAndPublish() {
   const { currentCard, updateCardMeta, cardError } = useCard();
   const { profile } = useProfile();
-  const [bio, setBio] = useState<string>(currentCard?.bio ?? "");
   const [isSaving, setIsSaving] = useState(false);
   const [copied, setCopied] = useState(false);
-
-  useEffect(() => {
-    setBio(currentCard?.bio ?? "");
-  }, [currentCard?.id, currentCard?.bio]);
 
   if (!currentCard) return null;
 
@@ -38,10 +29,6 @@ export function CardBioAndPublish() {
     }
   }
 
-  async function handleSaveBio() {
-    await runWithSaving(() => updateCardMeta({ bio: bio ?? null }));
-  }
-
   async function handleTogglePublish() {
     await runWithSaving(() => updateCardMeta({ is_public: !published }));
   }
@@ -57,7 +44,7 @@ export function CardBioAndPublish() {
     <div className="flex flex-col gap-4 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4">
       <div>
         <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200">
-          Card bio &amp; publishing
+          Publishing
         </h3>
         <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
           This applies to the “{currentCard.name}” card.
@@ -69,28 +56,6 @@ export function CardBioAndPublish() {
           {cardError}
         </div>
       )}
-
-      <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-        Card bio
-        <Textarea
-          rows={4}
-          maxLength={BIO_MAX_LENGTH}
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          placeholder="Leave empty to use your profile bio."
-          disabled={isSaving}
-        />
-        <span className="text-xs text-neutral-500 dark:text-neutral-400 text-right">
-          {bio.length}/{BIO_MAX_LENGTH}
-        </span>
-      </label>
-      <p className="text-xs text-neutral-500 dark:text-neutral-400">
-        {bio ? "Saved per-card." : "Using your profile bio."}
-      </p>
-
-      <Button onClick={handleSaveBio} disabled={isSaving} className="w-full sm:w-auto">
-        {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Save card bio"}
-      </Button>
 
       <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-4 ring-1 ring-black/5">
         <div>

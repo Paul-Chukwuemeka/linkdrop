@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useRef, useEffect } from "react";
 import { useProfile } from "@/context/ProfileContext";
+import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import { UserProfileMe } from "@/lib/types";
 import { useState } from "react";
@@ -14,6 +15,7 @@ import { BIO_MAX_LENGTH } from "@/lib/validations/cards";
 
 const Profile = () => {
   const { profile, setProfile, setProfileError: setError } = useProfile();
+  const { currentCard, updateCardMeta } = useCard();
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
@@ -22,6 +24,15 @@ const Profile = () => {
   const [urlInput, setUrlInput] = useState(profile?.avatar_url || "");
   const [imgError, setImgError] = useState(false);
   const [savedUsername, setSavedUsername] = useState<string | null>(null);
+  const [useProfileBio, setUseProfileBio] = useState<boolean>(
+    !currentCard?.bio,
+  );
+  const [cardBio, setCardBio] = useState<string>(currentCard?.bio ?? "");
+
+  useEffect(() => {
+    setUseProfileBio(!currentCard?.bio);
+    setCardBio(currentCard?.bio ?? "");
+  }, [currentCard?.id, currentCard?.bio]);
 
   useEffect(() => {
     setUrlInput(profile?.avatar_url || "");
@@ -103,6 +114,13 @@ const Profile = () => {
       });
       setSavedUsername(updated.username);
       setProfile(updated);
+
+      if (currentCard) {
+        const nextBio = useProfileBio ? null : cardBio;
+        if (nextBio !== currentCard.bio) {
+          await updateCardMeta({ bio: nextBio });
+        }
+      }
     } catch (err) {
       if (err instanceof ApiError) setError(err.message);
       else setError("Failed to save profile.");
@@ -207,21 +225,62 @@ const Profile = () => {
           />
         </label>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
-          Bio
-          <Textarea
-            rows={4}
-            maxLength={BIO_MAX_LENGTH}
-            value={profile?.bio || ""}
-            onChange={(e) =>
-              setProfile((p) => (p ? { ...p, bio: e.target.value } : p))
-            }
-            placeholder="Tell visitors what you do…"
-          />
-          <span className="text-xs text-neutral-500 dark:text-neutral-400 text-right">
-            {(profile?.bio ?? "").length}/{BIO_MAX_LENGTH}
-          </span>
-        </label>
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-3 ring-1 ring-black/5">
+            <div>
+              <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+                Use profile bio
+              </div>
+              <div className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
+                {useProfileBio
+                  ? "This card uses your global profile bio."
+                  : "This card uses its own custom bio."}
+              </div>
+            </div>
+            <button
+              onClick={() => setUseProfileBio((v) => !v)}
+              disabled={isSaving}
+              className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                useProfileBio
+                  ? "bg-black dark:bg-white"
+                  : "bg-neutral-300 dark:bg-neutral-600"
+              }`}
+              aria-checked={useProfileBio}
+              role="switch"
+            >
+              <span
+                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white dark:bg-black transition-transform ${
+                  useProfileBio ? "translate-x-5" : "translate-x-0.5"
+                }`}
+              />
+            </button>
+          </div>
+
+          <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
+            {useProfileBio ? "Profile bio" : "Card bio"}
+            <Textarea
+              rows={4}
+              maxLength={BIO_MAX_LENGTH}
+              value={useProfileBio ? profile?.bio || "" : cardBio}
+              onChange={(e) => {
+                if (useProfileBio) {
+                  setProfile((p) => (p ? { ...p, bio: e.target.value } : p));
+                } else {
+                  setCardBio(e.target.value);
+                }
+              }}
+              placeholder={
+                useProfileBio
+                  ? "Tell visitors what you do…"
+                  : "This bio only shows on this card."
+              }
+            />
+            <span className="text-xs text-neutral-500 dark:text-neutral-400 text-right">
+              {(useProfileBio ? profile?.bio ?? "" : cardBio).length}/
+              {BIO_MAX_LENGTH}
+            </span>
+          </label>
+        </div>
 
         <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Avatar URL (Optional)
