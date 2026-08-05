@@ -32,6 +32,7 @@ type CardContextType = {
   renameCard: (newName: string) => Promise<void>;
   updateCardMeta: (meta: {
     bio?: string | null;
+    use_profile_bio?: boolean;
     is_public?: boolean;
   }) => Promise<void>;
   moveLink: (linkId: string, collectionId: string | null) => Promise<void>;
