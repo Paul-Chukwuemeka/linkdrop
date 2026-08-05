@@ -23,12 +23,12 @@ export function PublicCollection({
 
   return (
     <div
-      className="flex flex-col rounded-[14px] px-[10px] pt-[14px] pb-[10px] overflow-visible"
+      className="flex flex-col rounded-[14px] px-2.5 pt-3.5 pb-2.5 overflow-visible"
       style={buttonBgStyle}
     >
       {/* Collection Title */}
       <h3
-        className="text-center font-bold text-lg tracking-tight px-4 mb-2"
+        className="text-center capitalize font-bold text-lg tracking-tight px-4 mb-2"
         style={{ color: textColor }}
       >
         {collection.title}
