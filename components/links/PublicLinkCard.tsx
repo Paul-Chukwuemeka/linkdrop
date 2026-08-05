@@ -96,7 +96,7 @@ export function PublicLinkCard({
   return (
     <Link
       href={safeHref(link.url)}
-      className={`group relative w-full px-5 h-14 font-semibold capitalize flex items-center justify-between transition-transform active:translate-x-[2px] active:translate-y-[2px] active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]}`}
+      className={`group relative w-full px-5 h-14 font-semibold capitalize flex items-center justify-between transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]} ${menuOpen ? "z-50" : ""}`}
       style={{ ...buttonBgStyle, ...shadowStyle }}
       target="_blank"
       rel="noopener noreferrer"
