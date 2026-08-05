@@ -197,7 +197,7 @@ export default function DashboardPage() {
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
                   disabled={isSettingMain}
-                  className="shadow-(--shadow-card) font-bold text-white w-30 h-9 bg-black dark:bg-white dark:text-black px-3 rounded-full text-xs md:text-md disabled:opacity-50"
+                  className="shadow-(--shadow-card) font-bold text-(--accent-foreground) w-30 h-9 bg-(--accent) px-3 rounded-full text-xs md:text-md disabled:opacity-50"
                 >
                   {isSettingMain ? <ButtonLoader label="Saving…" /> : "Set as main card"}
                 </button>
