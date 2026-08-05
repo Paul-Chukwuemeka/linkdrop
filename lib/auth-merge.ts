@@ -60,7 +60,6 @@ export async function linkGoogleUser({
   account,
 }: LinkGoogleUserArgs): Promise<LinkedGoogleUser | null> {
   let user = await prisma.user.findUnique({ where: { email } })
-  const userAtStart = user
 
   if (user?.password) {
     return null
@@ -99,7 +98,8 @@ export async function linkGoogleUser({
     if (!user) throw lastError
   }
 
-  if (!userAtStart) {
+  const cardCount = await prisma.card.count({ where: { userId: user.id } })
+  if (cardCount === 0) {
     const card = await prisma.card.create({
       data: {
         userId: user.id,
