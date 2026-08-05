@@ -82,19 +82,18 @@ export function PublicProfileHeader({
 
       {/* Username / Bio */}
       <div className="mt-1 space-y-2">
-        {bio ? (
+        <p
+          className={`font-medium tracking-wide ${textClasses}`}
+          style={{ color: textColor, opacity: 0.8 }}
+        >
+          @{username}
+        </p>
+        {bio && (
           <p
             className={`mx-auto max-w-md font-medium text-center px-4 ${textClasses}`}
             style={{ color: textColor, opacity: 0.9 }}
           >
             {bio}
-          </p>
-        ) : (
-          <p
-            className={`font-medium tracking-wide ${textClasses}`}
-            style={{ color: textColor, opacity: 0.8 }}
-          >
-            @{username}
           </p>
         )}
       </div>
