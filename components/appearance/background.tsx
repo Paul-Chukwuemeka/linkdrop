@@ -42,8 +42,9 @@ const Background = () => {
     }
     const url = URL.createObjectURL(pendingFile);
     setPendingPreview(url);
+    updateCardStyle({ bg_type: "image", profile_image: url });
     return () => URL.revokeObjectURL(url);
-  }, [pendingFile]);
+  }, [pendingFile, updateCardStyle]);
 
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -329,10 +330,7 @@ const Background = () => {
                 <button
                   type="button"
                   onClick={() => {
-                    if (pendingFile) {
-                      setPendingFile(null);
-                      return;
-                    }
+                    setPendingFile(null);
                     updateCardStyle({ profile_image: null });
                   }}
                   className="self-start text-sm font-semibold text-red-600 hover:underline"
