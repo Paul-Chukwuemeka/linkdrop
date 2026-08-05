@@ -15,7 +15,7 @@ import { BIO_MAX_LENGTH } from "@/lib/validations/cards";
 
 const Profile = () => {
   const { profile, setProfile, setProfileError: setError } = useProfile();
-  const { currentCard, updateCardMeta } = useCard();
+  const { currentCard, setCurrentCard, updateCardMeta } = useCard();
   const [isSaving, setIsSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [cropFile, setCropFile] = useState<File | null>(null);
@@ -240,7 +240,11 @@ const Profile = () => {
               </div>
             </div>
             <button
-              onClick={() => setUseProfileBio((v) => !v)}
+              onClick={() => setUseProfileBio((v) => {
+                const next = !v;
+                setCurrentCard((prev) => prev ? { ...prev, use_profile_bio: next } : prev);
+                return next;
+              })}
               disabled={isSaving}
               className={`relative h-6 w-12 shrink-0 rounded-full transition-colors ${
                 useProfileBio
