@@ -8,7 +8,7 @@ import { useStyle } from "@/context/StyleContext";
 import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
 import { PublicLinkCard } from "@/components/links/PublicLinkCard";
 import { PublicCollection } from "@/components/collections/PublicCollection";
-import { PublictitleSizeClasses, PublictextSizeClasses } from "@/lib/style-mappings";
+import { previewTitleSizeClasses, previewTextSizeClasses } from "@/lib/style-mappings";
 import { fonts } from "@/lib/fonts";
 import { isLight, darken, lighten } from "@/utils/colors";
 
@@ -102,6 +102,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               text_size={cardStyle.text_size}
               text_color={textColor}
               title_color={cardStyle.title_color || textColor}
+              preview
             />
 
             <div className="mt-4 flex flex-col gap-4">
@@ -154,7 +155,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               </div>
             )}
             <p
-              className={`mt-3 font-black ${PublictitleSizeClasses[cardStyle.title_size ?? "medium"]}`}
+              className={`mt-3 font-black ${previewTitleSizeClasses[cardStyle.title_size ?? "medium"]}`}
               style={{
                 color: cardStyle.title_color
                   ? `#${cardStyle.title_color}`
@@ -166,7 +167,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               {profile?.fullname}
             </p>
             <p
-              className={`mt-1 font-semibold ${PublictextSizeClasses[cardStyle.text_size ?? "medium"]}`}
+              className={`mt-1 font-semibold ${previewTextSizeClasses[cardStyle.text_size ?? "medium"]}`}
               style={{
                 color: cardStyle.text_color
                   ? `#${cardStyle.text_color}`
@@ -178,7 +179,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
 
             {profile?.bio && (
               <p
-                className={`mt-1 font-semibold text-center px-2 sm:px-4 ${PublictextSizeClasses[cardStyle.text_size ?? "medium"]}`}
+                className={`mt-1 font-semibold text-center px-2 sm:px-4 ${previewTextSizeClasses[cardStyle.text_size ?? "medium"]}`}
                 style={{
                   color: cardStyle.text_color
                     ? `#${cardStyle.text_color}`

@@ -87,6 +87,19 @@ export const PublictextSizeClasses = {
   large: "text-xl",
 };
 
+// Size mappings for the scaled-down card preview
+export const previewTitleSizeClasses = {
+  small: "text-sm",
+  medium: "text-base",
+  large: "text-lg",
+};
+
+export const previewTextSizeClasses = {
+  small: "text-[10px]",
+  medium: "text-xs",
+  large: "text-sm",
+};
+
 // Button radius mappings
 export const PublicbuttonRadiusClasses = {
   pill: "rounded-full",

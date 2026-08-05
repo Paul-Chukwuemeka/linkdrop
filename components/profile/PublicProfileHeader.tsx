@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { PublictitleSizeClasses, PublictextSizeClasses } from "@/lib/style-mappings";
+import { PublictitleSizeClasses, PublictextSizeClasses, previewTitleSizeClasses, previewTextSizeClasses } from "@/lib/style-mappings";
 
 interface PublicProfileHeaderProps {
   fullname: string;
@@ -15,6 +15,7 @@ interface PublicProfileHeaderProps {
   title_color?: string | null;
   font_className?: string;
   socialLinks?: { type: string; url: string }[];
+  preview?: boolean;
 }
 
 export function PublicProfileHeader({
@@ -28,10 +29,17 @@ export function PublicProfileHeader({
   title_color,
   font_className,
   socialLinks = [],
+  preview = false,
 }: PublicProfileHeaderProps) {
   const [imgError, setImgError] = useState(false);
   const textColor = text_color ? `#${text_color}` : "#ffffff";
   const titleColor = title_color ? `#${title_color}` : textColor;
+  const titleClasses = preview
+    ? previewTitleSizeClasses[title_size]
+    : PublictitleSizeClasses[title_size];
+  const textClasses = preview
+    ? previewTextSizeClasses[text_size]
+    : PublictextSizeClasses[text_size];
 
   return (
     <header
@@ -66,7 +74,7 @@ export function PublicProfileHeader({
 
       {/* Name */}
       <h1
-        className={`mt-3 font-black tracking-tight ${PublictitleSizeClasses[title_size]}`}
+        className={`mt-3 font-black tracking-tight ${titleClasses}`}
         style={{ color: titleColor }}
       >
         {fullname}
@@ -76,14 +84,14 @@ export function PublicProfileHeader({
       <div className="mt-1 space-y-2">
         {bio ? (
           <p
-            className={`mx-auto max-w-md font-medium text-center px-4 ${PublictextSizeClasses[text_size]}`}
+            className={`mx-auto max-w-md font-medium text-center px-4 ${textClasses}`}
             style={{ color: textColor, opacity: 0.9 }}
           >
             {bio}
           </p>
         ) : (
           <p
-            className={`font-medium tracking-wide ${PublictextSizeClasses[text_size]}`}
+            className={`font-medium tracking-wide ${textClasses}`}
             style={{ color: textColor, opacity: 0.8 }}
           >
             @{username}
