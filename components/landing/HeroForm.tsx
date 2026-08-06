@@ -29,12 +29,13 @@ export function HeroForm() {
           aria-label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="focus:ring-[var(--forest)] focus:border-[var(--forest)]"
         />
       </div>
       <Button
         variant="primary"
         size="lg"
-        className="w-full sm:w-auto"
+        className="w-full sm:w-auto bg-[var(--forest)] text-white hover:bg-[var(--forest)]/90 hover:shadow-md hover:-translate-y-px active:scale-95"
         type="submit"
       >
         Get started for free

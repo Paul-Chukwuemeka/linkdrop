@@ -90,15 +90,15 @@ const Background = () => {
               backgroundColor: hovered
                 ? "#243010"
                 : neighbor
-                  ? "#b8c9a3"
-                  : "#f0efe8",
+                  ? "#d6dcc8"
+                  : "#eae5d8",
               borderRadius: hovered ? "50%" : neighbor ? "30%" : "4px",
-              borderColor: "#e2e0d4",
+              borderColor: "#d8d3c6",
             }}
           />
         );
       })}
-      <div className="w-full backdrop-blur-[8px] h-full absolute bg-[#fffdf7]/60" />
+      <div className="w-full backdrop-blur-[8px] h-full absolute bg-[var(--cream)]/60" />
     </div>
   );
 };

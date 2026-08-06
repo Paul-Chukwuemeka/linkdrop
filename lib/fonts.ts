@@ -101,6 +101,8 @@ export const fonts: FontType[] = [
 
 export const fontVariables = fonts.map((f) => f.font.className).join(" ");
 
+export const landingFontClass = [dmSerif.className, dmSans.className].join(" ");
+
 const appFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-app",

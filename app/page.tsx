@@ -10,7 +10,7 @@ import Footer from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-dvh overflow-hidden flex-col">
+    <main className="relative flex min-h-dvh overflow-hidden flex-col font-[family-name:var(--font-dm-sans)]">
       <Background />
       <div className="relative z-10 mx-auto w-full max-w-7xl flex flex-col flex-1">
         <div className="px-4 sm:px-6 lg:px-8">
