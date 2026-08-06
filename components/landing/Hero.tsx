@@ -14,9 +14,20 @@ export default function Hero() {
         <br />
         <span className="relative inline-block">
           everything
-          <span
-            className="underline-draw absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-[var(--amber)]"
-          />
+          <svg
+            className="underline-draw absolute -bottom-1 left-0 w-full"
+            viewBox="0 0 300 10"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              pathLength="1"
+              d="M2 6 C25 1, 50 11, 75 5 S125 11, 150 5 S200 1, 225 7 S275 11, 298 5"
+              stroke="var(--amber)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+            />
+          </svg>
         </span>{" "}
         you build.
       </h1>

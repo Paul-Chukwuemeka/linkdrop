@@ -23,7 +23,7 @@ export function HeroForm() {
       onSubmit={handleSubmit}
       className="mt-6 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:items-center"
     >
-      <div className="w-full sm:max-w-xs">
+      <div className="w-full sm:max-w-sm">
         <Input
           placeholder="yourname"
           aria-label="Username"
