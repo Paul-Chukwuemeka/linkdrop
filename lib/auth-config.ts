@@ -5,8 +5,6 @@ import { loginSchema } from "@/lib/validations/auth"
 import { prisma } from "@/lib/db"
 import { linkGoogleUser } from "@/lib/auth-merge"
 import { checkLoginRateLimit, resetLoginRateLimit } from "@/lib/rate-limit"
-import { fetchWithRetry } from "@/lib/oauth-retry"
-import { customFetch } from "next-auth"
 import argon2 from "argon2"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -56,7 +54,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           GoogleProvider({
             clientId: process.env.AUTH_GOOGLE_ID,
             clientSecret: process.env.AUTH_GOOGLE_SECRET ?? "",
-            [customFetch]: fetchWithRetry,
           }),
         ]
       : []),
