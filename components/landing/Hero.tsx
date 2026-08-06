@@ -3,19 +3,11 @@ import { HeroForm } from "@/components/landing/HeroForm";
 export default function Hero() {
   return (
     <section className="mt-10 sm:mt-14 lg:mt-16 flex flex-col items-center text-center">
-      <div
-        className="animate-rise inline-flex items-center gap-2 rounded-full bg-white/70 ring-1 ring-[var(--border-soft)] px-4 py-1.5 text-xs font-semibold text-[var(--ink)] mb-6"
-        style={{ animationDelay: "0s" }}
-      >
-        <span className="h-1.5 w-1.5 rounded-full bg-[var(--amber)] animate-pulse" />
-        Free to start — no credit card required
-      </div>
-
       <h1
         className="animate-rise text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] tracking-tight text-[var(--ink)]"
         style={{
           fontFamily: "var(--font-dm-serif)",
-          animationDelay: "0.08s",
+          animationDelay: "0s",
         }}
       >
         One link for
@@ -31,7 +23,7 @@ export default function Hero() {
 
       <p
         className="animate-rise mt-5 sm:mt-6 text-base sm:text-lg text-[var(--text-secondary)] max-w-md mx-auto"
-        style={{ animationDelay: "0.16s" }}
+        style={{ animationDelay: "0.08s" }}
       >
         Create cards, group links into collections, and share a clean public
         profile in minutes.
@@ -39,14 +31,14 @@ export default function Hero() {
 
       <div
         className="animate-rise mt-6 sm:mt-8"
-        style={{ animationDelay: "0.24s" }}
+        style={{ animationDelay: "0.16s" }}
       >
         <HeroForm />
       </div>
 
       <div
         className="animate-rise mt-8 flex items-center gap-1 text-sm text-[var(--text-secondary)]"
-        style={{ animationDelay: "0.32s" }}
+        style={{ animationDelay: "0.24s" }}
       >
         <div className="flex -space-x-3">
           {[
