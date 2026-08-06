@@ -63,16 +63,32 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   ],
   callbacks: {
     async signIn({ user, account }) {
+      console.log("[auth] signIn callback invoked:", {
+        provider: account?.provider,
+        email: user?.email,
+        hasAccount: !!account,
+      })
       if (account?.provider === "google") {
         const email = (user.email ?? "").toLowerCase()
-        if (!email) return false
-        const linked = await linkGoogleUser({
-          email,
-          name: user.name,
-          image: user.image,
-          account,
-        })
-        if (!linked) return false
+        if (!email) {
+          console.error("[auth] Google sign-in denied: no email")
+          return false
+        }
+        try {
+          const linked = await linkGoogleUser({
+            email,
+            name: user.name,
+            image: user.image,
+            account,
+          })
+          console.log("[auth] linkGoogleUser result:", linked ? "success" : "null", email)
+          if (!linked) {
+            return false
+          }
+        } catch (err) {
+          console.error("[auth] Google sign-in error for", email, err)
+          return false
+        }
       }
       return true
     },
