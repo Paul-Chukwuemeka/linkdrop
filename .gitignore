@@ -66,6 +66,7 @@ CLAUDE.md
 Thumbs.db
 
 /lib/generated/prisma
-skill.md
-skill.md
-skill.md
+
+# Supabase
+/supabase/
+/dump.sql
