@@ -24,7 +24,7 @@ export default function Hero() {
               pathLength="1"
               d="M2 6 C25 1, 50 11, 75 5 S125 11, 150 5 S200 1, 225 7 S275 11, 298 5"
               stroke="var(--amber)"
-              strokeWidth="2.5"
+              strokeWidth="3"
               strokeLinecap="round"
             />
           </svg>
