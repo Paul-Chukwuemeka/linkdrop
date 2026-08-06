@@ -12,7 +12,12 @@ handlers.GET = async function GET(request: NextRequest) {
       headers: { "Content-Type": "application/json" },
     })
   }
-  return originalGET(request)
+  try {
+    return await originalGET(request)
+  } catch (error) {
+    console.error("[auth] GET callback error:", error)
+    throw error
+  }
 }
 
 handlers.POST = async function POST(request: NextRequest) {
@@ -22,7 +27,12 @@ handlers.POST = async function POST(request: NextRequest) {
       headers: { "Content-Type": "application/json" },
     })
   }
-  return originalPOST(request)
+  try {
+    return await originalPOST(request)
+  } catch (error) {
+    console.error("[auth] POST callback error:", error)
+    throw error
+  }
 }
 
 export const { GET, POST } = handlers
