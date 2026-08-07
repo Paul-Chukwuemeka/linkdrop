@@ -2,6 +2,7 @@
 
 import { Check, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { FieldError } from "@/components/auth/FieldError";
 
 const TAKEN_USERNAMES = ["admin", "root", "test", "linkdrop", "support"];
 const USERNAME_PATTERN = /^[a-zA-Z0-9_-]+$/;
@@ -73,9 +74,7 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
       </div>
 
       {error ? (
-        <p id={`${id}-error`} className="text-xs text-red-500">
-          {error}
-        </p>
+        <FieldError id={`${id}-error`}>{error}</FieldError>
       ) : availability === "checking" ? (
         <p id={`${id}-hint`} className="text-xs text-secondary">
           Checking…

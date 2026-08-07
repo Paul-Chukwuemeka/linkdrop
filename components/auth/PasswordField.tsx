@@ -3,6 +3,7 @@
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { PASSWORD_MIN_LENGTH } from "@/lib/validations/auth";
+import { FieldError } from "@/components/auth/FieldError";
 
 const STRENGTH_SEGMENTS = [
   (v: string) => v.length >= PASSWORD_MIN_LENGTH,
@@ -84,9 +85,7 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
         </div>
       )}
       {error && (
-        <p id={`${id}-error`} className="text-xs text-red-500">
-          {error}
-        </p>
+        <FieldError id={`${id}-error`}>{error}</FieldError>
       )}
     </div>
   );

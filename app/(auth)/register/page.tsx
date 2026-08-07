@@ -1,10 +1,18 @@
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Spinner } from "@/components/ui/Spinner";
+import { Check, Zap } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
 const meshBackground =
   "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(200, 150, 56, 0.15) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 80% 80%, rgba(42, 80, 42, 0.4) 0%, transparent 50%), #1B3A1B";
+const glowBackground =
+  "radial-gradient(ellipse 70% 60% at 50% 45%, rgba(200, 150, 56, 0.08) 0%, transparent 60%)";
+
+const featurePills = [
+  { icon: Check, label: "Free forever" },
+  { icon: Zap, label: "No code" },
+];
 
 export default function RegisterPage() {
   return (
@@ -15,6 +23,20 @@ export default function RegisterPage() {
         style={{ background: meshBackground }}
       >
         <div aria-hidden="true" className="bg-noise pointer-events-none absolute inset-0" />
+        {/* warm spotlight behind the text */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+          style={{ background: glowBackground }}
+        />
+        {/* watermark mark */}
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[24rem] font-bold leading-none text-white/[0.03]"
+        >
+          L
+        </span>
+
         <Link
           href="/"
           className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
@@ -22,13 +44,26 @@ export default function RegisterPage() {
           LinkDrop
         </Link>
 
-        <div className="relative z-10 flex flex-col items-center text-center">
-          <h2 className="max-w-sm text-4xl font-medium leading-tight tracking-[-0.02em] text-white">
-            Make it unmistakably yours.
+        <div className="relative z-10 flex flex-col items-center pb-16 text-center">
+          <h2 className="max-w-sm text-4xl font-medium leading-tight tracking-tight text-white">
+            Make it unmistakably{" "}
+            <span className="headline-underline">yours</span>.
           </h2>
-          <p className="mt-4 max-w-xs text-sm text-white/70">
+          <p className="mt-4 max-w-sm text-center text-base leading-relaxed text-white/70">
             Your work deserves a better link-in-bio.
           </p>
+
+          <div className="mt-8 flex items-center gap-3">
+            {featurePills.map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur-sm"
+              >
+                <Icon className="h-3 w-3" aria-hidden="true" />
+                {label}
+              </span>
+            ))}
+          </div>
         </div>
 
         <p className="relative z-10 text-xs text-white/50">© 2026 LinkDrop</p>
@@ -49,7 +84,7 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-border-subtle sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
+        <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
           <h1 className="text-2xl font-semibold tracking-tight text-primary">
             Create your LinkDrop
           </h1>

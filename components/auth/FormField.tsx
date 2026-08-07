@@ -1,4 +1,5 @@
 import React from "react";
+import { FieldError } from "@/components/auth/FieldError";
 
 const inputBase =
   "w-full bg-white px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all rounded-lg";
@@ -30,9 +31,7 @@ export function FormField({
         className: [inputBase, inputClassName].filter(Boolean).join(" "),
       })}
       {error && (
-        <p id={`${id}-error`} className="text-xs text-red-500">
-          {error}
-        </p>
+        <FieldError id={`${id}-error`}>{error}</FieldError>
       )}
     </div>
   );
