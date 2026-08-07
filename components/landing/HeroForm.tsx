@@ -1,9 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
+const inputId = "hero-username";
 
 export function HeroForm() {
   const router = useRouter();
@@ -19,27 +20,41 @@ export function HeroForm() {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="mt-6 sm:mt-10 flex flex-col sm:flex-row gap-3 sm:items-center"
-    >
-      <div className="w-full sm:max-w-sm">
-        <Input
+    <div className="mt-8">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-wrap items-center justify-center"
+      >
+        <label htmlFor={inputId} className="sr-only">
+          Your LinkDrop username
+        </label>
+        {/* visually hidden label so the visible prefix is not read twice */}
+        <span
+          aria-hidden="true"
+          className="rounded-l-lg border border-r-0 border-border-subtle bg-white px-4 py-3 text-sm font-medium text-secondary"
+        >
+          linkdrop.co/
+        </span>
+        <input
+          id={inputId}
+          type="text"
           placeholder="yourname"
-          aria-label="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="focus:ring-[var(--forest)] focus:border-[var(--forest)]"
+          className="w-40 rounded-r-lg border border-border-subtle bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary/60 focus:outline-none focus:ring-2 focus:ring-brand-green/20 sm:w-48"
         />
-      </div>
-      <Button
-        variant="primary"
-        size="lg"
-        className="w-full sm:w-auto bg-[var(--forest)] text-white hover:bg-[var(--forest)]/90 hover:shadow-md hover:-translate-y-px active:scale-95"
-        type="submit"
-      >
-        Get started for free
-      </Button>
-    </form>
+        <button
+          type="submit"
+          className="ml-3 rounded-lg border border-transparent bg-brand-green px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-brand-green-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2"
+        >
+          Get started for free
+        </button>
+      </form>
+
+      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-secondary">
+        <Check className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
+        No credit card required. Free forever.
+      </p>
+    </div>
   );
 }

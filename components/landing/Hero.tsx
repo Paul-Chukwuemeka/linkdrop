@@ -1,50 +1,77 @@
+/* eslint-disable @next/next/no-img-element -- placeholder avatars from pravatar.cc */
+
 import { HeroForm } from "@/components/landing/HeroForm";
+import { ExampleModal } from "@/components/landing/ExampleModal";
+import PhoneMockup from "@/components/landing/PhoneMockup";
+
+const avatars = Array.from(
+  { length: 5 },
+  (_, i) => `https://i.pravatar.cc/48?img=${i + 1}`,
+);
 
 export default function Hero() {
   return (
-    <section className="mt-10 sm:mt-14 lg:mt-16 flex flex-col items-center text-center">
-      <h1
-        className="animate-rise text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] tracking-tight text-[var(--ink)]"
-        style={{
-          fontFamily: "var(--font-dm-serif)",
-          animationDelay: "0s",
-        }}
-      >
-        One link for
-        <br />
-        <span className="relative inline-block">
-          everything
-          <svg
-            className="underline-draw absolute -bottom-1 left-0 w-full"
-            viewBox="0 0 300 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              pathLength="1"
-              d="M2 6 C25 1, 50 11, 75 5 S125 11, 150 5 S200 1, 225 7 S275 11, 298 5"
-              stroke="var(--amber)"
-              strokeWidth="3"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>{" "}
-        you build.
-      </h1>
-
-      <p
-        className="animate-rise mt-5 sm:mt-6 text-base sm:text-lg text-[var(--text-secondary)] max-w-md mx-auto"
-        style={{ animationDelay: "0.08s" }}
-      >
-        Create cards, group links into collections, and share a clean public
-        profile in minutes.
-      </p>
-
+    <section className="relative overflow-hidden">
+      {/* radial gold glow behind the hero text only */}
       <div
-        className="animate-rise mt-6 sm:mt-8"
-        style={{ animationDelay: "0.16s" }}
-      >
-        <HeroForm />
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(200, 150, 56, 0.06) 0%, transparent 100%)",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-12 px-6 pb-16 pt-16 md:px-12 lg:grid-cols-[11fr_9fr] lg:pb-24 lg:pt-[120px]">
+        {/* left column */}
+        <div className="flex flex-col items-center text-center">
+          <h1 className="text-4xl font-medium leading-[1.1] tracking-[-0.02em] text-primary sm:text-5xl lg:text-[48px]">
+            Your work deserves a better link-in-bio.
+            <br />
+            Make it unmistakably{" "}
+            {/* custom gold underline, not an image */}
+            <span className="rounded-[2px] border-b-[3px] border-accent-gold pb-[2px]">
+              yours
+            </span>
+            .
+          </h1>
+
+          <p className="mt-5 max-w-xl text-lg text-secondary">
+            Showcase your projects, group links by topic, and share a profile
+            that looks like you designed it — no code needed.
+          </p>
+
+          <HeroForm />
+
+          {/* social proof */}
+          <div className="mt-8 flex items-center justify-center">
+            <div className="flex items-center">
+              {avatars.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  width={32}
+                  height={32}
+                  loading="lazy"
+                  className={`h-8 w-8 rounded-full border-2 border-background-primary object-cover ${
+                    i > 0 ? "-ml-2" : ""
+                  }`}
+                />
+              ))}
+            </div>
+            <p className="ml-3 text-sm font-medium text-secondary">
+              Join 12,000+ creators and makers
+            </p>
+          </div>
+
+          <ExampleModal />
+        </div>
+
+        {/* right column — mockup is decorative in the hero */}
+        <div aria-hidden="true" className="flex justify-center lg:justify-end">
+          <PhoneMockup id="example-mockup" />
+        </div>
       </div>
     </section>
   );
