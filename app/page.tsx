@@ -1,7 +1,6 @@
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
 import HowItWorks from "@/components/landing/HowItWorks";
-import Testimonial from "@/components/landing/Testimonial";
 import TemplatePreview from "@/components/landing/TemplatePreview";
 import TrustBar from "@/components/landing/TrustBar";
 import Footer from "@/components/landing/Footer";
@@ -13,7 +12,6 @@ export default function Home() {
       <div className="flex flex-1 flex-col">
         <Hero />
         <HowItWorks />
-        <Testimonial />
         <TemplatePreview />
         <TrustBar />
       </div>

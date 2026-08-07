@@ -1,13 +1,6 @@
-/* eslint-disable @next/next/no-img-element -- placeholder avatars from pravatar.cc */
-
 import { HeroForm } from "@/components/landing/HeroForm";
 import { ExampleModal } from "@/components/landing/ExampleModal";
 import PhoneMockup from "@/components/landing/PhoneMockup";
-
-const avatars = Array.from(
-  { length: 5 },
-  (_, i) => `https://i.pravatar.cc/48?img=${i + 1}`,
-);
 
 /* Mini profile cards shown on mobile (<md) as a horizontal scroll strip */
 const miniProfiles = [
@@ -48,28 +41,6 @@ export default function Hero() {
           </p>
 
           <HeroForm />
-
-          {/* social proof */}
-          <div className="mt-8 flex items-center justify-center">
-            <div className="flex items-center">
-              {avatars.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt=""
-                  width={32}
-                  height={32}
-                  loading="lazy"
-                  className={`h-8 w-8 rounded-full border-2 border-background-primary object-cover ${
-                    i > 0 ? "-ml-2" : ""
-                  }`}
-                />
-              ))}
-            </div>
-            <p className="ml-3 text-sm font-medium text-secondary">
-              Join 12,000+ creators and makers
-            </p>
-          </div>
 
           <ExampleModal />
         </div>
