@@ -2,6 +2,20 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ── Landing design tokens ───────────────────────────────── */
+@theme {
+  --color-background-primary: #f5f2e9;
+  --color-background-elevated: #ffffff;
+  --color-primary: #1a1a1a;
+  --color-secondary: #6b6b6b;
+  --color-brand-green: #1b3a1b;
+  --color-brand-green-hover: #2a502a;
+  --color-accent-gold: #c8963e;
+  --color-border-subtle: rgba(26, 26, 26, 0.08);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
 :root {
   --text-primary: #1a1a1a;
   --text-secondary: #666666;
@@ -82,6 +96,8 @@ select:focus-visible {
 
 html {
   overflow-x: hidden;
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
 }
 
 .safe-area-bottom {
@@ -127,19 +143,25 @@ html {
   animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* ── Headline underline draw ──────────────────────────────── */
-@keyframes underline-draw {
+/* ── Phone mockup float ──────────────────────────────────── */
+@keyframes float {
   from {
-    transform: scaleX(0);
+    transform: translateY(0);
   }
   to {
-    transform: scaleX(1);
+    transform: translateY(-8px);
   }
 }
 
-.underline-draw {
-  transform-origin: left;
-  animation: underline-draw 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+.animate-float {
+  will-change: transform;
+  animation: float 4s ease-in-out infinite alternate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float {
+    animation: none;
+  }
 }
 
 /* ── Noise texture overlay ────────────────────────────────── */
