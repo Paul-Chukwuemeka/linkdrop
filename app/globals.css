@@ -127,41 +127,50 @@ html {
   --border-soft: #e8e2d4;
 }
 
-/* ── Hero staggered entrance ──────────────────────────────── */
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* ── Phone mockup ────────────────────────────────────────── */
+
+/* Perspective wrapper — rotation + hover effect; float on inner child */
+.phone-wrapper {
+  transform: perspective(1000px) rotateY(-4deg);
+  transition: transform 400ms ease;
+  will-change: transform;
+}
+
+@media (hover: hover) {
+  .phone-wrapper:hover {
+    transform: perspective(1000px) rotateY(-2deg) translateY(-4px);
   }
 }
 
-.animate-rise {
-  animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-/* ── Phone mockup float ──────────────────────────────────── */
 @keyframes float {
-  from {
+  0%,
+  100% {
     transform: translateY(0);
   }
-  to {
-    transform: translateY(-8px);
+  50% {
+    transform: translateY(-10px);
   }
 }
 
 .animate-float {
   will-change: transform;
-  animation: float 4s ease-in-out infinite alternate;
+  animation: float 6s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .phone-wrapper,
   .animate-float {
     animation: none;
   }
+}
+
+/* ── Headline gold underline ──────────────────────────────── */
+.headline-underline {
+  text-decoration: underline;
+  text-decoration-color: #c8963e;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  text-decoration-skip-ink: none;
 }
 
 /* ── Noise texture overlay ────────────────────────────────── */

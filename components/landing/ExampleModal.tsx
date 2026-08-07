@@ -30,9 +30,12 @@ export function ExampleModal() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="mt-4 inline-block rounded-md text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2"
+        className="group mt-4 inline-block rounded-md text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2"
       >
-        See an example profile &rarr;
+        See an example profile{" "}
+        <span className="inline-block transition-transform duration-200 group-hover:translate-x-1">
+          &rarr;
+        </span>
       </button>
 
       {open && (

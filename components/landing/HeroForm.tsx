@@ -41,7 +41,7 @@ export function HeroForm() {
           placeholder="yourname"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-40 rounded-r-lg border border-border-subtle bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary/60 focus:outline-none focus:ring-2 focus:ring-brand-green/20 sm:w-48"
+          className="w-40 rounded-r-lg border border-border-subtle bg-white px-4 py-3 text-sm text-primary placeholder:text-secondary/60 focus:outline-none focus:ring-2 focus:ring-brand-green/30 focus:ring-offset-2 focus:ring-offset-background-primary sm:w-48"
         />
         <button
           type="submit"

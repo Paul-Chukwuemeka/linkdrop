@@ -33,7 +33,7 @@ export default function Nav() {
             <li key={link.label}>
               <Link
                 href={link.href}
-                className={`text-sm font-medium text-secondary transition-colors hover:text-primary ${focusRing}`}
+                className={`text-sm font-medium text-primary opacity-70 transition-opacity duration-200 hover:opacity-100 ${focusRing}`}
               >
                 {link.label}
               </Link>
@@ -80,7 +80,7 @@ export default function Nav() {
                 <Link
                   href={link.href}
                   onClick={() => setOpen(false)}
-                  className={`block py-3 text-sm font-medium text-secondary transition-colors hover:text-primary ${focusRing}`}
+                  className={`block py-3 text-sm font-medium text-primary opacity-70 transition-opacity duration-200 hover:opacity-100 ${focusRing}`}
                 >
                   {link.label}
                 </Link>
