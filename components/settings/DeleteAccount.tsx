@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
 import { apiFetch, ApiError } from "@/lib/api";
-import { signOut } from "next-auth/react";
+import { logout } from "@/lib/logout";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -31,7 +31,7 @@ export function DeleteAccount({
         json: payload,
       });
       toast.success("Account deleted.");
-      await signOut({ callbackUrl: "/login" });
+      await logout();
     } catch (err) {
       setIsDeleting(false);
       setIsOpen(false);

@@ -9,7 +9,7 @@ import { useCard } from "@/context/CardContext"
 import { PiEyesLight, PiEyeBold } from "react-icons/pi"
 import { FaPaintbrush } from "react-icons/fa6"
 import { IoIdCardSharp } from "react-icons/io5"
-import { signOut } from "next-auth/react"
+import { logout } from "@/lib/logout"
 import { Home, Settings } from "lucide-react"
 import { ThemeToggle } from "./ThemeToggle"
 
@@ -108,7 +108,7 @@ export function Sidebar() {
         <Button
           variant="ghost"
           className="w-full"
-          onClick={() => signOut({ callbackUrl: "/login" })}
+          onClick={() => logout()}
         >
           Log out
         </Button>

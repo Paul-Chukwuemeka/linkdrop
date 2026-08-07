@@ -29,7 +29,7 @@ import { CreateLink } from "@/components/links/CreateLink";
 import { CreateCollection } from "@/components/collections/CreateCollection";
 import { CollectionBlock } from "@/components/collections/CollectionBlock";
 import { CardSwitcher } from "@/components/cards/CardSwitcher";
-import { signOut } from "next-auth/react";
+import { logout as logoutAll } from "@/lib/logout";
 
 export default function DashboardPage() {
   const { profile, profileError } = useProfile();
@@ -53,7 +53,7 @@ export default function DashboardPage() {
   const error = cardError || profileError;
   const setError = setCardError;
 
-  const logout = () => signOut({ callbackUrl: "/login" });
+  const logout = () => logoutAll();
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
