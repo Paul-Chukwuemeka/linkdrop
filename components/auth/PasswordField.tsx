@@ -68,28 +68,25 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
         </button>
       </div>
 
-      {error ? (
+      {value.length > 0 && (
+        <div id={`${id}-strength`} className="space-y-1.5">
+          <div className="flex gap-1.5">
+            {Array.from({ length: 4 }, (_, i) => (
+              <div
+                key={i}
+                className={`h-1 flex-1 rounded-full transition-colors ${
+                  i < score ? tone : "bg-gray-200"
+                }`}
+              />
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-gray-500">{strengthLabel(score)}</p>
+        </div>
+      )}
+      {error && (
         <p id={`${id}-error`} className="text-xs text-red-500">
           {error}
         </p>
-      ) : (
-        <div id={`${id}-strength`} className="space-y-1.5">
-          {value.length > 0 && (
-            <>
-              <div className="flex gap-1.5">
-                {Array.from({ length: 4 }, (_, i) => (
-                  <div
-                    key={i}
-                    className={`h-1 flex-1 rounded-full transition-colors ${
-                      i < score ? tone : "bg-gray-200"
-                    }`}
-                  />
-                ))}
-              </div>
-              <p className="text-xs text-gray-500">{strengthLabel(score)}</p>
-            </>
-          )}
-        </div>
       )}
     </div>
   );
