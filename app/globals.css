@@ -117,16 +117,6 @@ html {
   display: none;
 }
 
-/* ── Landing palette (Forest & Cream) ─────────────────────── */
-:root {
-  --cream: #f7f3ea;
-  --ink: #1d1b16;
-  --forest: #243010;
-  --forest-soft: #3d5a2e;
-  --amber: #c77e1f;
-  --border-soft: #e8e2d4;
-}
-
 /* ── Phone mockup ────────────────────────────────────────── */
 
 /* Perspective wrapper — rotation + hover effect; float on inner child */

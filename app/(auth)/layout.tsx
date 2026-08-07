@@ -1,9 +1,6 @@
-import Background from "@/components/background";
-
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="relative min-h-dvh flex items-center justify-center overflow-hidden px-4 sm:px-6 py-8 sm:py-12">
-      <Background/>
+    <main className="relative flex min-h-dvh items-center justify-center bg-background-primary px-4 py-8 sm:px-6 sm:py-12">
       <div className="relative z-10 w-full max-w-sm">{children}</div>
     </main>
   );
