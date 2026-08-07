@@ -1,19 +1,42 @@
 "use client"
 
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { ButtonLoader } from "@/components/ui/ButtonLoader"
+import { FormField } from "@/components/auth/FormField"
+import { GoogleButton } from "@/components/auth/GoogleButton"
+import { UsernameField } from "@/components/auth/UsernameField"
+import { PasswordField } from "@/components/auth/PasswordField"
 import { signIn } from "next-auth/react"
 import { useSearchParams } from "next/navigation"
 import { PASSWORD_PATTERN, PASSWORD_MIN_LENGTH } from "@/lib/validations/auth"
+import { Check, Loader2 } from "lucide-react"
+import Link from "next/link"
 import React, { useState } from "react"
-import { FcGoogle } from "react-icons/fc"
 
 interface FormState {
   username: string
   email: string
   fullname: string
   password: string
+}
+
+function getFieldError(key: keyof FormState, value: string) {
+  if (key === "username") {
+    if (!value.trim()) return "Username required."
+    if (value.trim().length < 3) return "At least 3 characters."
+    if (!/^[a-zA-Z0-9_-]+$/.test(value.trim())) return "Only letters, numbers, _, and - allowed."
+  }
+  if (key === "email") {
+    if (!value.trim()) return "Email required."
+    if (!/^[^@]+@[^@]+\.[^@]+$/.test(value.trim())) return "Invalid email format."
+  }
+  if (key === "fullname") {
+    if (!value.trim()) return "Full name required."
+  }
+  if (key === "password") {
+    if (!value) return "Password required."
+    if (value.length < PASSWORD_MIN_LENGTH) return `Minimum ${PASSWORD_MIN_LENGTH} characters.`
+    if (!PASSWORD_PATTERN.test(value)) return "Need an uppercase letter, a lowercase letter, and a number."
+  }
+  return ""
 }
 
 export function RegisterForm() {
@@ -30,36 +53,37 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
-
-  function validateField(key: string, value: string) {
-    let msg = ""
-    if (key === "username") {
-      if (!value.trim()) msg = "Username required."
-      else if (!/^[a-zA-Z0-9_-]+$/.test(value)) msg = "Only letters, numbers, _, and - allowed."
-    }
-    if (key === "email") {
-      if (!value.trim()) msg = "Email required."
-      else if (!/^[^@]+@[^@]+\.[^@]+$/.test(value)) msg = "Invalid email format."
-    }
-    if (key === "password") {
-      if (value.length > 0 && value.length < PASSWORD_MIN_LENGTH) {
-        msg = `Minimum ${PASSWORD_MIN_LENGTH} characters.`
-      } else if (value.length > 0 && !PASSWORD_PATTERN.test(value)) {
-        msg = "Need an uppercase letter, a lowercase letter, and a number."
-      }
-    }
-    setFieldErrors((prev) => ({ ...prev, [key]: msg }))
-  }
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({})
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
-    validateField(key, value)
+    if (key !== "username") {
+      const msg = getFieldError(key, value)
+      setFieldErrors((prev) => ({ ...prev, [key]: msg }))
+    }
+  }
+
+  function handleBlur(key: keyof FormState) {
+    const msg = getFieldError(key, form[key])
+    setFieldErrors((prev) => ({ ...prev, [key]: msg }))
   }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
+
+    const errors: Partial<Record<keyof FormState, string>> = {}
+    let hasErrors = false
+    ;(Object.keys(form) as (keyof FormState)[]).forEach((key) => {
+      const msg = getFieldError(key, form[key])
+      if (msg) hasErrors = true
+      errors[key] = msg
+    })
+    if (hasErrors) {
+      setFieldErrors(errors)
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
@@ -73,6 +97,16 @@ export function RegisterForm() {
           password: form.password,
         }),
       })
+
+      if (res.status === 409) {
+        const data = await res.json()
+        const detail: string = data.detail || ""
+        const field = detail.toLowerCase().startsWith("email") ? "email" : "username"
+        setFieldErrors({ [field]: detail || "Already in use." })
+        setError(null)
+        setIsSubmitting(false)
+        return
+      }
 
       if (!res.ok) {
         const data = await res.json()
@@ -94,110 +128,101 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={async () => {
+    <div>
+      <GoogleButton
+        onClick={() => {
           setIsGoogleSubmitting(true)
-          try {
-            await signIn("google", { redirectTo: "/dashboard" })
-          } finally {
+          signIn("google", { redirectTo: "/dashboard" }).finally(() =>
             setIsGoogleSubmitting(false)
-          }
+          )
         }}
-        disabled={isGoogleSubmitting || isSubmitting}
-        className="w-full flex items-center justify-center gap-2 border border-neutral-200 hover:bg-neutral-50"
-      >
-        {isGoogleSubmitting ? (
-          <ButtonLoader label="Redirecting…" />
-        ) : (
-          <>
-            <FcGoogle className="h-5 w-5" />
-            Create account with Google
-          </>
-        )}
-      </Button>
+        loading={isGoogleSubmitting}
+        disabled={isSubmitting}
+      />
 
-      <div className="relative my-2">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-neutral-200" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-3 text-neutral-500">or continue with</span>
-        </div>
+      <div className="my-6 flex items-center gap-4">
+        <div className="h-px flex-1 bg-gray-200" />
+        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
+          or continue with
+        </span>
+        <div className="h-px flex-1 bg-gray-200" />
       </div>
 
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Username
-          <Input
-            autoComplete="username"
-            value={form.username}
-            onChange={(e) => update("username", e.target.value)}
-            placeholder="yourname"
-            required
-            minLength={3}
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
-          />
-          {fieldErrors.username && <span className="text-xs text-red-600 font-normal">{fieldErrors.username}</span>}
-        </label>
+      <form className="flex flex-col gap-5" onSubmit={onSubmit} noValidate>
+        <UsernameField
+          id="register-username"
+          value={form.username}
+          onChange={(value) => update("username", value)}
+          onBlur={() => handleBlur("username")}
+          error={fieldErrors.username}
+        />
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Email
-          <Input
-            autoComplete="email"
+        <FormField id="register-email" label="Email" error={fieldErrors.email}>
+          <input
             type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}
-            placeholder="you@example.com"
-            required
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
+            onBlur={() => handleBlur("email")}
           />
-          {fieldErrors.email && <span className="text-xs text-red-600 font-normal">{fieldErrors.email}</span>}
-        </label>
+        </FormField>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Full name
-          <Input
+        <FormField id="register-fullname" label="Full name" error={fieldErrors.fullname}>
+          <input
+            type="text"
             autoComplete="name"
+            placeholder="Jane Doe"
             value={form.fullname}
             onChange={(e) => update("fullname", e.target.value)}
-            placeholder="Jane Doe"
-            required
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
+            onBlur={() => handleBlur("fullname")}
           />
-        </label>
+        </FormField>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Password
-          <Input
-            autoComplete="new-password"
-            type="password"
-            value={form.password}
-            onChange={(e) => update("password", e.target.value)}
-            placeholder="Minimum 8 characters"
-            required
-            minLength={8}
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
-          />
-          {fieldErrors.password && <span className="text-xs text-red-600 font-normal">{fieldErrors.password}</span>}
-        </label>
+        <PasswordField
+          id="register-password"
+          value={form.password}
+          onChange={(value) => update("password", value)}
+          onBlur={() => handleBlur("password")}
+          error={fieldErrors.password}
+        />
 
         {error && (
-          <div className="rounded-2xl bg-red-50 p-3 text-sm text-red-700  ring-red-100">
+          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
             {error}
           </div>
         )}
 
-        <Button type="submit" disabled={isSubmitting}>
+        <button
+          type="submit"
+          disabled={isSubmitting || isGoogleSubmitting}
+          className="flex w-full items-center justify-center rounded-lg bg-brand-green py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-brand-green-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+        >
           {isSubmitting ? (
-            <ButtonLoader label="Creating account…" onDark />
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              <span className="sr-only">Creating account…</span>
+            </>
           ) : (
-            "Sign up"
+            "Sign up free"
           )}
-        </Button>
+        </button>
       </form>
+
+      <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-secondary">
+        <Check className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
+        No credit card required. Free forever.
+      </p>
+
+      <p className="mt-6 text-center text-sm text-secondary">
+        Already have an account?{" "}
+        <Link
+          href="/login"
+          className="font-semibold text-brand-green underline-offset-2 hover:underline"
+        >
+          Log in
+        </Link>
+      </p>
     </div>
   )
 }
