@@ -24,7 +24,7 @@ export default function LoginPage() {
           </Link>
           <Link
             href="/register"
-            className="rounded-lg bg-brand-green px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-green-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+            className="rounded-md px-2 py-2 text-sm font-medium text-primary transition-colors hover:text-brand-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
           >
             Sign up free
           </Link>
