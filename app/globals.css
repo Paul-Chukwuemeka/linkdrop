@@ -147,9 +147,32 @@ html {
   animation: float 6s ease-in-out infinite;
 }
 
+/* Slow drifting glow — used by the signup brand panel */
+@keyframes glow-drift {
+  0%,
+  100% {
+    transform: translate(-8%, -5%);
+  }
+  25% {
+    transform: translate(5%, -10%);
+  }
+  50% {
+    transform: translate(9%, 3%);
+  }
+  75% {
+    transform: translate(-3%, 9%);
+  }
+}
+
+.animate-glow-drift {
+  will-change: transform;
+  animation: glow-drift 18s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .phone-wrapper,
-  .animate-float {
+  .animate-float,
+  .animate-glow-drift {
     animation: none;
   }
 }

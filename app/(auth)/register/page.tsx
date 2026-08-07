@@ -23,10 +23,10 @@ export default function RegisterPage() {
         style={{ background: meshBackground }}
       >
         <div aria-hidden="true" className="bg-noise pointer-events-none absolute inset-0" />
-        {/* warm spotlight behind the text */}
+        {/* warm spotlight behind the text — drifts slowly like a wave */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
+          className="animate-glow-drift pointer-events-none absolute -inset-1/4"
           style={{ background: glowBackground }}
         />
         <Link
