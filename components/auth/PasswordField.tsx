@@ -69,7 +69,7 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
       </div>
 
       {value.length > 0 && (
-        <div id={`${id}-strength`} className="space-y-1.5">
+        <div id={`${id}-strength`} className="mt-2 space-y-1">
           <div className="flex gap-1.5">
             {Array.from({ length: 4 }, (_, i) => (
               <div
@@ -80,7 +80,7 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
               />
             ))}
           </div>
-          <p className="mt-3 text-xs text-gray-500">{strengthLabel(score)}</p>
+          <p className="text-xs text-gray-500">{strengthLabel(score)}</p>
         </div>
       )}
       {error && (
