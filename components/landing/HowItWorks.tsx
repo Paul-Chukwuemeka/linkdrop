@@ -1,64 +1,62 @@
+import { Link, Palette, Share2 } from "lucide-react";
 import { Reveal } from "@/components/landing/Reveal";
 
-export default function HowItWorks() {
-  const steps = [
-    {
-      title: "Claim your link",
-      description: "Pick a username — your public page is live in seconds.",
-    },
-    {
-      title: "Style your cards",
-      description: "Add links, organize collections, pick fonts and colors.",
-    },
-    {
-      title: "Share everywhere",
-      description: "Drop your LinkDrop into bios, emails, and QR codes.",
-    },
-  ];
+const steps = [
+  {
+    icon: Link,
+    title: "Claim your brand",
+    description:
+      "Secure your unique URL in seconds. Your page is live before you finish your coffee.",
+  },
+  {
+    icon: Palette,
+    title: "Design without code",
+    description:
+      "Match your fonts, colors, and vibe. Organize links into collections that look intentional.",
+  },
+  {
+    icon: Share2,
+    title: "Convert your audience",
+    description:
+      "One link that drives traffic everywhere you earn — bios, emails, QR codes, and beyond.",
+  },
+];
 
+export default function HowItWorks() {
   return (
-    <section className="py-16 sm:py-20 px-4">
-      <Reveal className="max-w-5xl mx-auto">
-        <h2
-          className="text-center text-3xl sm:text-4xl font-normal tracking-tight text-[var(--ink)]"
-          style={{ fontFamily: "var(--font-dm-serif)" }}
-        >
+    <section id="how-it-works" className="scroll-mt-6 px-6 py-16 md:px-12 lg:py-24">
+      <Reveal className="mx-auto w-full max-w-[1200px]">
+        <h2 className="text-center text-3xl font-medium leading-[1.2] tracking-tight text-primary lg:text-[32px]">
           How it works
         </h2>
 
-        <div className="relative mt-10 sm:mt-14 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
-          {/* connecting hairline (desktop only) */}
-          <div className="hidden sm:block absolute top-6 left-[calc(16.66%+1rem)] right-[calc(16.66%+1rem)] h-px bg-[var(--border-soft)]" />
-
-          {steps.map((step, i) => (
-            <div
-              key={i}
-              className={`group relative bg-white ring-1 ring-[var(--border-soft)] rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
-                i === 1 ? "sm:mt-8" : ""
-              }`}
-            >
-              {/* numbered dot on connecting line */}
-              <div className="hidden sm:flex absolute -top-3 left-1/2 -translate-x-1/2 h-6 w-6 rounded-full bg-[var(--forest)] text-white text-xs font-bold items-center justify-center shadow-md z-10 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110">
-                {i + 1}
-              </div>
-
-              {/* faded serif numeral */}
-              <span
-                className="absolute -top-2 -right-1 text-6xl font-normal text-[var(--forest)]/[0.06] leading-none pointer-events-none select-none"
-                style={{ fontFamily: "var(--font-dm-serif)" }}
-                aria-hidden
+        {/* equal-height grid — every card shares the same top baseline */}
+        <div className="mt-12 grid grid-cols-1 gap-8 md:mt-14 md:grid-cols-3">
+          {steps.map((step, i) => {
+            const Icon = step.icon;
+            return (
+              <article
+                key={i}
+                className="relative rounded-2xl border border-border-subtle bg-white p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg"
               >
-                {i + 1}
-              </span>
+                <div className="absolute -top-3 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-sm font-bold text-white">
+                  {i + 1}
+                </div>
 
-              <h3 className="text-lg font-semibold text-[var(--ink)] mt-2">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-sm text-[var(--text-secondary)] leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+                <Icon
+                  className="mb-4 mt-2 h-6 w-6 text-brand-green"
+                  strokeWidth={1.75}
+                />
+
+                <h3 className="mb-2 text-lg font-semibold text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-sm leading-relaxed text-secondary">
+                  {step.description}
+                </p>
+              </article>
+            );
+          })}
         </div>
       </Reveal>
     </section>
