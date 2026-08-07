@@ -1,15 +1,22 @@
 "use client"
 
-import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { ButtonLoader } from "@/components/ui/ButtonLoader"
+import { FormField } from "@/components/auth/FormField"
+import { GoogleButton } from "@/components/auth/GoogleButton"
+import { PasswordField } from "@/components/auth/PasswordField"
 import { signIn } from "next-auth/react"
+import { Loader2 } from "lucide-react"
+import Link from "next/link"
 import React, { useState } from "react"
-import { FcGoogle } from "react-icons/fc"
+
+interface FieldErrors {
+  username?: string
+  password?: string
+}
 
 export function LoginForm() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
@@ -26,10 +33,11 @@ export function LoginForm() {
     e.preventDefault()
     setError(null)
 
-    if (!username.trim() || !password) {
-      setError("Username and password are required.")
-      return
-    }
+    const errors: FieldErrors = {}
+    if (!username.trim()) errors.username = "Please enter your username."
+    if (!password) errors.password = "Please enter your password."
+    setFieldErrors(errors)
+    if (errors.username || errors.password) return
 
     setIsSubmitting(true)
 
@@ -40,87 +48,93 @@ export function LoginForm() {
         redirectTo: next,
       })
     } catch {
-      setError("Login failed. Please try again.")
+      setError("Invalid username or password.")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div className="flex flex-col gap-4">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={async () => {
+    <div>
+      <GoogleButton
+        label="Sign in with Google"
+        ariaLabel="Sign in with Google"
+        onClick={() => {
           setIsGoogleSubmitting(true)
-          try {
-            await signIn("google", { redirectTo: next })
-          } finally {
+          signIn("google", { redirectTo: next }).finally(() =>
             setIsGoogleSubmitting(false)
-          }
+          )
         }}
-        disabled={isGoogleSubmitting || isSubmitting}
-        className="w-full flex items-center justify-center gap-2 border border-neutral-200 hover:bg-neutral-50"
-      >
-        {isGoogleSubmitting ? (
-          <ButtonLoader label="Redirecting…" />
-        ) : (
-          <>
-            <FcGoogle className="h-5 w-5" />
-            Sign in with Google
-          </>
-        )}
-      </Button>
+        loading={isGoogleSubmitting}
+        disabled={isSubmitting}
+      />
 
-      <div className="relative my-2">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-neutral-200" />
-        </div>
-        <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-3 text-neutral-500">or continue with</span>
-        </div>
+      <div className="my-6 flex items-center gap-4">
+        <div className="h-px flex-1 bg-gray-200" />
+        <span className="text-xs font-medium text-gray-400">Or continue with</span>
+        <div className="h-px flex-1 bg-gray-200" />
       </div>
 
-      <form className="flex flex-col gap-4" onSubmit={onSubmit}>
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Username
-          <Input
+      <form className="flex flex-col gap-5" onSubmit={onSubmit} noValidate>
+        <FormField id="login-username" label="Username" error={fieldErrors.username}>
+          <input
+            type="text"
             autoComplete="username"
+            placeholder="yourname"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="yourname"
-            required
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
           />
-        </label>
+        </FormField>
 
-        <label className="flex flex-col gap-2 text-sm font-semibold text-neutral-800">
-          Password
-          <Input
-            autoComplete="current-password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-            required
-            className="!bg-white !text-(--text-primary) !placeholder:text-neutral-500"
-          />
-        </label>
+        <PasswordField
+          id="login-password"
+          value={password}
+          onChange={setPassword}
+          autoComplete="current-password"
+          placeholder="••••••••"
+          showStrength={false}
+          labelAction={
+            <Link
+              href="/forgot-password"
+              className="text-xs font-medium text-brand-green hover:underline"
+            >
+              Forgot password?
+            </Link>
+          }
+          error={fieldErrors.password}
+        />
 
         {error && (
-          <div className="rounded-2xl bg-red-50 p-3 text-sm text-red-700  ring-red-100">
+          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
             {error}
           </div>
         )}
 
-        <Button type="submit" disabled={isSubmitting}>
+        <button
+          type="submit"
+          disabled={isSubmitting || isGoogleSubmitting}
+          className="flex w-full items-center justify-center rounded-lg bg-brand-green py-2.5 text-sm font-medium text-white transition-all duration-200 hover:bg-brand-green-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+        >
           {isSubmitting ? (
-            <ButtonLoader label="Logging in…" onDark />
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              <span className="sr-only">Logging in…</span>
+            </>
           ) : (
             "Log in"
           )}
-        </Button>
+        </button>
       </form>
+
+      <p className="mt-6 text-center text-sm text-secondary">
+        New here?{" "}
+        <Link
+          href="/register"
+          className="font-semibold text-brand-green underline-offset-2 hover:underline"
+        >
+          Create an account
+        </Link>
+      </p>
     </div>
   )
 }

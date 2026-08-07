@@ -2,6 +2,7 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
+import type { ReactNode } from "react";
 import { PASSWORD_MIN_LENGTH } from "@/lib/validations/auth";
 import { FieldError } from "@/components/auth/FieldError";
 
@@ -34,18 +35,35 @@ interface PasswordFieldProps {
   onChange: (value: string) => void;
   onBlur?: () => void;
   error?: string;
+  autoComplete?: string;
+  placeholder?: string;
+  labelAction?: ReactNode;
+  showStrength?: boolean;
 }
 
-export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFieldProps) {
+export function PasswordField({
+  id,
+  value,
+  onChange,
+  onBlur,
+  error,
+  autoComplete = "new-password",
+  placeholder = `Minimum ${PASSWORD_MIN_LENGTH} characters`,
+  labelAction,
+  showStrength = true,
+}: PasswordFieldProps) {
   const [show, setShow] = useState(false);
   const score = scorePassword(value);
   const tone = strengthTone(score);
 
   return (
     <div className="space-y-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-primary">
-        Password
-      </label>
+      <div className="flex items-center justify-between">
+        <label htmlFor={id} className="text-sm font-medium text-primary">
+          Password
+        </label>
+        {labelAction}
+      </div>
       <div className="relative">
         <input
           id={id}
@@ -53,8 +71,8 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
-          placeholder={`Minimum ${PASSWORD_MIN_LENGTH} characters`}
-          autoComplete="new-password"
+          placeholder={placeholder}
+          autoComplete={autoComplete}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : `${id}-strength`}
           className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-3 pr-10 text-sm text-primary placeholder:text-gray-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 transition-all"
@@ -69,7 +87,7 @@ export function PasswordField({ id, value, onChange, onBlur, error }: PasswordFi
         </button>
       </div>
 
-      {value.length > 0 && (
+      {showStrength && value.length > 0 && (
         <div id={`${id}-strength`} className="mt-2 space-y-1">
           <div className="flex gap-1.5">
             {Array.from({ length: 4 }, (_, i) => (
