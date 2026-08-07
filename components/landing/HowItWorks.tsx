@@ -1,5 +1,4 @@
 import { Link, Palette, Share2 } from "lucide-react";
-import { Reveal } from "@/components/landing/Reveal";
 
 const steps = [
   {
@@ -25,12 +24,11 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="scroll-mt-6 px-6 py-16 md:px-12 lg:py-24">
-      <Reveal className="mx-auto w-full max-w-[1200px]">
+      <div className="mx-auto w-full max-w-[1200px]">
         <h2 className="text-center text-3xl font-medium leading-[1.2] tracking-tight text-primary lg:text-[32px]">
           How it works
         </h2>
 
-        {/* equal-height grid — every card shares the same top baseline */}
         <div className="mt-12 grid grid-cols-1 gap-8 md:mt-14 md:grid-cols-3">
           {steps.map((step, i) => {
             const Icon = step.icon;
@@ -58,7 +56,7 @@ export default function HowItWorks() {
             );
           })}
         </div>
-      </Reveal>
+      </div>
     </section>
   );
 }
