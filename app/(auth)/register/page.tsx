@@ -1,21 +1,37 @@
 import { RegisterForm } from "@/components/auth/RegisterForm";
 import { Spinner } from "@/components/ui/Spinner";
-import PhoneMockup from "@/components/landing/PhoneMockup";
 import Link from "next/link";
 import { Suspense } from "react";
+
+const meshBackground =
+  "radial-gradient(ellipse 80% 50% at 20% 40%, rgba(200, 150, 56, 0.15) 0%, transparent 50%), radial-gradient(ellipse 60% 60% at 80% 80%, rgba(42, 80, 42, 0.4) 0%, transparent 50%), #1B3A1B";
 
 export default function RegisterPage() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-[45%_55%]">
       {/* Brand panel — desktop only */}
-      <aside className="hidden flex-col items-center justify-center gap-12 bg-brand-green px-10 py-16 lg:flex">
-        <Link href="/" className="text-2xl font-medium tracking-tight text-white">
+      <aside
+        className="relative hidden min-h-dvh flex-col items-center justify-between overflow-hidden px-10 py-16 lg:flex"
+        style={{ background: meshBackground }}
+      >
+        <div aria-hidden="true" className="bg-noise pointer-events-none absolute inset-0" />
+        <Link
+          href="/"
+          className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
+        >
           LinkDrop
         </Link>
-        <PhoneMockup variant="dark" />
-        <p className="max-w-xs text-center text-lg text-white/80">
-          Your work deserves a better link-in-bio.
-        </p>
+
+        <div className="relative z-10 flex flex-col items-center text-center">
+          <h2 className="max-w-sm text-4xl font-medium leading-tight tracking-[-0.02em] text-white">
+            Make it unmistakably yours.
+          </h2>
+          <p className="mt-4 max-w-xs text-sm text-white/70">
+            Your work deserves a better link-in-bio.
+          </p>
+        </div>
+
+        <p className="relative z-10 text-xs text-white/50">© 2026 LinkDrop</p>
       </aside>
 
       {/* Form panel */}
@@ -33,7 +49,7 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-border-subtle sm:bg-background-elevated sm:p-8 sm:shadow-xl sm:shadow-black/5">
+        <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-border-subtle sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
           <h1 className="text-2xl font-semibold tracking-tight text-primary">
             Create your LinkDrop
           </h1>

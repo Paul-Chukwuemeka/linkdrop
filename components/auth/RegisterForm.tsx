@@ -54,16 +54,18 @@ export function RegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({})
+  const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({})
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
     if (key !== "username") {
       const msg = getFieldError(key, value)
-      setFieldErrors((prev) => ({ ...prev, [key]: msg }))
+      setFieldErrors((prev) => (touched[key] ? { ...prev, [key]: msg } : prev))
     }
   }
 
   function handleBlur(key: keyof FormState) {
+    setTouched((prev) => ({ ...prev, [key]: true }))
     const msg = getFieldError(key, form[key])
     setFieldErrors((prev) => ({ ...prev, [key]: msg }))
   }
@@ -81,6 +83,7 @@ export function RegisterForm() {
     })
     if (hasErrors) {
       setFieldErrors(errors)
+      setTouched({ username: true, email: true, fullname: true, password: true })
       return
     }
 
@@ -142,9 +145,7 @@ export function RegisterForm() {
 
       <div className="my-6 flex items-center gap-4">
         <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs font-medium uppercase tracking-wide text-gray-400">
-          or continue with
-        </span>
+        <span className="text-xs font-medium text-gray-400">Or continue with</span>
         <div className="h-px flex-1 bg-gray-200" />
       </div>
 
