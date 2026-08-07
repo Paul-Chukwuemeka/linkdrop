@@ -24,12 +24,6 @@ export default function RegisterPage() {
           <Link href="/" className="text-xl font-medium tracking-tight text-primary">
             LinkDrop
           </Link>
-          <Link
-            href="/login"
-            className="rounded-md text-sm font-medium text-primary transition-colors hover:text-brand-green focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2"
-          >
-            Log in
-          </Link>
         </div>
 
         <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
