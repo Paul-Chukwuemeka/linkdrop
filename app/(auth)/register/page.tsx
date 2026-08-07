@@ -29,14 +29,6 @@ export default function RegisterPage() {
           className="pointer-events-none absolute inset-0"
           style={{ background: glowBackground }}
         />
-        {/* watermark mark */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none text-[24rem] font-bold leading-none text-white/[0.03]"
-        >
-          L
-        </span>
-
         <Link
           href="/"
           className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
