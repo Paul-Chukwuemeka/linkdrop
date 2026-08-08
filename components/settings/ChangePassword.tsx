@@ -3,8 +3,10 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { apiFetch, ApiError } from "@/lib/api";
 import { PASSWORD_PATTERN, PASSWORD_MIN_LENGTH } from "@/lib/validations/auth";
+import { Shield } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -43,18 +45,21 @@ export function ChangePassword() {
   }
 
   return (
-    <div className="flex flex-col gap-4 p-4 sm:p-5">
-      <div>
-        <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100">
-          Change password
-        </h3>
-        <p className="mt-1 text-xs text-neutral-600 dark:text-neutral-400">
-          Update the password used to sign in with your username.
-        </p>
+    <SectionCard>
+      <div className="flex items-start gap-3">
+        <Shield className="mt-0.5 h-5 w-5 shrink-0 text-[#6B6B6B]" />
+        <div>
+          <h3 className="text-sm font-semibold text-[#1A1A1A] dark:text-neutral-100">
+            Authentication
+          </h3>
+          <p className="mt-1 text-sm text-[#6B6B6B] dark:text-neutral-400">
+            Update the password used to sign in with your username.
+          </p>
+        </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-        <label className="flex flex-col gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+      <form onSubmit={handleSubmit} className="mt-4 flex flex-col gap-3">
+        <label className="flex flex-col gap-1.5 text-sm font-medium text-[#1A1A1A] dark:text-neutral-100">
           Current password
           <Input
             type="password"
@@ -64,7 +69,7 @@ export function ChangePassword() {
             disabled={isSaving}
           />
         </label>
-        <label className="flex flex-col gap-1.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-1.5 text-sm font-medium text-[#1A1A1A] dark:text-neutral-100">
           New password
           <Input
             type="password"
@@ -74,11 +79,13 @@ export function ChangePassword() {
             disabled={isSaving}
           />
         </label>
-        <p className="text-xs text-neutral-500 dark:text-neutral-400">{passwordHint}</p>
-        <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
-          {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Change password"}
-        </Button>
+        <p className="text-xs text-[#6B6B6B] dark:text-neutral-400">{passwordHint}</p>
+        <div className="pt-2">
+          <Button type="submit" disabled={isSaving} className="w-full sm:w-auto">
+            {isSaving ? <ButtonLoader label="Saving…" onDark /> : "Change password"}
+          </Button>
+        </div>
       </form>
-    </div>
+    </SectionCard>
   );
 }

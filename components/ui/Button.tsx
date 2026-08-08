@@ -7,9 +7,9 @@ const base =
   "inline-flex items-center justify-center font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-md touch-manipulation";
 
 const variantClass: Record<ButtonVariant, string> = {
-  primary: "bg-[var(--accent)] text-[var(--accent-foreground)] hover:opacity-90 active:scale-95",
+  primary: "bg-brand-green text-white hover:bg-brand-green-hover active:scale-95",
   ghost:
-    "text-(--text-primary) bg-(--text-primary)/10 hover:ring-2 hover:ring-(--text-primary)/20 hover:opacity-90 active:scale-95",
+    "text-[var(--text-primary)] bg-[var(--text-primary)]/10 hover:ring-2 hover:ring-[var(--text-primary)]/20 hover:opacity-90 active:scale-95",
   danger: "bg-red-600 text-white hover:opacity-90 active:scale-95",
 };
 

@@ -1,10 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ConfirmModal } from "@/components/ui/ConfirmModal";
+import { SectionCard } from "@/components/ui/SectionCard";
 import { apiFetch, ApiError } from "@/lib/api";
 import { logout } from "@/lib/logout";
+import { AlertTriangle, Trash2 } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -41,23 +42,24 @@ export function DeleteAccount({
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-lg bg-red-100/20 dark:bg-red-950/20 p-4 sm:p-5 shadow-(--shadow-card)">
-      <div>
-        <h3 className="text-base font-bold text-red-700 dark:text-red-300">
+    <SectionCard>
+      <div className="flex items-center gap-3 mb-4">
+        <AlertTriangle className="h-5 w-5 shrink-0 text-[#DC2626]" />
+        <h3 className="text-sm font-semibold text-[#1A1A1A] dark:text-neutral-100">
           Delete account
         </h3>
-        <p className="mt-1 text-xs text-red-600/80 dark:text-red-300/80">
-          Permanently deletes your account, cards, links, and profile. This cannot be undone.
-        </p>
       </div>
+      <p className="text-sm text-[#6B6B6B] dark:text-neutral-400 mb-6">
+        Permanently deletes your account, cards, links, and profile. This cannot be undone.
+      </p>
 
-      <Button
-        variant="danger"
+      <button
         onClick={() => setIsOpen(true)}
-        className="w-full sm:w-auto"
+        className="inline-flex h-9 w-auto items-center gap-2 rounded-lg border border-[#DC2626] px-4 text-sm font-medium text-[#DC2626] transition-colors hover:bg-[rgba(220,38,38,0.08)]"
       >
+        <Trash2 className="h-4 w-4" />
         Delete my account
-      </Button>
+      </button>
 
       <ConfirmModal
         isOpen={isOpen}
@@ -96,6 +98,6 @@ export function DeleteAccount({
           />
         )}
       </ConfirmModal>
-    </div>
+    </SectionCard>
   );
 }
