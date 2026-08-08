@@ -15,7 +15,7 @@ import { isLight, darken, lighten } from "@/utils/colors";
 const CardPreview = ({ mobile }: { mobile?: boolean }) => {
   const { profile } = useProfile();
   const { currentCard, isPreview, setIsPreview } = useCard();
-  const { cardStyle } = useStyle();
+  const { cardStyle, previewImage } = useStyle();
   const [imgError, setImgError] = useState(false);
 
   const items = currentCard?.items_list;
@@ -48,15 +48,15 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
         background: `linear-gradient(${cardStyle.gradient_direction ?? 135}deg, ${colors})`,
       };
     }
-    if (cardStyle.bg_type === "image" && cardStyle.profile_image) {
+    if (cardStyle.bg_type === "image" && (cardStyle.profile_image || previewImage)) {
       return {
-        backgroundImage: `url(${cardStyle.profile_image})`,
+        backgroundImage: `url(${previewImage || cardStyle.profile_image})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       };
     }
     return { background: `#${cardStyle.card_bg || "ffffff"}` };
-  }, [cardStyle, gradientColors]);
+  }, [cardStyle, gradientColors, previewImage]);
 
   const currentFont = useMemo(
     () =>

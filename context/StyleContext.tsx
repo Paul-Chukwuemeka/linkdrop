@@ -12,6 +12,8 @@ type StyleContextType = {
   updateCardStyle: (updates: Partial<CardTheme>) => void;
   updateStyle: () => Promise<void>;
   isSavingStyle: boolean;
+  previewImage: string | null;
+  setPreviewImage: (url: string | null) => void;
 };
 
 export const StyleContext = createContext<StyleContextType | null>(null);
@@ -28,6 +30,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   const { currentCard } = useCard();
   const [cardStyle, setCardStyle] = useState<CardTheme | null>(null);
   const [isSavingStyle, setIsSavingStyle] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   // Authoritative copy of the style that is always current, even within a
   // single tick. updateStyle reads this so a value (e.g. an uploaded
@@ -37,6 +40,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     cardStyleRef.current = currentCard?.style ?? null;
     setCardStyle(currentCard?.style ?? null);
+    setPreviewImage(null);
   }, [currentCard?.id, currentCard?.style]);
 
   const updateCardStyle = useCallback((updates: Partial<CardTheme>) => {
@@ -63,7 +67,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <StyleContext.Provider
-      value={{ cardStyle, setCardStyle, updateCardStyle, updateStyle, isSavingStyle }}
+      value={{ cardStyle, setCardStyle, updateCardStyle, updateStyle, isSavingStyle, previewImage, setPreviewImage }}
     >
       {children}
     </StyleContext.Provider>

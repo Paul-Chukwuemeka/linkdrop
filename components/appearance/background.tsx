@@ -3,7 +3,7 @@
 import ColorPicker from "../ui/colorPicker";
 import { isLight, lighten, darken } from "@/utils/colors";
 import { CiImageOn } from "react-icons/ci";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useStyle } from "@/context/StyleContext";
 import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
@@ -25,8 +25,13 @@ const directionPresets = [
 ];
 
 const Background = () => {
-  const { cardStyle, updateStyle, isSavingStyle: isSaving, updateCardStyle } =
-    useStyle();
+  const {
+    cardStyle,
+    updateStyle,
+    isSavingStyle: isSaving,
+    updateCardStyle,
+    setPreviewImage,
+  } = useStyle();
   const { currentCard } = useCard();
   const { bg_type, gradient_type, gradient_direction, gradient, card_bg } =
     cardStyle ?? {};
@@ -34,22 +39,31 @@ const Background = () => {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [pendingPreview, setPendingPreview] = useState<string | null>(null);
   const [isPublishingBg, setIsPublishingBg] = useState(false);
+  const prevBgTypeRef = useRef<"solid" | "gradient" | "image" | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     if (!pendingFile) {
       setPendingPreview(null);
+      setPreviewImage(null);
       return;
     }
     const url = URL.createObjectURL(pendingFile);
     setPendingPreview(url);
-    updateCardStyle({ bg_type: "image", profile_image: url });
-    return () => URL.revokeObjectURL(url);
-  }, [pendingFile, updateCardStyle]);
+    setPreviewImage(url);
+    updateCardStyle({ bg_type: "image" });
+    return () => {
+      URL.revokeObjectURL(url);
+      setPreviewImage(null);
+    };
+  }, [pendingFile, updateCardStyle, setPreviewImage]);
 
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
+    if (prevBgTypeRef.current === undefined) prevBgTypeRef.current = bg_type;
     setPendingFile(file);
   }
 
@@ -76,8 +90,20 @@ const Background = () => {
   }
 
   async function handleSave() {
+    if (!pendingFile) {
+      await updateStyle();
+      return;
+    }
     const url = await uploadPendingImage();
-    if (url) updateCardStyle({ bg_type: "image", profile_image: url });
+    if (!url) {
+      if (prevBgTypeRef.current) {
+        updateCardStyle({ bg_type: prevBgTypeRef.current });
+      }
+      return;
+    }
+    setPreviewImage(null);
+    updateCardStyle({ bg_type: "image", profile_image: url });
+    prevBgTypeRef.current = undefined;
     await updateStyle();
   }
 
@@ -91,6 +117,8 @@ const Background = () => {
       toast.error("Enter a valid http(s) URL");
       return;
     }
+    setPendingFile(null);
+    setPreviewImage(null);
     updateCardStyle({ bg_type: "image", profile_image: value });
     toast.success("Background image set");
     setImageUrl("");
@@ -331,6 +359,7 @@ const Background = () => {
                   type="button"
                   onClick={() => {
                     setPendingFile(null);
+                    setPreviewImage(null);
                     updateCardStyle({ profile_image: null });
                   }}
                   className="self-start text-sm font-semibold text-red-600 hover:underline"
