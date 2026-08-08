@@ -6,27 +6,38 @@ import { SectionCard } from "@/components/ui/SectionCard";
 import { apiFetch, ApiError } from "@/lib/api";
 import { logout } from "@/lib/logout";
 import { AlertTriangle, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import toast from "react-hot-toast";
+
+function isConfirmed(confirmText: string, username: string) {
+  const value = confirmText.trim().toLowerCase();
+  const name = username.trim().toLowerCase();
+  return value === "delete" || (name.length > 0 && value === name);
+}
 
 export function DeleteAccount({
   hasPassword,
-  email,
+  username,
 }: {
   hasPassword: boolean;
-  email: string;
+  username: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [password, setPassword] = useState("");
-  const [confirm, setConfirm] = useState("");
+  const [confirmText, setConfirmText] = useState("");
+
+  const confirmValid = useMemo(
+    () => isConfirmed(confirmText, username),
+    [confirmText, username],
+  );
 
   async function handleConfirm() {
     setIsDeleting(true);
     try {
       const payload = hasPassword
         ? { password }
-        : { confirm };
+        : { confirm: confirmText.trim().toLowerCase() };
       await apiFetch("/api/auth/account", {
         method: "DELETE",
         json: payload,
@@ -55,7 +66,7 @@ export function DeleteAccount({
 
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex h-9 w-auto items-center gap-2 rounded-lg border border-[#DC2626] px-4 text-sm font-medium text-[#DC2626] transition-colors hover:bg-[rgba(220,38,38,0.08)]"
+        className="inline-flex h-9 w-auto items-center gap-2 rounded-lg bg-[#DC2626] px-4 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
       >
         <Trash2 className="h-4 w-4" />
         Delete my account
@@ -70,14 +81,15 @@ export function DeleteAccount({
         title="Delete account"
         message={
           hasPassword
-            ? "Enter your current password to confirm deletion."
-            : `Type ${email} to confirm deletion.`
+            ? `Enter your current password and type ${username} (or DELETE) to confirm.`
+            : `Type ${username} or DELETE to confirm.`
         }
         destructive
         isPending={isDeleting}
         pendingLabel="Deleting…"
+        confirmDisabled={!confirmValid || (hasPassword && password.length === 0)}
       >
-        {hasPassword ? (
+        {hasPassword && (
           <Input
             type="password"
             autoComplete="current-password"
@@ -87,16 +99,15 @@ export function DeleteAccount({
             disabled={isDeleting}
             className="mt-4"
           />
-        ) : (
-          <Input
-            type="text"
-            placeholder={`Type ${email}`}
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            disabled={isDeleting}
-            className="mt-4"
-          />
         )}
+        <Input
+          type="text"
+          placeholder={hasPassword ? `Type ${username} or DELETE` : `Type ${username} or DELETE`}
+          value={confirmText}
+          onChange={(e) => setConfirmText(e.target.value)}
+          disabled={isDeleting}
+          className={hasPassword ? "mt-3" : "mt-4"}
+        />
       </ConfirmModal>
     </SectionCard>
   );

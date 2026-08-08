@@ -9,6 +9,7 @@ interface ConfirmModalProps {
   destructive?: boolean;
   isPending?: boolean;
   pendingLabel?: string;
+  confirmDisabled?: boolean;
   children?: React.ReactNode;
 }
 
@@ -21,6 +22,7 @@ export const ConfirmModal = ({
   destructive = true,
   isPending = false,
   pendingLabel = "Deleting…",
+  confirmDisabled = false,
   children,
 }: ConfirmModalProps) => {
   if (!isOpen) return null;
@@ -53,7 +55,7 @@ export const ConfirmModal = ({
                 ? "bg-red-600 hover:bg-red-700 text-white"
                 : "bg-black dark:bg-white dark:text-black hover:bg-neutral-800 dark:hover:bg-neutral-200 text-white"
             }`}
-            disabled={isPending}
+            disabled={isPending || confirmDisabled}
             onClick={() => {
               void (async () => {
                 await onConfirm();

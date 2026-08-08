@@ -1,11 +1,10 @@
 "use client";
 
 import { ChangePassword } from "@/components/settings/ChangePassword";
+import { ConnectedAccount } from "@/components/settings/ConnectedAccount";
 import { DeleteAccount } from "@/components/settings/DeleteAccount";
-import { SectionCard } from "@/components/ui/SectionCard";
 import { Spinner } from "@/components/ui/Spinner";
 import { apiFetch, ApiError } from "@/lib/api";
-import { Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 
 type MeResponse = {
@@ -14,6 +13,7 @@ type MeResponse = {
   email: string;
   fullname: string;
   has_password: boolean;
+  provider: string | null;
 };
 
 export default function SettingsPage() {
@@ -71,27 +71,12 @@ export default function SettingsPage() {
       )}
 
       <div className="flex flex-1 flex-col gap-3 sm:gap-4 pb-5 pt-2">
-        <div className="max-w-200 w-full flex flex-col gap-3 sm:gap-4">
-          {me?.has_password ? (
-            <ChangePassword />
-          ) : (
-            <SectionCard>
-              <div className="flex items-start gap-3">
-                <Shield className="mt-0.5 h-5 w-5 shrink-0 text-[#6B6B6B]" />
-                <div>
-                  <h3 className="text-sm font-semibold text-[#1A1A1A] dark:text-neutral-100">
-                    Authentication
-                  </h3>
-                  <p className="mt-1 text-sm text-[#6B6B6B] dark:text-neutral-400">
-                    You sign in with a provider and don’t use a password.
-                  </p>
-                </div>
-              </div>
-            </SectionCard>
-          )}
+        <div className="w-full max-w-160 flex flex-col gap-3 sm:gap-4">
+          <ConnectedAccount provider={me?.provider ?? null} email={me?.email ?? ""} />
+          {me?.has_password ? <ChangePassword /> : null}
           <DeleteAccount
             hasPassword={me?.has_password === true}
-            email={me?.email ?? ""}
+            username={me?.username ?? ""}
           />
         </div>
       </div>

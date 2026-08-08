@@ -21,12 +21,18 @@ export async function GET() {
 
     if (!dbUser) return notFoundResponse("User not found")
 
+    const account = await prisma.account.findFirst({
+      where: { userId: dbUser.id },
+      select: { provider: true },
+    })
+
     return NextResponse.json({
       id: dbUser.id,
       username: dbUser.username,
       email: dbUser.email,
       fullname: dbUser.fullname,
       has_password: dbUser.password !== null,
+      provider: account?.provider ?? null,
     })
   } catch (e) {
     if (e instanceof UnauthorizedError) return unauthorizedResponse()

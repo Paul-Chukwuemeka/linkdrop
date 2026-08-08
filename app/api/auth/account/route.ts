@@ -31,14 +31,15 @@ export async function DELETE(request: Request) {
     if (!dbUser) return notFoundResponse("User not found")
 
     // Confirmation gate: password accounts verify their password; password-less
-    // (OAuth-only) accounts must type their email or username as the anti-CSRF
-    // signal, since they have no password to check.
+    // (OAuth-only) accounts must type "DELETE", their email, or their username as
+    // the anti-CSRF signal, since they have no password to check.
     if (dbUser.password) {
       const valid = await argon2.verify(dbUser.password, parsed.data.password ?? "")
       if (!valid) return errorResponse("Current password is incorrect", 400)
     } else {
       const confirm = (parsed.data.confirm ?? "").trim().toLowerCase()
       const matches =
+        confirm === "delete" ||
         confirm === dbUser.email.toLowerCase() ||
         confirm === dbUser.username.toLowerCase()
       if (!matches) {
