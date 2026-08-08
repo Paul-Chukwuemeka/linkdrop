@@ -36,6 +36,10 @@ export const linkUpdateSchema = z.object({
   collection_id: z.string().uuid().nullable().optional(),
 })
 
+export const ogFetchSchema = z.object({
+  url: httpUrl,
+})
+
 export const collectionLinksReorderSchema = z.object({
   collection_id: z.string().uuid().nullable().optional(),
   items: z.array(

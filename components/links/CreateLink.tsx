@@ -4,7 +4,8 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";
 import { isValidUrl } from "@/utils/validate";
-import { Link2, X } from "lucide-react";
+import { Link2, X, Wand2 } from "lucide-react";
+import { useOgSuggestion } from "@/hooks/useOgSuggestion";
 
 export function CreateLink() {
   const { isSavingLink: isSaving, saveLink, setIsCreatingLink, cardError: error, setCardError: setError } =
@@ -12,11 +13,19 @@ export function CreateLink() {
 
   const [title, setTitle] = useState<string>("");
   const [url, setUrl] = useState<string>("");
+  const [ogRefreshKey, setOgRefreshKey] = useState(0);
   const [localError, setLocalError] = useState<string | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
+  const { suggestion, isDetecting } = useOgSuggestion(url, ogRefreshKey);
+
   const nestedInputClassName =
     "rounded-xl bg-neutral-50 dark:bg-neutral-800 shadow-none ring-neutral-200 dark:ring-neutral-700 focus:ring-[var(--accent)]";
+
+  function applySuggestion() {
+    if (suggestion?.title) setTitle(suggestion.title);
+    setOgRefreshKey((k) => k + 1);
+  }
 
   function close() {
     if (isSaving) return;
@@ -95,6 +104,31 @@ export function CreateLink() {
               Tip: use a full URL (including https://).
             </div>
           </div>
+
+          {isDetecting && (
+            <div className="flex items-center gap-2 rounded-xl bg-neutral-50 dark:bg-neutral-800 px-3 py-2 text-xs text-neutral-500 dark:text-neutral-400">
+              <Wand2 className="h-3.5 w-3.5 animate-pulse" />
+              Detecting title…
+            </div>
+          )}
+
+          {suggestion?.title && (
+            <button
+              type="button"
+              onClick={applySuggestion}
+              className="flex items-start gap-2 rounded-xl bg-brand-green/5 px-3 py-2 text-left text-xs text-neutral-600 dark:text-neutral-300 ring-1 ring-brand-green/15 transition hover:bg-brand-green/10"
+            >
+              <Wand2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#1B3A1B] dark:text-[#7ece7e]" />
+              <span className="min-w-0">
+                <span className="font-semibold text-[#1B3A1B] dark:text-[#7ece7e]">
+                  Use: {suggestion.title}
+                </span>
+                <span className="block text-neutral-400 dark:text-neutral-500">
+                  Auto-detected from {suggestion.domain}
+                </span>
+              </span>
+            </button>
+          )}
 
           <div className="flex flex-col gap-1.5">
             <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
