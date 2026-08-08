@@ -71,7 +71,7 @@ export default function SettingsPage() {
       )}
 
       <div className="flex flex-1 flex-col gap-3 sm:gap-4 pb-5 pt-2">
-        <div className="w-full max-w-160 flex flex-col gap-3 sm:gap-4">
+        <div className="w-full max-w-160 mx-auto flex flex-col gap-3 sm:gap-4">
           <ConnectedAccount provider={me?.provider ?? null} email={me?.email ?? ""} />
           {me?.has_password ? <ChangePassword /> : null}
           <DeleteAccount
