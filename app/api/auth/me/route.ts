@@ -26,14 +26,17 @@ export async function GET() {
       select: { provider: true },
     })
 
-    return NextResponse.json({
-      id: dbUser.id,
-      username: dbUser.username,
-      email: dbUser.email,
-      fullname: dbUser.fullname,
-      has_password: dbUser.password !== null,
-      provider: account?.provider ?? null,
-    })
+    return NextResponse.json(
+      {
+        id: dbUser.id,
+        username: dbUser.username,
+        email: dbUser.email,
+        fullname: dbUser.fullname,
+        has_password: dbUser.password !== null,
+        provider: account?.provider ?? null,
+      },
+      { headers: { "Cache-Control": "no-store" } },
+    )
   } catch (e) {
     if (e instanceof UnauthorizedError) return unauthorizedResponse()
     console.error("Auth me error:", e)
