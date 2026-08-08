@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef, useCallback } from "react";
 import { CardTheme } from "@/lib/types";
 import { apiFetch } from "@/lib/api";
 import { useCard } from "./CardContext";
@@ -39,14 +39,14 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
     setCardStyle(currentCard?.style ?? null);
   }, [currentCard?.id, currentCard?.style]);
 
-  function updateCardStyle(updates: Partial<CardTheme>) {
+  const updateCardStyle = useCallback((updates: Partial<CardTheme>) => {
     if (!cardStyleRef.current) return;
     const next = { ...cardStyleRef.current, ...updates } as CardTheme;
     cardStyleRef.current = next;
     setCardStyle(next);
-  }
+  }, []);
 
-  async function updateStyle() {
+  const updateStyle = useCallback(async () => {
     setIsSavingStyle(true);
     try {
       await apiFetch(`/api/cards/${currentCard?.id}/style`, {
@@ -60,7 +60,7 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsSavingStyle(false);
     }
-  }
+  }, [currentCard?.id, setCardError]);
 
   return (
     <StyleContext.Provider
