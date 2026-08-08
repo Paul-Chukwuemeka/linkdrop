@@ -20,7 +20,18 @@ function decodeHtmlEntities(value: string): string {
     .replace(/&gt;/g, ">");
 }
 
-function extractTitle(html: string): string | null {
+export function extractTitle(html: string): string | null {
+  // Prefer the document <title> (what shows in the browser title bar and in
+  // search engine results) and fall back to og:title when it's missing.
+  const titleTag = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+  if (titleTag) {
+    const title = decodeHtmlEntities(titleTag[1])
+      .replace(/[\r\n\t]+/g, " ")
+      .replace(/ {2,}/g, " ")
+      .trim();
+    if (title) return title;
+  }
+
   const ogTag =
     html.match(
       /<meta[^>]+(?:property|name)=["']og:title["'][^>]*content=["']([^"']*)["'][^>]*>/i
@@ -34,14 +45,7 @@ function extractTitle(html: string): string | null {
     if (ogTitle) return ogTitle;
   }
 
-  const titleTag = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-  if (!titleTag) return null;
-
-  const title = decodeHtmlEntities(titleTag[1])
-    .replace(/[\r\n\t]+/g, " ")
-    .replace(/ {2,}/g, " ")
-    .trim();
-  return title || null;
+  return null;
 }
 
 export type OgMetadata = {
