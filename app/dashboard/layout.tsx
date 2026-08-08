@@ -30,9 +30,9 @@ export default function DashboardLayout({
 
   return (
     <Providers>
-      <div className="min-h-dvh flex flex-col">
+      <div className="h-dvh overflow-hidden flex flex-col">
         <PublicUrlBar />
-        <div className="flex flex-1 bg-neutral-100 dark:bg-neutral-950 p-2 sm:p-3 lg:p-4">
+        <div className="flex min-h-0 flex-1 bg-neutral-100 dark:bg-neutral-950 p-2 sm:p-3 lg:p-4">
           <AppWrapper>
             <Sidebar />
             <NavBar />
