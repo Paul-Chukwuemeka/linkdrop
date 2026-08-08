@@ -2,10 +2,9 @@
 import { useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { PenLine, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { PenLine, Plus, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
-import { ProfileHeaderBar } from "@/components/dashboard/ProfileHeaderBar";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
 import { apiFetch } from "@/lib/api";
 import {
@@ -29,7 +28,6 @@ import { CreateLink } from "@/components/links/CreateLink";
 import { CreateCollection } from "@/components/collections/CreateCollection";
 import { CollectionBlock } from "@/components/collections/CollectionBlock";
 import { CardSwitcher } from "@/components/cards/CardSwitcher";
-import { logout as logoutAll } from "@/lib/logout";
 
 export default function DashboardPage() {
   const { profile, profileError } = useProfile();
@@ -52,8 +50,6 @@ export default function DashboardPage() {
 
   const error = cardError || profileError;
   const setError = setCardError;
-
-  const logout = () => logoutAll();
 
   const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
@@ -138,7 +134,6 @@ export default function DashboardPage() {
 
   return (
     <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
-      <ProfileHeaderBar profile={profile} logout={logout} />
       {error && (
         <div className="bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300  ring-red-100 dark:ring-red-800/50">
           {error}
@@ -207,21 +202,23 @@ export default function DashboardPage() {
               <CardSwitcher />
               </div>
             </div>
-            <div className="flex rounded-2xl sm:rounded-3xl items-center w-full bg-white dark:bg-neutral-800 h-11 sm:h-12 shadow-[0_0_15px_rgba(0,0,0,0.15)]">
+            <div className="flex rounded-full items-center w-full overflow-hidden shadow-[0_0_15px_rgba(0,0,0,0.15)]">
               <button
-                className="flex-1 h-full rounded-l-2xl sm:rounded-l-3xl text-sm sm:text-base font-semibold tracking-wide"
+                className="flex-1 h-12 inline-flex items-center justify-center gap-2 bg-brand-green hover:bg-brand-green-hover text-white font-medium px-4 transition-all active:scale-[0.98]"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
               >
-                Add a new Link
+                <Plus className="w-4 h-4" />
+                Add link
               </button>
               <button
-                className="h-full border-l border-neutral-200 dark:border-neutral-600 cursor-pointer px-3 sm:px-4 touch-manipulation rounded-r-2xl sm:rounded-r-3xl hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+                className="shrink-0 h-12 w-12 flex items-center justify-center border-l border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 cursor-pointer touch-manipulation hover:bg-gray-50 dark:hover:bg-neutral-700 transition-colors"
                 onClick={() => {
                   setOptions(!options);
                 }}
                 aria-label="More options"
+                aria-expanded={options}
               >
                 {options ? (
                   <ChevronUp className="w-5" />
@@ -283,9 +280,16 @@ export default function DashboardPage() {
           </div>
         </div>
         <div
-          className="md:p-2 hidden lg:flex bg-white dark:bg-neutral-900 p-2 items-center justify-center rounded-xl h-full"
+          className="hidden lg:flex bg-gray-50 dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 p-6 items-center justify-center h-full"
         >
-          <CardPreview />
+          <div className="w-full">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+              Preview
+            </h3>
+            <div className="mx-auto w-fit bg-white rounded-[2rem] border-6 border-gray-200 dark:border-neutral-700 shadow-xl p-2">
+              <CardPreview />
+            </div>
+          </div>
         </div>
       </div>
     </div>

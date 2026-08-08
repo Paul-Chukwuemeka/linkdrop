@@ -6,7 +6,13 @@ import { useProfile } from "@/context/ProfileContext"
 import { apiFetch } from "@/lib/api"
 import { Sun, Moon, Monitor } from "lucide-react"
 
-export function ThemeToggle({ className }: { className?: string }) {
+export function ThemeToggle({
+  className,
+  iconOnly = false,
+}: {
+  className?: string
+  iconOnly?: boolean
+}) {
   const { theme, setTheme } = useTheme()
   const { profile, setProfile } = useProfile()
   const [mounted, setMounted] = useState(false)
@@ -41,13 +47,17 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <button
       onClick={cycle}
-      className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-black/10 dark:hover:bg-white/10 ${className || ""}`}
+      className={
+        iconOnly
+          ? `flex items-center justify-center w-8 h-8 rounded-lg transition-colors hover:bg-gray-100 dark:hover:bg-neutral-800 text-gray-600 dark:text-gray-300 ${className || ""}`
+          : `flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors hover:bg-black/10 dark:hover:bg-white/10 ${className || ""}`
+      }
       aria-label={`Theme: ${theme}. Click to switch.`}
     >
       {theme === "light" && <Sun className="w-4 h-4" />}
       {theme === "dark" && <Moon className="w-4 h-4" />}
       {theme === "system" && <Monitor className="w-4 h-4" />}
-      <span className="capitalize">{theme}</span>
+      {!iconOnly && <span className="capitalize">{theme}</span>}
     </button>
   )
 }

@@ -1,16 +1,17 @@
 "use client"
 
-import { Button } from "@/components/ui/Button"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { ReactNode } from "react"
 import { useCard } from "@/context/CardContext"
+import { useProfile } from "@/context/ProfileContext"
 import { PiEyesLight, PiEyeBold } from "react-icons/pi"
 import { FaPaintbrush } from "react-icons/fa6"
 import { IoIdCardSharp } from "react-icons/io5"
+import { TbLogout } from "react-icons/tb"
 import { logout } from "@/lib/logout"
-import { Home, Settings } from "lucide-react"
+import { Home, Settings, PenLine } from "lucide-react"
 import { ThemeToggle } from "./ThemeToggle"
 
 function PreviewToggle() {
@@ -57,11 +58,13 @@ function NavItem({
     <Link
       href={href}
       className={[
-        "font-semibold transition-colors",
+        "transition-colors duration-150",
         mobile
           ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
           : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
-        !mobile && active ? "text-blue-600 bg-blue-50 dark:text-blue-400 dark:bg-blue-500/10" : " ",
+        !mobile && active
+          ? "bg-brand-green/10 text-brand-green font-medium dark:bg-brand-green/25 dark:text-[#7ece7e]"
+          : "font-semibold text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
         // mobile && active ? "bg-black text-white dark:bg-white dark:text-black rounded-full" : "rounded-full",
       ]
         .filter(Boolean)
@@ -76,6 +79,7 @@ function NavItem({
 export function Sidebar() {
   const { data: session } = useSession()
   const user = session?.user
+  const { profile } = useProfile()
 
   return (
     <aside className="hidden md:flex h-full w-full flex-col gap-4 rounded-xl bg-white/60 dark:bg-neutral-900/60 p-4 shadow-(--shadow-nav)    backdrop-blur">
@@ -88,6 +92,26 @@ export function Sidebar() {
         </Link>
       </div>
 
+      <div className="px-3 py-4 border-b border-gray-100 dark:border-neutral-800">
+        <p className="flex items-center gap-1 text-sm font-semibold text-gray-900 dark:text-neutral-100">
+          <span className="truncate">{profile?.fullname || user?.name}</span>
+          <Link
+            href="/dashboard/appearance#fullname"
+            className="shrink-0 text-gray-400 hover:text-brand-green transition-colors"
+            aria-label="Edit name"
+          >
+            <PenLine className="w-3.5 h-3.5" />
+          </Link>
+        </p>
+        <Link
+          href="/dashboard/appearance#username"
+          className="flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400 hover:text-brand-green transition-colors"
+        >
+          <span className="truncate">@{profile?.username || user?.username}</span>
+          <PenLine className="w-3 h-3 shrink-0" />
+        </Link>
+      </div>
+
       <nav className="flex flex-col gap-1">
         <NavItem href="/dashboard" label="Links" />
         <NavItem href="/dashboard/cards" label="Cards" />
@@ -97,21 +121,26 @@ export function Sidebar() {
 
       <div className="mt-auto flex flex-col gap-2">
         <PreviewToggle />
-        <ThemeToggle />
-        {user?.username && (
-          <Link href={`/u/${encodeURIComponent(user.username)}`} target="_blank">
-            <Button variant="primary" size="sm" className="w-full h-12">
+        <div className="space-y-2">
+          {user?.username && (
+            <Link
+              href={`/u/${encodeURIComponent(user.username)}`}
+              target="_blank"
+              className="inline-flex items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
+            >
               View public page
-            </Button>
-          </Link>
-        )}
-        <Button
-          variant="ghost"
-          className="w-full"
-          onClick={() => logout()}
-        >
-          Log out
-        </Button>
+            </Link>
+          )}
+          <button
+            className="inline-flex items-center justify-center w-full bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 py-2.5 px-4 rounded-lg transition-colors"
+            onClick={() => logout()}
+          >
+            Log out
+          </button>
+        </div>
+      </div>
+      <div className="border-t border-gray-100 dark:border-neutral-800 pt-2 flex justify-center">
+        <ThemeToggle iconOnly />
       </div>
     </aside>
   )
@@ -189,6 +218,13 @@ export function NavBar() {
           aria-label={isPreview ? "Hide preview" : "Show preview"}
         >
           <PiEyeBold className="text-xl" />
+        </button>
+        <button
+          className="flex items-center justify-center w-11 h-11 rounded-xl transition-colors text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 touch-manipulation"
+          onClick={() => logout()}
+          aria-label="Log out"
+        >
+          <TbLogout className="text-xl" />
         </button>
       </div>
     </nav>
