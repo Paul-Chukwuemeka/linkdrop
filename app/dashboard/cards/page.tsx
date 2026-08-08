@@ -1,6 +1,7 @@
 "use client";
 import { CardsOverview } from "@/components/cards/CardsOverview";
 import CardPreview from "@/components/cards/CardPreview";
+import { ViewPublicPageButton } from "@/components/cards/ViewPublicPageButton";
 
 export default function DashboardCardsPage() {
   return (
@@ -18,7 +19,10 @@ export default function DashboardCardsPage() {
         <div
           className="md:p-2 hidden lg:flex bg-white dark:bg-neutral-900 p-2 items-center justify-center rounded-xl h-full"
         >
-          <CardPreview />
+          <div className="flex flex-col items-center justify-center gap-3">
+            <CardPreview />
+            <ViewPublicPageButton />
+          </div>
         </div>
       </div>
     </div>

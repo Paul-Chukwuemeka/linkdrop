@@ -3,6 +3,7 @@ import { useProfile } from "@/context/ProfileContext";
 import { FullScreenLoader } from "@/components/ui/FullScreenLoader";
 import React from "react";
 import CardPreview from "../cards/CardPreview";
+import { ViewPublicPageButton } from "../cards/ViewPublicPageButton";
 
 const AppWrapper = ({ children }: { children: React.ReactNode }) => {
   const { isPreview, isLoadingCard, currentCard } = useCard();
@@ -17,7 +18,10 @@ const AppWrapper = ({ children }: { children: React.ReactNode }) => {
       {children}
       {isPreview && (
         <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm lg:hidden flex items-center justify-center p-4 safe-area-inset">
-          <CardPreview mobile={true} />
+          <div className="flex flex-col items-center gap-4">
+            <CardPreview mobile={true} />
+            <ViewPublicPageButton />
+          </div>
         </div>
       )}
     </div>
