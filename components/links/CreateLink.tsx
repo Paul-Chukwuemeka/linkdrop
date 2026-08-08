@@ -81,18 +81,6 @@ export function CreateLink() {
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.currentTarget.value)}
-              placeholder="e.g. My portfolio"
-              className={nestedInputClassName}
-              disabled={isSaving}
-              autoFocus
-            />
-          </div>
-
-          <div className="flex flex-col gap-1.5">
             <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</div>
             <Input
               type="url"
@@ -101,10 +89,22 @@ export function CreateLink() {
               placeholder="https://…"
               className={nestedInputClassName}
               disabled={isSaving}
+              autoFocus
             />
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Tip: use a full URL (including https://).
             </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
+            <Input
+              value={title}
+              onChange={(e) => setTitle(e.currentTarget.value)}
+              placeholder="e.g. My portfolio"
+              className={nestedInputClassName}
+              disabled={isSaving}
+            />
           </div>
 
           {localError || (hasSubmitted ? error : null) ? (
