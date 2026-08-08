@@ -34,7 +34,7 @@ export function CardList({
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Main"
             aria-label="Card name"
-            className="flex-1 max-w-[320px]"
+            className="flex-1 min-w-0"
           />
           <button
             type="button"
