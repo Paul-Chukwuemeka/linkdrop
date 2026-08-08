@@ -25,7 +25,7 @@ export const useStyle = () => {
 };
 
 export function StyleProvider({ children }: { children: React.ReactNode }) {
-  const { currentCard, setCardError } = useCard();
+  const { currentCard } = useCard();
   const [cardStyle, setCardStyle] = useState<CardTheme | null>(null);
   const [isSavingStyle, setIsSavingStyle] = useState(false);
 
@@ -55,12 +55,11 @@ export function StyleProvider({ children }: { children: React.ReactNode }) {
       });
       toast.success("Card style saved!");
     } catch {
-      setCardError("Failed to save style");
       toast.error("Failed to save style");
     } finally {
       setIsSavingStyle(false);
     }
-  }, [currentCard?.id, setCardError]);
+  }, [currentCard?.id]);
 
   return (
     <StyleContext.Provider
