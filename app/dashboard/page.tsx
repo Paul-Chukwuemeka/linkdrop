@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { PenLine, Plus, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import { PenLine, Plus, FolderPlus, Loader2 } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
@@ -51,7 +51,6 @@ export default function DashboardPage() {
   const error = cardError || profileError;
   const setError = setCardError;
 
-  const [options, setOptions] = useState(false);
   const [activeId, setActiveId] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
   const [editedName, setEditedName] = useState("");
@@ -202,9 +201,9 @@ export default function DashboardPage() {
               <CardSwitcher />
               </div>
             </div>
-            <div className="flex rounded-full items-center w-full overflow-hidden shadow-[0_0_15px_rgba(0,0,0,0.15)]">
+            <div className="flex flex-col gap-2">
               <button
-                className="flex-1 h-12 inline-flex items-center justify-center gap-2 bg-brand-green hover:bg-brand-green-hover text-white font-medium px-4 transition-all active:scale-[0.98]"
+                className="w-full inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-all"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -213,39 +212,15 @@ export default function DashboardPage() {
                 Add link
               </button>
               <button
-                className="shrink-0 h-12 w-12 flex items-center justify-center border-l border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800 cursor-pointer touch-manipulation hover:bg-gray-50 dark:hover:bg-neutral-700 transition-colors"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
                 onClick={() => {
-                  setOptions(!options);
+                  setIsCreatingCollection(true);
                 }}
-                aria-label="More options"
-                aria-expanded={options}
               >
-                {options ? (
-                  <ChevronUp className="w-5" />
-                ) : (
-                  <ChevronDown className="w-5" />
-                )}
+                <FolderPlus className="w-4 h-4" />
+                Create a new collection
               </button>
             </div>
-            {options && (
-              <div className="w-full">
-                <div
-                  className="flex items-center gap-3 w-full rounded-xl bg-white dark:bg-neutral-800 p-4 shadow-lg shadow-black/10  ring-black/5 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-700 transition-colors"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setIsCreatingCollection(true);
-                    setOptions(false);
-                  }}
-                >
-                  <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-neutral-100 dark:bg-neutral-700 text-neutral-600 dark:text-neutral-300">
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">Create a new collection</span>
-                </div>
-              </div>
-            )}
             {isCreatingLink && <CreateLink />}
             {isCreatingCollection && <CreateCollection />}
             <DndContext
@@ -280,7 +255,7 @@ export default function DashboardPage() {
           </div>
         </div>
         <div
-          className="hidden lg:flex bg-gray-50 dark:bg-neutral-900 rounded-2xl border border-gray-200 dark:border-neutral-800 p-6 items-center justify-center h-full"
+          className="hidden lg:flex bg-gray-100 dark:bg-neutral-800/60 rounded-2xl border border-gray-200 dark:border-neutral-700 p-6 items-center justify-center h-full"
         >
           <div className="w-full">
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">

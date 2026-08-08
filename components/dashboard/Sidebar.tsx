@@ -63,12 +63,13 @@ function NavItem({
           ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
           : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
         !mobile && active
-          ? "bg-brand-green/10 text-brand-green font-medium dark:bg-brand-green/25 dark:text-[#7ece7e]"
+          ? "bg-[#1B3A1B]/10 text-[#1B3A1B] font-medium dark:bg-brand-green/25 dark:text-[#7ece7e]"
           : "font-semibold text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
         // mobile && active ? "bg-black text-white dark:bg-white dark:text-black rounded-full" : "rounded-full",
       ]
         .filter(Boolean)
         .join(" ")}
+
     >
       {icon}
       {!mobile && label}
@@ -93,8 +94,10 @@ export function Sidebar() {
       </div>
 
       <div className="px-3 py-4 border-b border-gray-100 dark:border-neutral-800">
-        <p className="flex items-center gap-1 text-sm font-semibold text-gray-900 dark:text-neutral-100">
-          <span className="truncate">{profile?.fullname || user?.name}</span>
+        <div className="flex items-center justify-between gap-2">
+          <p className="min-w-0 truncate text-sm font-semibold text-gray-900 dark:text-neutral-100">
+            {profile?.fullname || user?.name}
+          </p>
           <Link
             href="/dashboard/appearance#fullname"
             className="shrink-0 text-gray-400 hover:text-brand-green transition-colors"
@@ -102,14 +105,10 @@ export function Sidebar() {
           >
             <PenLine className="w-3.5 h-3.5" />
           </Link>
+        </div>
+        <p className="truncate text-xs text-gray-500 dark:text-neutral-400">
+          @{profile?.username || user?.username}
         </p>
-        <Link
-          href="/dashboard/appearance#username"
-          className="flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400 hover:text-brand-green transition-colors"
-        >
-          <span className="truncate">@{profile?.username || user?.username}</span>
-          <PenLine className="w-3 h-3 shrink-0" />
-        </Link>
       </div>
 
       <nav className="flex flex-col gap-1">
