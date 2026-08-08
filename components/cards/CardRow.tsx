@@ -55,7 +55,7 @@ export function CardRow({
     <div
       className={`flex items-center justify-between gap-3 rounded-xl border p-3 sm:p-4 transition-colors ${
         isActive
-          ? "border-brand-green/40 bg-brand-green/5 ring-1 ring-brand-green/30 dark:border-brand-green/50 dark:bg-brand-green/10"
+          ? "border-brand-green/40 bg-brand-green/5 dark:border-brand-green/50 dark:bg-brand-green/10"
           : "border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
       }`}
     >
