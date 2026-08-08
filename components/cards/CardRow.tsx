@@ -53,10 +53,10 @@ export function CardRow({
 
   return (
     <div
-      className={`flex items-center justify-between gap-3 rounded-xl border bg-white p-3 sm:p-4 transition-colors dark:bg-neutral-900 ${
+      className={`flex items-center justify-between gap-3 rounded-xl border p-3 sm:p-4 transition-colors ${
         isActive
-          ? "border-l-4 border-l-brand-green border-gray-200 dark:border-neutral-800"
-          : "border-gray-200 dark:border-neutral-800"
+          ? "border-brand-green/40 bg-brand-green/5 ring-1 ring-brand-green/30 dark:border-brand-green/50 dark:bg-brand-green/10"
+          : "border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
       }`}
     >
       <div className="min-w-0 flex-1">
