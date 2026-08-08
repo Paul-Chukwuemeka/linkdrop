@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
+import { IdCard } from "lucide-react";
 import type { Card } from "@/lib/types";
 import React, { useState } from "react";
 import { CardRow } from "./CardRow";
@@ -24,33 +24,50 @@ export function CardList({
 
   return (
     <div className="flex flex-col w-full max-w-200 gap-3 sm:gap-4">
-      <div className="bg-white dark:bg-neutral-900 p-4 sm:p-5 rounded-md shadow-(--shadow-card)   ">
-        <div className="text-sm font-bold text-neutral-900 dark:text-neutral-100">Create a card</div>
+      <div className="bg-white dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 rounded-xl p-4 sm:p-5">
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-100">
+          Create a card
+        </h3>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Input
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Main"
             aria-label="Card name"
+            className="flex-1 max-w-[320px]"
           />
-          <Button
+          <button
             type="button"
             onClick={() => onCreateCard(name)}
             disabled={isCreating}
-            className="shrink-0"
+            className="shrink-0 inline-flex h-10 items-center justify-center justify-self-start rounded-lg bg-brand-green px-5 text-sm font-medium text-white transition-colors hover:bg-brand-green-hover disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isCreating ? <ButtonLoader label="Creating…" onDark /> : "Create"}
-          </Button>
+          </button>
         </div>
-        <div className="mt-2 text-xs text-neutral-600 dark:text-neutral-400">
-          Leave blank to create an Untitled card.
-        </div>
+      </div>
+
+      <div className="flex items-center justify-between px-1">
+        <span className="text-sm font-semibold text-gray-900 dark:text-neutral-100">
+          Your cards
+        </span>
+        <span className="text-xs text-gray-500 dark:text-neutral-400">
+          {cards.length} {cards.length === 1 ? "card" : "cards"}
+        </span>
       </div>
 
       <div className="flex flex-col gap-3">
         {cards.length === 0 ? (
-          <div className="rounded-sm sm:rounded-md bg-white dark:bg-neutral-900 p-4 sm:p-6 text-sm text-neutral-700 dark:text-neutral-300 shadow-(--shadow-card)   ">
-            No cards yet.
+          <div className="flex flex-col items-center justify-center rounded-xl bg-white dark:bg-neutral-900 p-8 border border-gray-200 dark:border-neutral-800 text-center">
+            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-green/10">
+              <IdCard className="h-6 w-6 text-brand-green" />
+            </div>
+            <p className="mt-3 text-sm font-medium text-gray-900 dark:text-neutral-100">
+              No cards yet
+            </p>
+            <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
+              Create your first card above to start publishing links.
+            </p>
           </div>
         ) : (
           cards.map((card) => <CardRow deleteCard={deleteCard} key={card.id} card={card} isActive={card.id === activeCardId} />)

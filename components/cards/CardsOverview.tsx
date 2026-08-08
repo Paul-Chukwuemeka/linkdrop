@@ -38,7 +38,7 @@ export function CardsOverview() {
     try {
       await apiFetch<Card>("/api/cards", {
         method: "POST",
-        json: { name: name.trim() || null },
+        json: { name: name.trim() || "My Card" },
       });
       await load();
     } catch (err) {
