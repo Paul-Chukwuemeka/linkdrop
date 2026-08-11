@@ -29,6 +29,19 @@ export function LoginForm() {
     return raw && raw.startsWith("/") && !raw.startsWith("//") ? raw : "/dashboard"
   })
 
+  const [urlError] = useState(() => {
+    if (typeof window === "undefined") return null
+    const code = new URLSearchParams(window.location.search).get("error")
+    if (!code) return null
+    const messages: Record<string, string> = {
+      Configuration: "There was a problem with the server configuration. Please try again later.",
+      CredentialsSignin: "Invalid username or password.",
+      AccessDenied: "You do not have access to sign in.",
+      OAuthAccountNotLinked: "This email is already linked to another account. Please sign in with your password.",
+    }
+    return messages[code] ?? `Sign-in failed (${code}). Please try again.`
+  })
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -107,6 +120,12 @@ export function LoginForm() {
         {error && (
           <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
             {error}
+          </div>
+        )}
+
+        {urlError && (
+          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+            {urlError}
           </div>
         )}
 
