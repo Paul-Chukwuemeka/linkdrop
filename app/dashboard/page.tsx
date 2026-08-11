@@ -193,7 +193,7 @@ export default function DashboardPage() {
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
                   disabled={isSettingMain}
-                  className="shadow-(--shadow-card) font-bold text-(--accent-foreground) w-30 h-9 bg-(--accent) px-3 rounded-full text-xs md:text-md disabled:opacity-50"
+                  className="shadow-(--shadow-card) cursor-pointer font-bold text-(--accent-foreground) w-30 h-9 bg-[#1B3A1B] px-3 rounded-full text-xs md:text-md disabled:opacity-50"
                 >
                   {isSettingMain ? <ButtonLoader label="Saving…" /> : "Set as main card"}
                 </button>
@@ -203,7 +203,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-2">
               <button
-                className="w-full inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-all"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-all"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -212,7 +212,7 @@ export default function DashboardPage() {
                 Add link
               </button>
               <button
-                className="w-full inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
                 onClick={() => {
                   setIsCreatingCollection(true);
                 }}

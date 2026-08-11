@@ -66,7 +66,7 @@ export function CardSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isSwitching}
-        className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors disabled:opacity-50"
+        className="flex cursor-pointer items-center justify-center w-10 h-10 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-700  transition-colors disabled:opacity-50"
         aria-label="Switch card"
       >
         {isSwitching ? (
@@ -77,7 +77,7 @@ export function CardSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 top-full z-50 mt-1 min-w-48 rounded-xl bg-white dark:bg-neutral-800 shadow-lg  ring-black/5 dark:ring-white/10 py-1">
+        <div className="absolute right-0 top-full z-50 mt-1 min-w-48 rounded-xl bg-white dark:bg-neutral-800 shadow-lg  ring-black/5 dark:ring-white/10 py-1">
           {cards.map((card) => (
             <button
               key={card.id}
