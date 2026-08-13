@@ -22,7 +22,6 @@ const layoutOptions: { value: LinkLayout; label: string }[] = [
   { value: "row", label: "Row" },
   { value: "centered", label: "Centered" },
   { value: "grid", label: "Grid" },
-  { value: "minimal", label: "Minimal" },
 ];
 
 function LayoutMockup({ value }: { value: LinkLayout }) {
@@ -51,12 +50,6 @@ function LayoutMockup({ value }: { value: LinkLayout }) {
           ))}
         </div>
       )}
-      {value === "minimal" &&
-        [0, 1].map((i) => (
-          <div key={i} className="w-full flex items-center justify-center">
-            <div className="h-0.5 w-10 rounded-full bg-neutral-400 dark:bg-neutral-500" />
-          </div>
-        ))}
     </div>
   );
 }

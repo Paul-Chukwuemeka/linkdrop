@@ -100,15 +100,11 @@ export function PublicLinkCard({
       className={`group relative w-full font-semibold capitalize flex items-center justify-between transition-transform hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5 active:shadow-none ${PublicbuttonRadiusClasses[cardStyle.button_radius ?? "round"]} ${menuOpen ? "z-50" : ""} ${
         layout === "row"
           ? "px-5 h-14"
-          : layout === "centered" || layout === "minimal"
+          : layout === "centered"
             ? "px-5 h-14"
             : "flex-col px-3 py-3.5 h-auto gap-2"
       }`}
-      style={
-        layout === "minimal"
-          ? { ...shadowStyle, boxShadow: "none", backgroundColor: "transparent" }
-          : { ...buttonBgStyle, ...shadowStyle }
-      }
+      style={{ ...buttonBgStyle, ...shadowStyle }}
       target="_blank"
       rel="noopener noreferrer"
     >

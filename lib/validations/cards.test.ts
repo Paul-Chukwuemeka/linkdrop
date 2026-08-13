@@ -63,12 +63,13 @@ describe("cardStyleUpdateSchema caps on free-form style input", () => {
   })
 
   it("accepts every link_layout value", () => {
-    for (const layout of ["row", "centered", "grid", "minimal"]) {
+    for (const layout of ["row", "centered", "grid"]) {
       expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: layout } }).success).toBe(true)
     }
   })
 
   it("rejects invalid link_layout values", () => {
+    expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: "minimal" } }).success).toBe(false)
     expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: "bento" } }).success).toBe(false)
     expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: 42 } }).success).toBe(false)
   })

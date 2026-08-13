@@ -44,16 +44,13 @@ export const shadowStyles = {
 
 export type ShadowType = keyof typeof shadowStyles;
 
-export type LinkLayout = "row" | "centered" | "grid" | "minimal";
+export type LinkLayout = "row" | "centered" | "grid";
 
 export function getLinkLayout(
   cardStyle: CardTheme | null | undefined,
 ): LinkLayout {
   const layout = cardStyle?.link_layout;
-  return layout === "row" ||
-    layout === "centered" ||
-    layout === "grid" ||
-    layout === "minimal"
+  return layout === "row" || layout === "centered" || layout === "grid"
     ? layout
     : "row";
 }
