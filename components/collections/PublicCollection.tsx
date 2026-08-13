@@ -15,9 +15,9 @@ export function PublicCollection({
 
   if (links.length === 0) return null;
 
-  const textColor = cardStyle.text_color
-    ? `#${cardStyle.text_color}`
-    : "#ffffff";
+  const textColor = cardStyle.button_color
+    ? `#${cardStyle.button_color}`
+    : "#000000";
 
   const buttonBgStyle = getButtonBgStyle(cardStyle);
 
