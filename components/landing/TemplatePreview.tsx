@@ -3,7 +3,11 @@ const templates = [
     name: "Minimal",
     cardBg: "bg-white",
     avatarBg: "bg-neutral-200",
-    linkBgs: ["bg-neutral-100 border border-neutral-200", "bg-neutral-100 border border-neutral-200", "bg-neutral-100 border border-neutral-200"],
+    linkBgs: [
+      "bg-neutral-100 border border-neutral-200",
+      "bg-neutral-100 border border-neutral-200",
+      "bg-neutral-100 border border-neutral-200",
+    ],
     nameColor: "text-[#1A1A1A]",
     handleColor: "text-[#6B6B6B]",
   },
@@ -19,7 +23,11 @@ const templates = [
     name: "Editorial",
     cardBg: "bg-[#f7efdd]",
     avatarBg: "bg-[#e8d5b8]",
-    linkBgs: ["bg-white/60 border border-[#e8d5b8]", "bg-white/60 border border-[#e8d5b8]", "bg-white/60 border border-[#e8d5b8]"],
+    linkBgs: [
+      "bg-white/60 border border-[#e8d5b8]",
+      "bg-white/60 border border-[#e8d5b8]",
+      "bg-white/60 border border-[#e8d5b8]",
+    ],
     nameColor: "text-[#3d2b1f]",
     handleColor: "text-[#6B6B6B]",
   },
@@ -28,7 +36,7 @@ const templates = [
 export default function TemplatePreview() {
   return (
     <section className="px-6 py-16 md:px-12 lg:py-24">
-      <div className="mx-auto w-full max-w-[1200px]">
+      <div className="mx-auto w-full max-w-300">
         <h2 className="mb-10 text-center text-2xl font-medium text-primary">
           A profile for every vibe
         </h2>
@@ -38,7 +46,7 @@ export default function TemplatePreview() {
             <div key={t.name} className="w-72 shrink-0 snap-start md:w-auto">
               {/* thumbnail */}
               <div
-                className={`aspect-[4/5] rounded-xl border border-[rgba(26,26,26,0.08)] p-4 ${t.cardBg}`}
+                className={`aspect-4/5 rounded-xl border border-border-subtle p-4 ${t.cardBg}`}
                 aria-hidden="true"
               >
                 {/* avatar */}
@@ -49,7 +57,9 @@ export default function TemplatePreview() {
                 {/* name bars */}
                 <div className="mt-3 flex flex-col items-center gap-1.5">
                   <div className={`h-2 w-20 rounded-full ${t.avatarBg}`} />
-                  <div className={`h-1.5 w-14 rounded-full ${t.avatarBg} opacity-60`} />
+                  <div
+                    className={`h-1.5 w-14 rounded-full ${t.avatarBg} opacity-60`}
+                  />
                 </div>
 
                 {/* link cards */}

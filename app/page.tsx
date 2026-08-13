@@ -7,9 +7,9 @@ import Footer from "@/components/landing/Footer";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-dvh flex-col bg-background-primary font-[family-name:var(--font-inter)] text-primary">
+    <main className="relative flex min-h-dvh flex-col bg-background-primary font-(family-name:var(--font-inter)) text-primary">
       <Nav />
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col bg-background-primary ">
         <Hero />
         <HowItWorks />
         <TemplatePreview />
