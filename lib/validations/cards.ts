@@ -41,6 +41,7 @@ const cardStyleSchema = z.object({
   button_bg: color.optional(),
   button_color: color.optional(),
   button_type: z.enum(["solid", "glass-light", "glass", "glass-heavy", "outline"]).optional(),
+  link_layout: z.enum(["row", "centered", "grid", "minimal"]).optional(),
   profile_image: profileImageUrl,
   shadow: z.enum(["none", "soft", "medium", "hard", "glow"]).nullable().optional(),
   shadow_color: color.nullable().optional(),

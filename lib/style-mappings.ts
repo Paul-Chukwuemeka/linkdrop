@@ -44,6 +44,20 @@ export const shadowStyles = {
 
 export type ShadowType = keyof typeof shadowStyles;
 
+export type LinkLayout = "row" | "centered" | "grid" | "minimal";
+
+export function getLinkLayout(
+  cardStyle: CardTheme | null | undefined,
+): LinkLayout {
+  const layout = cardStyle?.link_layout;
+  return layout === "row" ||
+    layout === "centered" ||
+    layout === "grid" ||
+    layout === "minimal"
+    ? layout
+    : "row";
+}
+
 function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
   const h = hex.replace("#", "");
   if (h.length !== 6) return null;
@@ -126,7 +140,9 @@ const glassStyles: Record<
   },
 };
 
-export function getButtonBgStyle(cardStyle: CardTheme): CSSProperties {
+export function getButtonBgStyle(
+  cardStyle: Pick<CardTheme, "button_type" | "button_bg">,
+): CSSProperties {
   if (
     cardStyle.button_type === "glass-light" ||
     cardStyle.button_type === "glass" ||

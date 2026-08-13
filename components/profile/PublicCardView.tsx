@@ -1,8 +1,7 @@
 import { Card } from "@/lib/types";
 import { isLight, darken, lighten } from "@/utils/colors";
 import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
-import { PublicLinkCard } from "@/components/links/PublicLinkCard";
-import { PublicCollection } from "@/components/collections/PublicCollection";
+import { LinksContainer } from "@/components/links/LinksContainer";
 import { fonts } from "@/lib/fonts";
 import { DEFAULT_CARD_STYLE } from "@/lib/constants";
 import Link from "next/link";
@@ -71,23 +70,7 @@ export function PublicCardView({ card }: { card: Card }) {
             title_color={cardStyle.title_color || textColor}
           />
 
-          <div className="mt-4 flex flex-col gap-4">
-            {items.map((item, i) =>
-              item.type === "link" ? (
-                <PublicLinkCard
-                  key={i}
-                  link={item.content}
-                  cardStyle={cardStyle}
-                />
-              ) : (
-                <PublicCollection
-                  key={i}
-                  collection={item.content}
-                  cardStyle={cardStyle}
-                />
-              ),
-            )}
-          </div>
+          <LinksContainer items={items} cardStyle={cardStyle} className="mt-4 gap-4" />
 
           <div className="mt-4 text-center">
             <div

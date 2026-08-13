@@ -61,4 +61,15 @@ describe("cardStyleUpdateSchema caps on free-form style input", () => {
       cardStyleUpdateSchema.safeParse({ style: { ...base, profile_image: "https://example.com/a.png" } }).success
     ).toBe(true)
   })
+
+  it("accepts every link_layout value", () => {
+    for (const layout of ["row", "centered", "grid", "minimal"]) {
+      expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: layout } }).success).toBe(true)
+    }
+  })
+
+  it("rejects invalid link_layout values", () => {
+    expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: "bento" } }).success).toBe(false)
+    expect(cardStyleUpdateSchema.safeParse({ style: { ...base, link_layout: 42 } }).success).toBe(false)
+  })
 })

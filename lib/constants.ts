@@ -6,6 +6,7 @@ export const DEFAULT_CARD_STYLE = {
   button_bg: "ffffff",
   button_color: "000000",
   button_type: "solid",
+  link_layout: "row",
   profile_image: null,
   shadow: null,
   shadow_color: null,

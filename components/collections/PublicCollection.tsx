@@ -2,7 +2,7 @@
 
 import { Collection, CardTheme } from "@/lib/types";
 import { PublicLinkCard } from "../links/PublicLinkCard";
-import { getButtonBgStyle } from "@/lib/style-mappings";
+import { getButtonBgStyle, getLinkLayout } from "@/lib/style-mappings";
 
 export function PublicCollection({
   collection,
@@ -20,6 +20,7 @@ export function PublicCollection({
     : "#000000";
 
   const buttonBgStyle = getButtonBgStyle(cardStyle);
+  const isGrid = getLinkLayout(cardStyle) === "grid";
 
   return (
     <div
@@ -35,7 +36,7 @@ export function PublicCollection({
       </h3>
 
       {/* Links */}
-      <div className="flex flex-col gap-2">
+      <div className={isGrid ? "grid grid-cols-2 gap-2" : "flex flex-col gap-2"}>
         {links.map((link, i) => (
           <PublicLinkCard key={i} link={link} cardStyle={cardStyle} />
         ))}

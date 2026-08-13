@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { getButtonBgStyle } from "@/lib/style-mappings";
 import { CardTheme } from "@/lib/types";
 
-const STYLE_PRESETS: CardTheme[] = [
+const STYLE_PRESETS: Omit<CardTheme, "link_layout">[] = [
   {
     name: "Default",
     card_bg: "ffffff",
@@ -168,7 +168,7 @@ const STYLE_PRESETS: CardTheme[] = [
   },
 ];
 
-function getBackgroundStyle(preset: CardTheme): React.CSSProperties {
+function getBackgroundStyle(preset: Omit<CardTheme, "link_layout">): React.CSSProperties {
   if (preset.bg_type === "gradient" && preset.gradient.length > 0) {
     const gradient = preset.gradient.map((c) => `#${c}`).join(",");
     const angle = preset.gradient_direction ?? 135;
@@ -179,7 +179,7 @@ function getBackgroundStyle(preset: CardTheme): React.CSSProperties {
   return { backgroundColor: `#${preset.card_bg}` };
 }
 
-function getButtonStyle(preset: CardTheme): React.CSSProperties {
+function getButtonStyle(preset: Omit<CardTheme, "link_layout">): React.CSSProperties {
   const base: React.CSSProperties = {
     borderRadius:
       preset.button_radius === "pill"
@@ -223,7 +223,7 @@ const Presets = () => {
   const { cardStyle, updateCardStyle, updateStyle, isSavingStyle: isSaving } =
     useStyle();
 
-  const handleApplyPreset = (preset: CardTheme) => {
+  const handleApplyPreset = (preset: Omit<CardTheme, "link_layout">) => {
     updateCardStyle({
       card_bg: preset.card_bg,
       bg_type: preset.bg_type,

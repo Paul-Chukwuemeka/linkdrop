@@ -113,6 +113,7 @@ export interface CardTheme {
   button_color: string
   button_type: "solid" | "glass-light" | "glass" | "glass-heavy" | "outline"
   button_radius: "pill" | "round" | "square" | "rounder"
+  link_layout: "row" | "centered" | "grid" | "minimal"
   text_size: "large" | "medium" | "small"
   text_color: string
   title_color: string | null

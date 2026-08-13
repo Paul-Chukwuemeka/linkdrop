@@ -6,8 +6,7 @@ import { useProfile } from "@/context/ProfileContext";
 import { useCard } from "@/context/CardContext";
 import { useStyle } from "@/context/StyleContext";
 import { PublicProfileHeader } from "@/components/profile/PublicProfileHeader";
-import { PublicLinkCard } from "@/components/links/PublicLinkCard";
-import { PublicCollection } from "@/components/collections/PublicCollection";
+import { LinksContainer } from "@/components/links/LinksContainer";
 import { previewTitleSizeClasses, previewTextSizeClasses } from "@/lib/style-mappings";
 import { fonts } from "@/lib/fonts";
 import { isLight, darken, lighten } from "@/utils/colors";
@@ -105,23 +104,11 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               preview
             />
 
-            <div className="mt-4 flex flex-col gap-4">
-              {items?.map((item, i) =>
-                item.type === "link" ? (
-                  <PublicLinkCard
-                    key={i}
-                    link={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ) : (
-                  <PublicCollection
-                    key={i}
-                    collection={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ),
-              )}
-            </div>
+            <LinksContainer
+              items={items ?? []}
+              cardStyle={cardStyle}
+              className="mt-4 gap-4"
+            />
           </div>
         </div>
       </div>
@@ -190,30 +177,11 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               </p>
             )}
 
-            <div
-              className="w-full flex gap-2 sm:gap-2.5 p-1 sm:p-2 flex-col flex-1 text-xs"
-              style={{
-                color: cardStyle.text_color
-                  ? `#${cardStyle.text_color}`
-                  : undefined,
-              }}
-            >
-              {items?.map((item, i) => {
-                return item.type == "link" ? (
-                  <PublicLinkCard
-                    key={i}
-                    link={item.content}
-                    cardStyle={cardStyle}
-                  />
-                ) : (
-                  <PublicCollection
-                    key={i}
-                    collection={item.content}
-                    cardStyle={cardStyle}
-                  />
-                );
-              })}
-            </div>
+            <LinksContainer
+              items={items ?? []}
+              cardStyle={cardStyle}
+              className="w-full gap-2 sm:gap-2.5 p-1 sm:p-2 flex-1 text-xs"
+            />
           </div>
         </div>
       </div>

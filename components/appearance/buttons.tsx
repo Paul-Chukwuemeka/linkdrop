@@ -2,7 +2,7 @@ import ColorPicker from "../ui/colorPicker";
 import { useStyle } from "@/context/StyleContext";
 import { Button } from "../ui/Button";
 import { ButtonLoader } from "../ui/ButtonLoader";
-import { getShadowStyles, ShadowType } from "@/lib/style-mappings";
+import { getShadowStyles, ShadowType, getLinkLayout, LinkLayout } from "@/lib/style-mappings";
 
 const shadowOptions: { value: ShadowType; label: string }[] = [
   { value: "none", label: "None" },
@@ -18,15 +18,76 @@ const glassOptions: { value: "glass-light" | "glass" | "glass-heavy"; label: str
   { value: "glass-heavy", label: "Heavy", preview: "bg-white/50" },
 ];
 
+const layoutOptions: { value: LinkLayout; label: string }[] = [
+  { value: "row", label: "Row" },
+  { value: "centered", label: "Centered" },
+  { value: "grid", label: "Grid" },
+  { value: "minimal", label: "Minimal" },
+];
+
+function LayoutMockup({ value }: { value: LinkLayout }) {
+  return (
+    <div className="w-full h-9 sm:h-12 flex flex-col items-center justify-center gap-1 bg-neutral-100 dark:bg-neutral-700 rounded-lg p-1.5">
+      {value === "row" &&
+        [0, 1].map((i) => (
+          <div key={i} className="w-full flex items-center gap-1.5 bg-white dark:bg-neutral-600 rounded-full px-1.5 py-1 shadow-(--shadow-card)">
+            <div className="w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-500 shrink-0" />
+            <div className="h-1 w-full rounded-full bg-neutral-300 dark:bg-neutral-500" />
+          </div>
+        ))}
+      {value === "centered" &&
+        [0, 1].map((i) => (
+          <div key={i} className="w-full h-3 bg-white dark:bg-neutral-600 rounded-full shadow-(--shadow-card) flex items-center justify-center">
+            <div className="h-1 w-8 rounded-full bg-neutral-300 dark:bg-neutral-500" />
+          </div>
+        ))}
+      {value === "grid" && (
+        <div className="w-full grid grid-cols-2 gap-1">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="bg-white dark:bg-neutral-600 rounded-md py-1.5 flex flex-col items-center gap-0.5">
+              <div className="w-2 h-2 rounded-full bg-neutral-300 dark:bg-neutral-500" />
+              <div className="h-0.5 w-4 rounded-full bg-neutral-300 dark:bg-neutral-500" />
+            </div>
+          ))}
+        </div>
+      )}
+      {value === "minimal" &&
+        [0, 1].map((i) => (
+          <div key={i} className="w-full flex items-center justify-center">
+            <div className="h-0.5 w-10 rounded-full bg-neutral-400 dark:bg-neutral-500" />
+          </div>
+        ))}
+    </div>
+  );
+}
+
 const Buttons = () => {
   const { cardStyle, updateCardStyle, updateStyle, isSavingStyle: isSaving } =
     useStyle();
 
   if (!cardStyle) return;
   const { button_radius, button_type, shadow } = cardStyle;
+  const linkLayout = getLinkLayout(cardStyle);
   const isGlass = button_type.startsWith("glass");
   return (
     <div className="flex flex-col gap-5 sm:gap-6 w-full">
+      <div>
+        <h2 className="text-sm sm:text-base font-semibold">Link Layout</h2>
+        <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
+          {layoutOptions.map((option) => (
+            <button
+              key={option.value}
+              className={`${linkLayout == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+              onClick={() => {
+                updateCardStyle({ link_layout: option.value });
+              }}
+            >
+              <LayoutMockup value={option.value} />
+              <p className="text-xs sm:text-sm font-semibold capitalize">{option.label}</p>
+            </button>
+          ))}
+        </div>
+      </div>
       <div>
         <h2 className="text-sm sm:text-base font-semibold">Button Style</h2>
         <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
