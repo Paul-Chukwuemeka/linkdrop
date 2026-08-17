@@ -6,7 +6,12 @@ import { Link as LinkType, CardTheme } from "@/lib/types";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { getDomain, safeHref } from "@/utils/validate";
-import { PublicbuttonRadiusClasses, getShadowStyles, getButtonBgStyle, getLinkLayout } from "@/lib/style-mappings";
+import {
+  PublicbuttonRadiusClasses,
+  getShadowStyles,
+  getButtonBgStyle,
+  getLinkLayout,
+} from "@/lib/style-mappings";
 
 async function copyToClipboard(text: string): Promise<boolean> {
   try {
@@ -163,69 +168,87 @@ export function PublicLinkCard({
       )}
 
       <div ref={menuRef} className="relative shrink-0 self-end">
-          <button
-            className="p-2 opacity-60 hover:opacity-100 transition-opacity"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMenuOpen((open) => !open);
-            }}
-            aria-label="More options"
-            aria-haspopup="menu"
-            aria-expanded={menuOpen}
+        <button
+          className="p-2 opacity-60 hover:opacity-100 transition-opacity"
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            setMenuOpen((open) => !open);
+          }}
+          aria-label="More options"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            style={{ color: textColor }}
           >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              style={{ color: textColor }}
-            >
-              <circle cx="12" cy="6" r="2" />
-              <circle cx="12" cy="12" r="2" />
-              <circle cx="12" cy="18" r="2" />
-            </svg>
-          </button>
+            <circle cx="12" cy="6" r="2" />
+            <circle cx="12" cy="12" r="2" />
+            <circle cx="12" cy="18" r="2" />
+          </svg>
+        </button>
 
-          {menuOpen && (
-            <div
-              role="menu"
-              className="absolute right-0 top-full mt-2 z-1000 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
+        {menuOpen && (
+          <div
+            role="menu"
+            className="absolute right-0 top-full mt-2 z-1000 min-w-44 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 shadow-lg overflow-hidden"
+          >
+            <button
+              role="menuitem"
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                void handleCopyLink();
+              }}
             >
-              <button
-                role="menuitem"
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  void handleCopyLink();
-                }}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="9" y="9" width="13" height="13" rx="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-                Copy link
-              </button>
-              <button
-                role="menuitem"
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleOpenInNewTab();
-                }}
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              Copy link
+            </button>
+            <button
+              role="menuitem"
+              className="w-full flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleOpenInNewTab();
+              }}
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-                Open in new tab
-              </button>
-            </div>
-          )}
-        </div>
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              Open in new tab
+            </button>
+          </div>
+        )}
+      </div>
     </Link>
   );
 }

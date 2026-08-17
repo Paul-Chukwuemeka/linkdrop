@@ -125,7 +125,7 @@ export function Sidebar() {
             <Link
               href={`/u/${encodeURIComponent(user.username)}`}
               target="_blank"
-              className="inline-flex items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
+              className="inline-flex text-xs md:text-sm items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
             >
               View public page
             </Link>
