@@ -107,7 +107,6 @@ export const GradientColorsManager = ({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Current gradient colors */}
       <div className="flex flex-wrap items-center gap-3">
         {colors.map((color, index) => (
           <GradientColorPicker

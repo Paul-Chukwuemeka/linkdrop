@@ -47,7 +47,6 @@ export function PublicProfileHeader({
         font_className || ""
       }`}
     >
-      {/* Avatar */}
       <div className="relative">
         <div className="h-24 w-24 overflow-hidden rounded-full border-4 border-white shadow-lg bg-white/20">
           {avatarUrl && !imgError ? (
@@ -72,7 +71,6 @@ export function PublicProfileHeader({
         </div>
       </div>
 
-      {/* Name */}
       <h1
         className={`mt-3 font-black tracking-tight ${titleClasses}`}
         style={{ color: titleColor }}
@@ -80,7 +78,6 @@ export function PublicProfileHeader({
         {fullname}
       </h1>
 
-      {/* Username / Bio */}
       <div className="mt-1 space-y-2">
         <p
           className={`font-medium tracking-wide ${textClasses}`}
@@ -98,7 +95,6 @@ export function PublicProfileHeader({
         )}
       </div>
 
-      {/* Social Links */}
       {socialLinks.length > 0 && (
         <div className="flex items-center gap-4 mt-3">
           {socialLinks.map((social, i) => (

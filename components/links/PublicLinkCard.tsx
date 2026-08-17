@@ -110,7 +110,6 @@ export function PublicLinkCard({
     >
       {layout === "row" ? (
         <div className="flex items-center gap-4 flex-1 min-w-0">
-          {/* Favicon */}
           <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden border border-black/10">
             <img
               width={40}
@@ -124,7 +123,6 @@ export function PublicLinkCard({
             />
           </div>
 
-          {/* Title - centered */}
           <p
             className="flex-1 text-center truncate px-2 text-sm sm:text-base"
             style={{ color: textColor }}
@@ -134,7 +132,6 @@ export function PublicLinkCard({
         </div>
       ) : layout === "grid" ? (
         <>
-          {/* Favicon on top */}
           <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden border border-black/10">
             <img
               width={40}
@@ -156,7 +153,6 @@ export function PublicLinkCard({
         </>
       ) : (
         <>
-          {/* Title - centered, no favicon */}
           <p
             className="w-full text-center truncate px-2 text-sm sm:text-base"
             style={{ color: textColor }}
@@ -166,7 +162,6 @@ export function PublicLinkCard({
         </>
       )}
 
-      {/* Three dots menu - always shown */}
       <div ref={menuRef} className="relative shrink-0 self-end">
           <button
             className="p-2 opacity-60 hover:opacity-100 transition-opacity"

@@ -44,17 +44,14 @@ export default function TemplatePreview() {
         <div className="flex gap-4 overflow-x-auto pb-4 snap-x md:grid md:grid-cols-3 md:gap-8 md:overflow-visible md:pb-0">
           {templates.map((t) => (
             <div key={t.name} className="w-72 shrink-0 snap-start md:w-auto">
-              {/* thumbnail */}
               <div
                 className={`aspect-4/5 rounded-xl border border-border-subtle p-4 ${t.cardBg}`}
                 aria-hidden="true"
               >
-                {/* avatar */}
                 <div className="flex justify-center">
                   <div className={`h-10 w-10 rounded-full ${t.avatarBg}`} />
                 </div>
 
-                {/* name bars */}
                 <div className="mt-3 flex flex-col items-center gap-1.5">
                   <div className={`h-2 w-20 rounded-full ${t.avatarBg}`} />
                   <div
@@ -62,7 +59,6 @@ export default function TemplatePreview() {
                   />
                 </div>
 
-                {/* link cards */}
                 <div className="mt-5 flex flex-col gap-2">
                   {t.linkBgs.map((bg, j) => (
                     <div key={j} className={`rounded-lg px-3 py-2.5 ${bg}`}>
@@ -72,7 +68,6 @@ export default function TemplatePreview() {
                 </div>
               </div>
 
-              {/* label */}
               <p className="mt-3 text-center text-sm font-medium text-primary">
                 {t.name}
               </p>

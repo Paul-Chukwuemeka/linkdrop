@@ -12,7 +12,6 @@ import { ButtonLoader } from "../ui/ButtonLoader";
 import { GradientColorsManager } from "./GradientColorPicker";
 import toast from "react-hot-toast";
 
-// Direction presets with icons
 const directionPresets = [
   { angle: 0, label: "→", name: "Right" },
   { angle: 45, label: "↘", name: "Diagonal" },
@@ -202,10 +201,8 @@ const Background = () => {
         </div>
       </div>
 
-      {/* Gradient Type & Direction - only show when gradient is selected */}
       {bg_type === "gradient" && (
         <div className="flex flex-col gap-4 sm:gap-5 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
-          {/* Gradient Colors */}
           <div>
             <h2 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Gradient Colors</h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-2 sm:mb-3">
@@ -244,7 +241,6 @@ const Background = () => {
             </div>
           </div>
 
-          {/* Direction selector - only for linear gradients */}
           {gradient_type === "linear" && (
             <>
               <h2 className="text-sm sm:text-base font-semibold mt-2">Gradient Direction</h2>
@@ -268,7 +264,6 @@ const Background = () => {
                   );
                 })}
               </div>
-              {/* Custom angle slider */}
               <div className="mt-2">
                 <div className="flex justify-between items-center mb-2">
                   <span className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">Custom Angle</span>
@@ -295,7 +290,6 @@ const Background = () => {
         </div>
       )}
 
-      {/* Background Image - only show when image is selected */}
       {bg_type === "image" && (
         <div className="flex flex-col gap-4 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           <div>

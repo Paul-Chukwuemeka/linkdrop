@@ -12,7 +12,6 @@ const miniProfiles = [
 export default function Hero() {
   return (
     <section className="relative overflow-hidden">
-      {/* radial gold glow behind the hero text only */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0"
@@ -22,11 +21,9 @@ export default function Hero() {
         }}
       />
 
-      {/* subtle noise texture across the hero beige */}
       <div aria-hidden="true" className="bg-noise pointer-events-none absolute inset-0 z-0" />
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-12 px-6 pb-16 pt-16 md:grid-cols-[11fr_9fr] md:px-12 md:pb-24 md:pt-16 lg:items-start">
-        {/* left column */}
         <div className="flex flex-col items-center text-center lg:pt-16">
           <h1 className="text-4xl font-medium leading-[1.1] tracking-[-0.02em] text-primary sm:text-5xl lg:text-[48px]">
             Your work deserves a better link-in-bio.
@@ -45,14 +42,11 @@ export default function Hero() {
           <ExampleModal />
         </div>
 
-        {/* right column — desktop phone + mobile scroll strip */}
         <div>
-          {/* phone mockup — hidden on mobile, shown md+ */}
           <div aria-hidden="true" className="hidden justify-end md:flex">
             <PhoneMockup id="example-mockup" />
           </div>
 
-          {/* horizontal scroll cards — shown <md */}
           <div className="mt-8 flex gap-4 overflow-x-auto pb-4 md:hidden">
             {miniProfiles.map((p) => (
               <div
@@ -61,7 +55,7 @@ export default function Hero() {
                 className="w-64 shrink-0 rounded-2xl border border-border-subtle bg-white p-5 shadow-sm"
               >
                 <div className="flex flex-col items-center">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-green to-brand-green-hover text-sm font-semibold text-white">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-linear-to-br from-brand-green to-brand-green-hover text-sm font-semibold text-white">
                     {p.initial}
                   </div>
                   <div className="mt-2 text-xs font-semibold text-primary">

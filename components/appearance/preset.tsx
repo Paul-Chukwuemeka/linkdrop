@@ -275,7 +275,6 @@ const Presets = () => {
                   className={` w-full aspect-4/3 rounded-lg shadow-inner overflow-hidden relative`}
                   style={bgStyle}
                 >
-                  {/* Mock Profile Preview */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-3">
                     <div
                       className="w-8 h-8 rounded-full border-2"
@@ -289,7 +288,6 @@ const Presets = () => {
                       className="w-12 h-1.5 rounded opacity-60"
                       style={{ backgroundColor: `#${preset.text_color}` }}
                     />
-                    {/* Mock Button */}
                     <div
                       className="mt-2 w-20 h-6 text-[8px] font-semibold flex items-center justify-center"
                       style={btnStyle}
@@ -299,7 +297,6 @@ const Presets = () => {
                   </div>
                 </div>
 
-                {/* Preset Name */}
                 <div className="flex items-center justify-between">
                   <span
                     className={`font-semibold text-sm ${

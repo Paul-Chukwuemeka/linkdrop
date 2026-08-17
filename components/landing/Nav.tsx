@@ -18,7 +18,7 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="mx-auto w-full max-w-[1200px] px-6 md:px-12">
+    <nav className="mx-auto w-full max-w-300 px-6 md:px-12">
       <div className="flex items-center justify-between py-4">
         <Link
           href="/"
@@ -27,7 +27,6 @@ export default function Nav() {
           LinkDrop
         </Link>
 
-        {/* desktop links */}
         <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.label}>
@@ -41,7 +40,6 @@ export default function Nav() {
           ))}
         </ul>
 
-        {/* auth cluster */}
         <div className="flex items-center gap-2">
           <Link
             href="/login"
@@ -68,7 +66,6 @@ export default function Nav() {
         </div>
       </div>
 
-      {/* mobile menu */}
       {open && (
         <div
           id="mobile-nav"

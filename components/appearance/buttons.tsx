@@ -200,7 +200,6 @@ const Buttons = () => {
         </div>
       </div>
 
-      {/* Shadow Style Section */}
       <div>
         <h2 className="text-sm sm:text-base font-semibold mb-3">Shadow Style</h2>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
@@ -219,7 +218,6 @@ const Buttons = () => {
                 }`}
                 onClick={() => updateCardStyle({ shadow: option.value })}
               >
-                {/* Shadow Preview Box */}
                 <div
                   className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-white dark:bg-neutral-700 transition-transform group-hover:scale-105"
                   style={shadowStyle}

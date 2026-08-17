@@ -17,9 +17,7 @@ const featurePills = [
 export default function RegisterPage() {
   return (
     <div className="grid min-h-dvh lg:grid-cols-[55%_45%]">
-      {/* Form panel */}
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 sm:px-10">
-        {/* mobile top bar */}
         <div className="mb-10 flex w-full max-w-md items-center justify-between lg:hidden">
           <Link href="/" className="text-xl font-medium tracking-tight text-primary">
             LinkDrop
@@ -42,13 +40,11 @@ export default function RegisterPage() {
         </div>
       </div>
 
-      {/* Brand panel — desktop only */}
       <aside
         className="relative hidden min-h-dvh flex-col items-center justify-between overflow-hidden px-10 py-16 lg:flex"
         style={{ background: meshBackground }}
       >
         <div aria-hidden="true" className="bg-noise pointer-events-none absolute inset-0" />
-        {/* warm spotlight behind the text — drifts slowly like a wave */}
         <div
           aria-hidden="true"
           className="animate-glow-drift pointer-events-none absolute -inset-1/4"

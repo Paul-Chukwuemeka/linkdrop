@@ -28,7 +28,6 @@ export function HeroForm() {
         <label htmlFor={inputId} className="sr-only">
           Your LinkDrop username
         </label>
-        {/* visually hidden label so the visible prefix is not read twice */}
         <span
           aria-hidden="true"
           className="rounded-l-lg border border-r-0 border-border-subtle bg-white px-4 py-3 text-sm font-medium text-secondary"

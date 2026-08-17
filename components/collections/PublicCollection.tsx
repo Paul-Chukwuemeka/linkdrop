@@ -27,7 +27,6 @@ export function PublicCollection({
       className="flex flex-col rounded-[14px] px-2.5 pt-3.5 pb-2.5 overflow-visible"
       style={buttonBgStyle}
     >
-      {/* Collection Title */}
       <h3
         className="text-center capitalize font-bold text-lg tracking-tight px-4 mb-2"
         style={{ color: textColor }}
@@ -35,7 +34,6 @@ export function PublicCollection({
         {collection.title}
       </h3>
 
-      {/* Links */}
       <div className={isGrid ? "grid grid-cols-2 gap-2" : "flex flex-col gap-2"}>
         {links.map((link, i) => (
           <PublicLinkCard key={i} link={link} cardStyle={cardStyle} />
