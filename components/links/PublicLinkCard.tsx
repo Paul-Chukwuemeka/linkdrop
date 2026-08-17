@@ -166,9 +166,8 @@ export function PublicLinkCard({
         </>
       )}
 
-      {/* Three dots menu - row layout only */}
-      {layout === "row" && (
-        <div ref={menuRef} className="relative shrink-0">
+      {/* Three dots menu - always shown */}
+      <div ref={menuRef} className="relative shrink-0 self-end">
           <button
             className="p-2 opacity-60 hover:opacity-100 transition-opacity"
             onClick={(e) => {
@@ -232,7 +231,6 @@ export function PublicLinkCard({
             </div>
           )}
         </div>
-      )}
     </Link>
   );
 }
