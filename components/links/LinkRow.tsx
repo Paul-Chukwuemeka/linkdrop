@@ -124,6 +124,9 @@ export function DraggableLink({
           <div
             className="flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100"
             onClick={() => setIsEditing(true)}
+            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setIsEditing(true); }}
+            tabIndex={0}
+            role="button"
           >
             <span className="flex min-w-0 flex-1 items-center gap-2">
               <span className="min-w-0  truncate">{item.title}</span>
@@ -185,13 +188,13 @@ export function DraggableLink({
               <Trash2 className="h-4 w-4" />
             </button>
           </div>
-          <p
-            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-sm"
+          <button
+            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-sm text-left"
             onClick={() => setIsEditing(true)}
           >
             <span className="min-w-0 flex-1 truncate">{item.url}</span>
             <Pencil width={14} className="shrink-0" />
-          </p>
+          </button>
         </div>
       </div>
       {isEditing ? (

@@ -265,7 +265,7 @@ const Presets = () => {
               <button
                 key={i}
                 onClick={() => handleApplyPreset(preset)}
-                className={`group relative flex flex-col gap-3 p-4 rounded-xl border-2 transition-all duration-200 hover:scale-[1.02] hover:shadow-lg ${
+                className={`group relative flex flex-col gap-3 p-4 rounded-xl border-2 transition-colors duration-200 hover:scale-[1.02] hover:shadow-lg ${
                   isActive
                     ? "border-black dark:border-white shadow-md"
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
@@ -331,7 +331,7 @@ const Presets = () => {
           onClick={updateStyle}
           disabled={isSaving}
         >
-          {isSaving ? "Saving..." : "Save changes"}
+          {isSaving ? "Saving…" : "Save changes"}
         </Button>
       </div>
     </div>

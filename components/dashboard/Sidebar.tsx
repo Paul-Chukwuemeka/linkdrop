@@ -19,7 +19,7 @@ function PreviewToggle() {
 
   return (
     <button
-      className={`flex items-center lg:hidden justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all ${
+      className={`flex items-center lg:hidden justify-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
         isPreview
           ? "bg-black text-white dark:bg-white dark:text-black"
           : "bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-neutral-200 dark:hover:bg-neutral-700"
@@ -160,7 +160,7 @@ export function NavBar() {
         <div className="flex items-center gap-2">
           <Link
             href="/dashboard"
-          className={`flex items-center justify-center w-12 h-12 rounded-full transition-all shadow-lg touch-manipulation ${
+          className={`flex items-center justify-center w-12 h-12 rounded-full transition-colors shadow-lg touch-manipulation ${
             isLinkActive
               ? "bg-black text-white dark:bg-white dark:text-black shadow-black/30"
               : "text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"

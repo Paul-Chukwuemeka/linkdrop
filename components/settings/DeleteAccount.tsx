@@ -90,24 +90,32 @@ export function DeleteAccount({
         confirmDisabled={!confirmValid || (hasPassword && password.length === 0)}
       >
         {hasPassword && (
-          <Input
-            type="password"
-            autoComplete="current-password"
-            placeholder="Current password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={isDeleting}
-            className="mt-4"
-          />
+          <div>
+            <label htmlFor="delete-password" className="sr-only">Current password</label>
+            <Input
+              id="delete-password"
+              type="password"
+              autoComplete="current-password"
+              placeholder="Current password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isDeleting}
+              className="mt-4"
+            />
+          </div>
         )}
-        <Input
-          type="text"
-          placeholder={hasPassword ? `Type ${username} or DELETE` : `Type ${username} or DELETE`}
-          value={confirmText}
-          onChange={(e) => setConfirmText(e.target.value)}
-          disabled={isDeleting}
-          className={hasPassword ? "mt-3" : "mt-4"}
-        />
+        <div>
+          <label htmlFor="delete-confirm" className="sr-only">Type {username} or DELETE to confirm</label>
+          <Input
+            id="delete-confirm"
+            type="text"
+            placeholder={hasPassword ? `Type ${username} or DELETE` : `Type ${username} or DELETE`}
+            value={confirmText}
+            onChange={(e) => setConfirmText(e.target.value)}
+            disabled={isDeleting}
+            className={hasPassword ? "mt-3" : "mt-4"}
+          />
+        </div>
       </ConfirmModal>
     </SectionCard>
   );

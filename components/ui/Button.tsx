@@ -4,7 +4,7 @@ type ButtonVariant = "primary" | "ghost" | "danger";
 type ButtonSize = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed rounded-md touch-manipulation";
+  "inline-flex items-center justify-center font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed rounded-md touch-manipulation";
 
 const variantClass: Record<ButtonVariant, string> = {
   primary: "bg-brand-green text-white hover:bg-brand-green-hover active:scale-95",

@@ -3,6 +3,7 @@ import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";
+import { Modal } from "../ui/Modal";
 import { FolderPlus, X } from "lucide-react";
 
 export function CreateCollection() {
@@ -25,10 +26,7 @@ export function CreateCollection() {
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
-      onClick={close}
-    >
+    <Modal isOpen={true} onClose={close} label="Create collection">
       <form
         className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card)    sm:p-6"
         onClick={(e) => e.stopPropagation()}
@@ -44,9 +42,6 @@ export function CreateCollection() {
           setError(null);
           addCollection(nextTitle);
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Create collection"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -74,8 +69,9 @@ export function CreateCollection() {
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
+            <label htmlFor="collection-title" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</label>
             <Input
+              id="collection-title"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
               placeholder="e.g. Projects"
@@ -101,6 +97,6 @@ export function CreateCollection() {
           </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }

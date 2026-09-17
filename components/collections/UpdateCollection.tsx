@@ -4,10 +4,11 @@ import { useCard } from "@/context/CardContext";
 import { apiFetch, ApiError } from "@/lib/api";
 import type { Collection } from "@/lib/types";
 import { Folder, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";
+import { Modal } from "../ui/Modal";
 
 export function UpdateCollection({
   collection,
@@ -28,14 +29,6 @@ export function UpdateCollection({
     if (isSaving) return;
     onClose();
   }
-
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && !isSaving) onClose();
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isSaving, onClose]);
 
   async function save() {
     const nextTitle = title.trim();
@@ -63,10 +56,7 @@ export function UpdateCollection({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
-      onClick={close}
-    >
+    <Modal isOpen={true} onClose={close} label="Edit collection">
       <form
         className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card)    sm:p-6"
         onClick={(e) => e.stopPropagation()}
@@ -74,9 +64,6 @@ export function UpdateCollection({
           e.preventDefault();
           void save();
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Edit collection"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -104,8 +91,9 @@ export function UpdateCollection({
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
+            <label htmlFor="collection-title" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</label>
             <Input
+              id="collection-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. Projects"
@@ -131,6 +119,6 @@ export function UpdateCollection({
           </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }

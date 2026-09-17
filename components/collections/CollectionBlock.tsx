@@ -110,13 +110,13 @@ export function CollectionBlock({ item }: { item: Collection }) {
           >
             ⠿
           </button>
-          <p
+          <button
             className="flex flex-1 cursor-pointer items-center justify-center gap-1 text-sm font-semibold capitalize text-neutral-600 dark:text-neutral-400 sm:text-base"
             onClick={() => setIsEditing(true)}
           >
             <span className="truncate capitalize">{item.title}</span>
             <Pencil className="w-4 h-4 shrink-0" />
-          </p>
+          </button>
           <button
             className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-neutral-700 transition-colors touch-manipulation"
             onClick={() => {

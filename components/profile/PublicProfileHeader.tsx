@@ -105,6 +105,7 @@ export function PublicProfileHeader({
               rel="noopener noreferrer"
               className="p-2 rounded-full transition-transform hover:scale-110"
               style={{ color: textColor }}
+              aria-label={social.type}
             >
               {social.type === "twitter" && (
                 <svg

@@ -159,20 +159,24 @@ export default function DashboardPage() {
               <>
               <div className="flex px-1 items-center justify-between">
               {isEditingName ? (
-                <input
-                  autoFocus
-                  className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black dark:border-white bg-transparent text-neutral-900 dark:text-neutral-100 w-full mr-4"
-                  value={editedName}
-                  onChange={(e) => setEditedName(e.target.value)}
-                  onBlur={handleRename}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleRename();
-                    if (e.key === "Escape") setIsEditingName(false);
-                  }}
-                />
+                <>
+                  <label htmlFor="card-name" className="sr-only">Card name</label>
+                  <input
+                    id="card-name"
+                    autoFocus
+                    className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black dark:border-white bg-transparent text-neutral-900 dark:text-neutral-100 w-full mr-4"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    onBlur={handleRename}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleRename();
+                      if (e.key === "Escape") setIsEditingName(false);
+                    }}
+                  />
+                </>
               ) : (
-                <h2
-                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group dark:text-neutral-100"
+                <button
+                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group dark:text-neutral-100 text-left"
                   onClick={() => {
                     setEditedName(currentCard?.name || "");
                     setIsEditingName(true);
@@ -180,7 +184,7 @@ export default function DashboardPage() {
                 >
                   {currentCard?.name}{" "}
                   <PenLine className="w-4 transition-transform group-hover:scale-110" />
-                </h2>
+                </button>
               )}
               <div className="flex items-center gap-1">
               {(isLoadingCard || isLoadingReorder) && (
@@ -203,7 +207,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-2">
               <button
-                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-all"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-colors"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -255,13 +259,13 @@ export default function DashboardPage() {
           </div>
         </div>
         <div
-          className="hidden lg:flex bg-gray-100 dark:bg-neutral-800/60 rounded-2xl border border-gray-200 dark:border-neutral-700 p-6 items-center justify-center h-full"
+          className="hidden lg:flex bg-gray-100 dark:bg-neutral-800/60 rounded-2xl  border-gray-200 dark:border-neutral-700 p-6 items-center justify-center h-full"
         >
           <div className="w-full">
             <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
               Preview
             </h3>
-            <div className="mx-auto w-fit bg-white rounded-[2rem] border-6 border-gray-200 dark:border-neutral-700 shadow-xl p-2">
+            <div className="mx-auto w-fit bg-white rounded-4xl border-6 border-gray-200 dark:border-neutral-700 shadow-xl p-2">
               <CardPreview />
             </div>
           </div>
