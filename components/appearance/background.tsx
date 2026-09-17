@@ -170,7 +170,7 @@ const Background = () => {
         <h2 className="text-sm sm:text-base font-semibold">Background Style</h2>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "solid" })}
           >
             <div
@@ -180,7 +180,7 @@ const Background = () => {
             <p>Solid</p>
           </button>
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "gradient" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "gradient" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "gradient" })}
           >
             <div
@@ -190,7 +190,7 @@ const Background = () => {
             <p>Gradient</p>
           </button>
           <button
-            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-all touch-manipulation ${bg_type == "image" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
+            className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "image" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "image" })}
           >
             <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0 flex items-center justify-center bg-black/5 dark:bg-white/10">
@@ -219,7 +219,7 @@ const Background = () => {
             <h2 className="text-sm sm:text-base font-semibold">Gradient Type</h2>
             <div className="flex gap-2 sm:gap-3 mt-2">
               <button
-                className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-all touch-manipulation ${
+                className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-colors touch-manipulation ${
                   gradient_type === "linear"
                     ? "border-black dark:border-white bg-white dark:bg-neutral-800"
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
@@ -229,7 +229,7 @@ const Background = () => {
                 Linear
               </button>
               <button
-                className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-all touch-manipulation ${
+                className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-colors touch-manipulation ${
                   gradient_type === "radial"
                     ? "border-black dark:border-white bg-white dark:bg-neutral-800"
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
@@ -250,7 +250,7 @@ const Background = () => {
                   return (
                     <button
                       key={preset.angle}
-                      className={`flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-all touch-manipulation ${
+                      className={`flex flex-col items-center gap-1 p-2 rounded-lg border-2 transition-colors touch-manipulation ${
                         isActive
                           ? "border-black dark:border-white bg-white dark:bg-neutral-800"
                           : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 bg-white/50 dark:bg-neutral-800/50"
@@ -331,7 +331,9 @@ const Background = () => {
               </label>
 
               <div className="flex flex-col gap-2 sm:flex-row">
+                <label htmlFor="bg-image-url" className="sr-only">Image URL</label>
                 <input
+                  id="bg-image-url"
                   type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}

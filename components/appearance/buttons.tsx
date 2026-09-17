@@ -70,7 +70,7 @@ const Buttons = () => {
           {layoutOptions.map((option) => (
             <button
               key={option.value}
-              className={`${linkLayout == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+              className={`${linkLayout == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
               onClick={() => {
                 updateCardStyle({ link_layout: option.value });
               }}
@@ -85,7 +85,7 @@ const Buttons = () => {
         <h2 className="text-sm sm:text-base font-semibold">Button Style</h2>
         <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
           <button
-            className={`${button_type == "solid" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+            className={`${button_type == "solid" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_type: "solid" });
             }}
@@ -95,7 +95,7 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${isGlass && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+            className={`${isGlass && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_type: "glass" });
             }}
@@ -105,7 +105,7 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${button_type == "outline" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+            className={`${button_type == "outline" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_type: "outline" });
             }}
@@ -124,7 +124,7 @@ const Buttons = () => {
             {glassOptions.map((option) => (
               <button
                 key={option.value}
-                className={`${button_type == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-32 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-all touch-manipulation`}
+                className={`${button_type == option.value && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-32 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
                 onClick={() => {
                   updateCardStyle({ button_type: option.value });
                 }}
@@ -144,7 +144,7 @@ const Buttons = () => {
         <h2 className="text-sm sm:text-base font-semibold">Button Corner</h2>
         <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
           <button
-            className={`${button_radius == "square" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-all touch-manipulation`}
+            className={`${button_radius == "square" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_radius: "square" });
             }}
@@ -154,7 +154,7 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${button_radius == "round" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-all touch-manipulation`}
+            className={`${button_radius == "round" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_radius: "round" });
             }}
@@ -164,7 +164,7 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${button_radius == "rounder" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-all touch-manipulation`}
+            className={`${button_radius == "rounder" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_radius: "rounder" });
             }}
@@ -174,7 +174,7 @@ const Buttons = () => {
             </div>
           </button>
           <button
-            className={`${button_radius == "pill" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-all touch-manipulation`}
+            className={`${button_radius == "pill" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-colors touch-manipulation`}
             onClick={() => {
               updateCardStyle({ button_radius: "pill" });
             }}
@@ -211,7 +211,7 @@ const Buttons = () => {
             return (
               <button
                 key={option.value}
-                className={`group relative flex flex-col items-center gap-2 p-2 sm:p-3 rounded-xl border-2 transition-all duration-200 touch-manipulation ${
+                className={`group relative flex flex-col items-center gap-2 p-2 sm:p-3 rounded-xl border-2 transition-colors duration-200 touch-manipulation ${
                   isActive
                     ? "border-black dark:border-white bg-neutral-50 dark:bg-neutral-800"
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600 hover:bg-neutral-50/50 dark:hover:bg-neutral-800/50"

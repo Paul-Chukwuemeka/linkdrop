@@ -5,10 +5,11 @@ import { apiFetch, ApiError } from "@/lib/api";
 import type { Link as LinkType } from "@/lib/types";
 import { isValidUrl } from "@/utils/validate";
 import { Link2, X, Wand2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";
+import { Modal } from "../ui/Modal";
 import { useOgSuggestion } from "@/hooks/useOgSuggestion";
 
 export function UpdateLink({
@@ -39,14 +40,6 @@ export function UpdateLink({
     if (isSaving) return;
     onClose();
   }
-
-  useEffect(() => {
-    function onKeyDown(e: KeyboardEvent) {
-      if (e.key === "Escape" && !isSaving) onClose();
-    }
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isSaving, onClose]);
 
   async function save() {
     const nextTitle = title.trim();
@@ -81,10 +74,7 @@ export function UpdateLink({
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
-      onClick={close}
-    >
+    <Modal isOpen={true} onClose={close} label="Edit link">
       <form
         className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card)    sm:p-6"
         onClick={(e) => e.stopPropagation()}
@@ -92,9 +82,6 @@ export function UpdateLink({
           e.preventDefault();
           void save();
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Edit link"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -122,8 +109,9 @@ export function UpdateLink({
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
+            <label htmlFor="link-title" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</label>
             <Input
+              id="link-title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g. My portfolio"
@@ -134,8 +122,9 @@ export function UpdateLink({
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</div>
+            <label htmlFor="link-url" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</label>
             <Input
+              id="link-url"
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
@@ -189,6 +178,6 @@ export function UpdateLink({
           </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }

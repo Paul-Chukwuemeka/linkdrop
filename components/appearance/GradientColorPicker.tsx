@@ -125,8 +125,9 @@ export const GradientColorsManager = ({
               value="#808080"
               onChange={(e) => handleAddColor(e.target.value)}
               className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10"
+              aria-label="Add gradient color"
             />
-            <button className="w-12 h-12 rounded-lg border-2 border-dashed border-neutral-300 dark:border-neutral-600 flex items-center justify-center text-neutral-400 dark:text-neutral-500 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-all pointer-events-none">
+            <button className="w-12 h-12 rounded-lg border-2 border-dashed border-neutral-300 dark:border-neutral-600 flex items-center justify-center text-neutral-400 dark:text-neutral-500 hover:border-black dark:hover:border-white hover:text-black dark:hover:text-white transition-colors pointer-events-none" aria-hidden="true">
               <svg
                 width="20"
                 height="20"

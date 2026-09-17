@@ -262,6 +262,7 @@ const Profile = () => {
                   : "bg-neutral-300 dark:bg-neutral-600"
               }`}
               aria-checked={useProfileBio}
+              aria-label="Use profile bio"
               role="switch"
             >
               <span

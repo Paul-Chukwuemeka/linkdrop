@@ -5,6 +5,7 @@ import Cropper, { type Area } from "react-easy-crop";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Spinner";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
+import { Modal } from "@/components/ui/Modal";
 
 interface AvatarCropModalProps {
   file: File | null;
@@ -91,7 +92,7 @@ export function AvatarCropModal({
   if (!file) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <Modal isOpen={!!file} onClose={onCancel} label="Crop avatar">
       <div
         className="bg-white dark:bg-neutral-900 rounded-2xl p-6 max-w-md w-full mx-auto flex flex-col gap-4"
         onClick={(e) => e.stopPropagation()}
@@ -151,6 +152,6 @@ export function AvatarCropModal({
           </Button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }

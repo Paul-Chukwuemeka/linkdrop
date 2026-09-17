@@ -130,7 +130,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
             {profile?.avatar_url && !imgError ? (
               <Image
                 src={profile.avatar_url}
-                alt="user"
+                alt={profile?.fullname || "User avatar"}
                 width={100}
                 height={100}
                 className="h-20 w-20 shrink-0 rounded-full bg-white/40  ring-black/10 object-cover"

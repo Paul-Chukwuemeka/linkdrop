@@ -3,6 +3,7 @@ import { useCard } from "@/context/CardContext";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { ButtonLoader } from "../ui/ButtonLoader";
+import { Modal } from "../ui/Modal";
 import { isValidUrl } from "@/utils/validate";
 import { Link2, X, Wand2 } from "lucide-react";
 import { useOgSuggestion } from "@/hooks/useOgSuggestion";
@@ -36,10 +37,7 @@ export function CreateLink() {
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
-      onClick={close}
-    >
+    <Modal isOpen={true} onClose={close} label="Add link">
       <form
         className="w-full max-w-md rounded-2xl bg-white dark:bg-neutral-900 p-4 shadow-(--shadow-card)    sm:p-6"
         onClick={(e) => e.stopPropagation()}
@@ -60,9 +58,6 @@ export function CreateLink() {
           setError(null);
           saveLink({ title: nextTitle, url: nextUrl });
         }}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Add link"
       >
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -90,8 +85,9 @@ export function CreateLink() {
 
         <div className="mt-5 flex flex-col gap-3">
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</div>
+            <label htmlFor="link-url" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">URL</label>
             <Input
+              id="link-url"
               type="url"
               value={url}
               onChange={(e) => setUrl(e.currentTarget.value)}
@@ -131,8 +127,9 @@ export function CreateLink() {
           )}
 
           <div className="flex flex-col gap-1.5">
-            <div className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</div>
+            <label htmlFor="link-title" className="text-xs font-semibold text-neutral-600 dark:text-neutral-400">Title</label>
             <Input
+              id="link-title"
               value={title}
               onChange={(e) => setTitle(e.currentTarget.value)}
               placeholder="e.g. My portfolio"
@@ -157,6 +154,6 @@ export function CreateLink() {
           </div>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 }

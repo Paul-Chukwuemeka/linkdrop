@@ -128,7 +128,7 @@ function Links({
           <Link
             href={`#${sect}`}
             key={i}
-            className={`text-xs sm:text-sm md:text-base px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-all duration-300 text-center capitalize ${
+            className={`text-xs sm:text-sm md:text-base px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg transition-colors duration-300 text-center capitalize ${
               current != sect
                 ? "text-black/50 dark:text-white/50 font-semibold hover:text-black/70 dark:hover:text-white/70 hover:bg-black/5 dark:hover:bg-white/5"
                 : "font-extrabold bg-black/10 dark:bg-white/10"

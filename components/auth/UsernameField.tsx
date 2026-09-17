@@ -48,7 +48,7 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
       : "checking";
 
   const inputClassName =
-    "flex-1 rounded-r-lg border border-gray-200 px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-all";
+    "flex-1 rounded-r-lg border border-gray-200 px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors";
 
   return (
     <div className="space-y-1.5">

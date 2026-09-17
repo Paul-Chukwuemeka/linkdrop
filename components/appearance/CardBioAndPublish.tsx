@@ -75,6 +75,7 @@ export function CardBioAndPublish() {
             published ? "bg-black dark:bg-white" : "bg-neutral-300 dark:bg-neutral-600"
           }`}
           aria-checked={published}
+          aria-label="Toggle public page"
           role="switch"
         >
           <span

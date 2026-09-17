@@ -42,7 +42,7 @@ export default function HowItWorks() {
             return (
               <article
                 key={i}
-                className="relative rounded-2xl border border-border-subtle bg-white p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-lg"
+                className="relative rounded-2xl border border-border-subtle bg-white p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-colors duration-200 ease-out hover:-translate-y-1 hover:shadow-lg"
               >
                 <div
                   aria-label={`Step ${i + 1}`}

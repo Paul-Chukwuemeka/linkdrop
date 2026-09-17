@@ -1,4 +1,5 @@
 import React from "react";
+import { Modal } from "./Modal";
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -25,12 +26,12 @@ export const ConfirmModal = ({
   confirmDisabled = false,
   children,
 }: ConfirmModalProps) => {
-  if (!isOpen) return null;
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm shadow-(--shadow-card)"
-      onClick={isPending ? undefined : onClose}
+    <Modal
+      isOpen={isOpen}
+      onClose={isPending ? () => {} : onClose}
+      label={title}
+      closeOnBackdrop={!isPending}
     >
       <div
         className="bg-white dark:bg-neutral-900 rounded-2xl p-6 max-w-sm w-full mx-auto"
@@ -77,6 +78,6 @@ export const ConfirmModal = ({
           </button>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
