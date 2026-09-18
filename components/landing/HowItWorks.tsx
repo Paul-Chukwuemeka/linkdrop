@@ -32,7 +32,7 @@ export default function HowItWorks() {
           Simple setup
         </p>
 
-        <h2 className="text-center text-3xl font-medium leading-[1.2] tracking-tight text-primary lg:text-[32px]">
+        <h2 className="text-center text-3xl font-medium leading-[1.2] tracking-tight text-primary lg:text-[32px]" style={{ textWrap: 'balance' }}>
           How it works
         </h2>
 

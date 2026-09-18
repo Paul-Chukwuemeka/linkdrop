@@ -75,7 +75,7 @@ export function CardRow({
       )}
       {isActive && (
         <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-brand-green/10 px-3 sm:px-4 py-2 text-sm font-medium text-brand-green">
-          <Star className="h-3.5 w-3.5" />
+          <Star className="h-3.5 w-3.5" aria-hidden="true" />
           Active
         </span>
       )}

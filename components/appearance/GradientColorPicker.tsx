@@ -46,6 +46,7 @@ const GradientColorPicker = ({
           <button
             onClick={() => onRemove(index)}
             className="text-xs text-red-500 hover:text-red-700 transition-colors mt-1"
+            aria-label="Remove color"
           >
             Remove
           </button>
@@ -147,13 +148,14 @@ export const GradientColorsManager = ({
         <span className="text-sm text-neutral-500 dark:text-neutral-400">Quick add from palette:</span>
         <div className="flex gap-2">
           {paletteColors.map((color, index) => (
-            <button
-              key={index}
-              onClick={() => handleAddFromPalette(color)}
-              disabled={colors.length >= MAX_GRADIENT_COLORS}
-              className="w-8 h-8 rounded-md border border-neutral-200 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-              style={{ backgroundColor: `#${color}` }}
-            />
+          <button
+            key={index}
+            onClick={() => handleAddFromPalette(color)}
+            disabled={colors.length >= MAX_GRADIENT_COLORS}
+            className="w-8 h-8 rounded-md border border-neutral-200 transition-transform hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: `#${color}` }}
+            aria-label={`Add color #${color}`}
+          />
           ))}
         </div>
       </div>

@@ -66,7 +66,7 @@ export function DeleteAccount({
 
       <button
         onClick={() => setIsOpen(true)}
-        className="inline-flex h-9 w-auto items-center gap-2 rounded-lg bg-[#DC2626] px-4 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C]"
+        className="inline-flex h-9 w-auto items-center gap-2 rounded-lg bg-[#DC2626] px-4 text-sm font-medium text-white transition-colors hover:bg-[#B91C1C] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
       >
         <Trash2 className="h-4 w-4" />
         Delete my account

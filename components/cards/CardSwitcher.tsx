@@ -36,7 +36,11 @@ export function CardSwitcher() {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, []);
 
   const handleSelect = useCallback(async (cardId: string) => {
@@ -68,6 +72,8 @@ export function CardSwitcher() {
         disabled={isSwitching}
         className="flex cursor-pointer items-center justify-center w-10 h-10 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-700  transition-colors disabled:opacity-50"
         aria-label="Switch card"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
       >
         {isSwitching ? (
           <Loader2 className="h-5 w-5 animate-spin" />
@@ -77,12 +83,13 @@ export function CardSwitcher() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full z-50 mt-1 min-w-48 rounded-xl bg-white dark:bg-neutral-800 shadow-lg  ring-black/5 dark:ring-white/10 py-1">
+        <div className="absolute right-0 top-full z-50 mt-1 min-w-48 rounded-xl bg-white dark:bg-neutral-800 shadow-lg  ring-black/5 dark:ring-white/10 py-1" role="menu">
           {cards.map((card) => (
             <button
               key={card.id}
               onClick={() => handleSelect(card.id)}
               className="flex w-full items-center gap-2 px-3 py-2 text-sm text-left hover:bg-neutral-100 dark:hover:bg-neutral-700 transition-colors"
+              role="menuitem"
             >
               <span className="truncate flex-1 text-neutral-900 dark:text-neutral-100">
                 {card.name}

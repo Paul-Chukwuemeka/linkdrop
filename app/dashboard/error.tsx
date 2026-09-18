@@ -22,7 +22,7 @@ export default function DashboardError({
         </p>
         <button
           onClick={() => reset()}
-          className="rounded-full bg-black px-5 py-2 text-sm text-white hover:bg-neutral-800 transition-colors"
+          className="rounded-full bg-black px-5 py-2 text-sm text-white hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
         >
           Reload Dashboard
         </button>

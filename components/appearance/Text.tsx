@@ -44,6 +44,7 @@ const Text = () => {
                 onClick={() => {
                   updateCardStyle({ title_size: t });
                 }}
+                aria-pressed={title_size == t}
               >
                 {t}
               </button>
@@ -62,6 +63,7 @@ const Text = () => {
                 onClick={() => {
                   updateCardStyle({ text_size: t });
                 }}
+                aria-pressed={text_size == t}
               >
                 {t}
               </button>

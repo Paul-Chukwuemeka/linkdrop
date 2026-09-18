@@ -25,7 +25,7 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto grid w-full max-w-[1200px] grid-cols-1 items-center gap-12 px-6 pb-16 pt-16 md:grid-cols-[11fr_9fr] md:px-12 md:pb-24 md:pt-16 lg:items-start">
         <div className="flex flex-col items-center text-center lg:pt-16">
-          <h1 className="text-4xl font-medium leading-[1.1] tracking-[-0.02em] text-primary sm:text-5xl lg:text-[48px]">
+          <h1 className="text-4xl font-medium leading-[1.1] tracking-[-0.02em] text-primary sm:text-5xl lg:text-[48px]" style={{ textWrap: 'balance' }}>
             Your work deserves a better link-in-bio.
             <br />
             Make it unmistakably{" "}

@@ -162,6 +162,7 @@ export function RegisterForm() {
           <input
             type="email"
             autoComplete="email"
+            spellCheck={false}
             placeholder="you@example.com"
             value={form.email}
             onChange={(e) => update("email", e.target.value)}

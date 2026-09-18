@@ -117,14 +117,14 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
 
   return (
     <div
-      className={`flex items-center flex-col justify-center relative w-full h-full md:h-auto`}
+      className={`flex items-center px-1 flex-col justify-center relative w-full h-full md:h-auto`}
     >
       <div
-        className={`shadow-(--shadow-card) rounded-xl sm:rounded-lg p-2 sm:p-1 sm:py-2  ring-black/10 overflow-hidden w-[320px] h-180`}
+        className={`shadow-(--shadow-card) p-6 rounded-xl sm:rounded-lg sm:p-1 sm:py-2  ring-black/10 overflow-hidden w-[320px] h-180`}
         style={backgroundStyle}
       >
         <div
-          className={`h-full overflow-y-auto scrollbar-hidden preview p-2 sm:p-1 sm:pb-5 lg:p-2 ${currentFont.font.className}`}
+          className={`h-full overflow-y-auto scrollbar-hidden preview p-3 sm:p-1 sm:pb-5 lg:p-4 ${currentFont.font.className}`}
         >
           <div className="flex flex-col items-center h-fit py-3 sm:py-4 text-center">
             {profile?.avatar_url && !imgError ? (
@@ -135,6 +135,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
                 height={100}
                 className="h-20 w-20 shrink-0 rounded-full bg-white/40  ring-black/10 object-cover"
                 onError={() => setImgError(true)}
+                priority
               />
             ) : (
               <div className="h-20 w-20  shrink-0 rounded-full bg-white/40  ring-black/10 flex items-center justify-center text-2xl font-black text-neutral-900">
@@ -142,8 +143,9 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               </div>
             )}
             <p
-              className={`mt-3 font-black capitalize ${previewTitleSizeClasses[cardStyle.title_size ?? "medium"]}`}
+              className={`mt-3 font-black text-wrap capitalize ${previewTitleSizeClasses[cardStyle.title_size ?? "medium"]}`}
               style={{
+                lineBreak:"anywhere",
                 color: cardStyle.title_color
                   ? `#${cardStyle.title_color}`
                   : cardStyle.text_color

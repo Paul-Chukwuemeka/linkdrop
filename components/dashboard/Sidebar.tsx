@@ -125,13 +125,13 @@ export function Sidebar() {
             <Link
               href={`/u/${encodeURIComponent(user.username)}`}
               target="_blank"
-              className="inline-flex text-xs md:text-sm items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors"
+              className="inline-flex text-xs md:text-sm items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
             >
               View public page
             </Link>
           )}
           <button
-            className="inline-flex items-center justify-center w-full bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 py-2.5 px-4 rounded-lg transition-colors"
+            className="inline-flex items-center justify-center w-full bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 py-2.5 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
             onClick={() => logout()}
           >
             Log out

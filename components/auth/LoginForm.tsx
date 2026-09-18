@@ -93,6 +93,7 @@ export function LoginForm() {
           <input
             type="text"
             autoComplete="username"
+            spellCheck={false}
             placeholder="yourname"
             value={username}
             onChange={(e) => setUsername(e.target.value)}

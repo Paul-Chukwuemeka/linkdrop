@@ -40,7 +40,7 @@ export function CardList({
             type="button"
             onClick={() => onCreateCard(name)}
             disabled={isCreating}
-            className="shrink-0 inline-flex h-10 items-center justify-center justify-self-start rounded-lg bg-brand-green px-5 text-sm font-medium text-white transition-colors hover:bg-brand-green-hover disabled:cursor-not-allowed disabled:opacity-50"
+            className="shrink-0 inline-flex h-10 items-center justify-center justify-self-start rounded-lg bg-brand-green px-5 text-sm font-medium text-white transition-colors hover:bg-brand-green-hover disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
           >
             {isCreating ? <ButtonLoader label="Creating…" onDark /> : "Create"}
           </button>

@@ -62,6 +62,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   --text-primary: #f5f5f5;
   --border-color: #2a2a2a;
 

@@ -270,6 +270,7 @@ const Presets = () => {
                     ? "border-black dark:border-white shadow-md"
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
+                aria-pressed={isActive}
               >
                 <div
                   className={` w-full aspect-4/3 rounded-lg shadow-inner overflow-hidden relative`}
@@ -310,6 +311,7 @@ const Presets = () => {
                       className="w-5 h-5 text-black dark:text-white"
                       fill="currentColor"
                       viewBox="0 0 20 20"
+                      aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"

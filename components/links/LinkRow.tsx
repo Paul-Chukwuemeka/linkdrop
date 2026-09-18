@@ -121,27 +121,24 @@ export function DraggableLink({
           ⠿
         </button>
         <div className="flex min-w-0 flex-1 flex-col gap-1 px-2 sm:gap-1.5 sm:px-3">
-          <div
-            className="flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100"
-            onClick={() => setIsEditing(true)}
-            onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setIsEditing(true); }}
-            tabIndex={0}
-            role="button"
-          >
-            <span className="flex min-w-0 flex-1 items-center gap-2">
-              <span className="min-w-0  truncate">{item.title}</span>
-              <Pencil width={14} className="h-4 w-4 shrink-0" />
-            </span>
+          <div className="flex items-center gap-2">
+            <button
+              className="flex-1 flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100 text-left"
+              onClick={() => setIsEditing(true)}
+            >
+              <span className="flex min-w-0 flex-1 items-center gap-2">
+                <span className="min-w-0  truncate">{item.title}</span>
+                <Pencil width={14} className="h-4 w-4 shrink-0" aria-hidden="true" />
+              </span>
+            </button>
             {moveTargets.length > 0 && (
               <span
                 ref={menuRef}
                 className="relative shrink-0"
-                onClick={(e) => e.stopPropagation()}
               >
                 <button
                   className="rounded p-1 transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-700 touch-manipulation"
                   onClick={(e) => {
-                    e.stopPropagation();
                     setMenuOpen((open) => !open);
                   }}
                   aria-label="Move to collection"
@@ -152,7 +149,7 @@ export function DraggableLink({
                   {isMoving ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <FolderInput className="h-4 w-4" />
+                    <FolderInput className="h-4 w-4" aria-hidden="true" />
                   )}
                 </button>
                 {menuOpen && (
@@ -185,7 +182,7 @@ export function DraggableLink({
               }}
               aria-label="Delete link"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
           <button
@@ -193,7 +190,7 @@ export function DraggableLink({
             onClick={() => setIsEditing(true)}
           >
             <span className="min-w-0 flex-1 truncate">{item.url}</span>
-            <Pencil width={14} className="shrink-0" />
+            <Pencil width={14} className="shrink-0" aria-hidden="true" />
           </button>
         </div>
       </div>

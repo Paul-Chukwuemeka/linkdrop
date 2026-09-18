@@ -67,6 +67,7 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
           onBlur={onBlur}
           placeholder="yourname"
           autoComplete="username"
+          spellCheck={false}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : `${id}-hint`}
           className={inputClassName}

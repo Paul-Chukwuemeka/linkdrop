@@ -95,6 +95,7 @@ export function CreateLink() {
               className={nestedInputClassName}
               disabled={isSaving}
               autoFocus
+              autoComplete="url"
             />
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Tip: use a full URL (including https://).

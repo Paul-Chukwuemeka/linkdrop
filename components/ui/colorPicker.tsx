@@ -16,13 +16,14 @@ const ColorPicker = ({ property }: { property: keyof CardTheme }) => {
       <input
         id={`color-${property}`}
         type="text"
-        onInput={(e) => {
+        onChange={(e) => {
           if (!cardStyle) return;
           updateCardStyle({ [property]: e.currentTarget.value });
         }}
         value={value}
         className="w-full outline-none bg-transparent ml-1 text-sm sm:text-base dark:text-neutral-100"
         maxLength={6}
+        autoComplete="off"
       />
       <div className="w-6 h-6 sm:w-7 sm:h-7 shrink-0 flex overflow-hidden rounded-full justify-center items-center  ring-black/30 dark:ring-white/30 ml-2">
         <label htmlFor={`color-picker-${property}`} className="sr-only">Pick color</label>

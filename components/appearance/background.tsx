@@ -172,6 +172,7 @@ const Background = () => {
           <button
             className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "solid" })}
+            aria-pressed={bg_type == "solid"}
           >
             <div
               className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0"
@@ -182,6 +183,7 @@ const Background = () => {
           <button
             className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "gradient" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "gradient" })}
+            aria-pressed={bg_type == "gradient"}
           >
             <div
               className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0"
@@ -192,6 +194,7 @@ const Background = () => {
           <button
             className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "image" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
             onClick={() => updateCardStyle({ bg_type: "image" })}
+            aria-pressed={bg_type == "image"}
           >
             <div className="w-16 h-16 sm:w-24 sm:h-24 rounded-md shrink-0 flex items-center justify-center bg-black/5 dark:bg-white/10">
               <CiImageOn className="text-2xl sm:text-4xl" />
@@ -225,6 +228,7 @@ const Background = () => {
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
                 onClick={() => updateCardStyle({ gradient_type: "linear" })}
+                aria-pressed={gradient_type === "linear"}
               >
                 Linear
               </button>
@@ -235,6 +239,7 @@ const Background = () => {
                     : "border-neutral-200 dark:border-neutral-700 hover:border-neutral-300 dark:hover:border-neutral-600"
                 }`}
                 onClick={() => updateCardStyle({ gradient_type: "radial" })}
+                aria-pressed={gradient_type === "radial"}
               >
                 Radial
               </button>
@@ -258,6 +263,7 @@ const Background = () => {
                       onClick={() =>
                         updateCardStyle({ gradient_direction: preset.angle })
                       }
+                      aria-pressed={isActive}
                     >
                       <span className="text-base sm:text-lg font-bold">{preset.label}</span>
                     </button>
@@ -334,11 +340,12 @@ const Background = () => {
                 <label htmlFor="bg-image-url" className="sr-only">Image URL</label>
                 <input
                   id="bg-image-url"
-                  type="text"
+                  type="url"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
                   placeholder="Paste image URL"
                   className="flex-1 rounded-lg bg-white dark:bg-neutral-900 px-3 py-2 text-sm outline-none  ring-neutral-200 dark:ring-neutral-700 focus:ring-(--accent)"
+                  autoComplete="url"
                 />
                 <button
                   type="button"

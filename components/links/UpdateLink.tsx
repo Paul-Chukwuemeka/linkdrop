@@ -131,6 +131,7 @@ export function UpdateLink({
               placeholder="https://…"
               className={nestedInputClassName}
               disabled={isSaving}
+              autoComplete="url"
             />
             <div className="text-xs text-neutral-500 dark:text-neutral-400">
               Tip: use a full URL (including https://).

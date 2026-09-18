@@ -207,7 +207,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-2">
               <button
-                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-colors"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                 Add link
               </button>
               <button
-                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
                 onClick={() => {
                   setIsCreatingCollection(true);
                 }}
