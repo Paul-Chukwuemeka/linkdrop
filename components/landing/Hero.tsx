@@ -20,6 +20,7 @@ function TapedCard({
 }) {
   return (
     <div
+      aria-hidden="true"
       className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] ${className}`}
     >
       <span
@@ -31,7 +32,7 @@ function TapedCard({
           {badge}
         </span>
       ) : null}
-      <div className="font-(family-name:var(--font-jetbrains)) text-[10px] text-accent-gold">
+      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-accent-gold">
         {`// ${label}`}
       </div>
       <strong className="block text-[13px] text-brand-green">{handle}</strong>
@@ -58,7 +59,7 @@ export default function Hero() {
           <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-brand-green">
             100% FREE. ACTUALLY.
           </span>
-          <h1 className="mt-3.5 font-(family-name:var(--font-syne)) text-4xl font-extrabold leading-[0.99] tracking-tight text-brand-green sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3.5 font-[family-name:var(--font-syne)] text-4xl font-extrabold leading-[0.99] tracking-tight text-brand-green sm:text-5xl lg:text-6xl">
             stop looking like{" "}
             <span className="relative inline-block">
               everyone else&apos;s
@@ -87,7 +88,7 @@ export default function Hero() {
           <div className="mt-4">
             <ClaimForm variant="hero" />
           </div>
-          <p className="mt-2.5 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+          <p className="mt-2.5 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
             free forever · no card · nothing to cancel
           </p>
         </div>
@@ -131,7 +132,7 @@ export default function Hero() {
           </p>
         </div>
       </div>
-      <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#5a5a48] md:px-9">
+      <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48] md:px-9">
         <span className="text-accent-coral">{"//"}</span>
         <span>18 fonts</span>
         <span>any color</span>
