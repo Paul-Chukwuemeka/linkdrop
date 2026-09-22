@@ -1,73 +1,53 @@
-import { Link, Palette, Share2 } from "lucide-react";
-
 const steps = [
   {
-    icon: Link,
-    title: "Claim your brand",
-    description:
-      "Secure your unique URL in seconds. Your page is live before you finish your coffee.",
+    n: "1",
+    circle: "bg-brand-green text-background-primary",
+    title: "claim your name",
+    aside: "linkdrop.bio/you",
   },
   {
-    icon: Palette,
-    title: "Design without code",
-    description:
-      "Match your fonts, colors, and vibe. Organize links into collections that look intentional.",
+    n: "2",
+    circle: "bg-accent-gold text-brand-green",
+    title: "pick a theme, or wreck it",
+    aside: "any color. any font.",
   },
   {
-    icon: Share2,
-    title: "Convert your audience",
-    description:
-      "One link that drives traffic everywhere you earn — bios, emails, QR codes, and beyond.",
+    n: "3",
+    circle: "bg-accent-coral-dark text-white",
+    title: "paste your links",
+    aside: "done. go outside.",
   },
 ];
 
 export default function HowItWorks() {
   return (
-    <section
-      id="how-it-works"
-      className="scroll-mt-24 px-6 py-16 md:px-12 lg:py-24"
-    >
-      <div className="mx-auto w-full max-w-[1200px]">
-        <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.15em] text-brand-green">
-          Simple setup
-        </p>
-
-        <h2 className="text-center text-3xl font-medium leading-[1.2] tracking-tight text-primary lg:text-[32px]" style={{ textWrap: 'balance' }}>
-          How it works
-        </h2>
-
-        <div className="mt-12 grid grid-cols-1 gap-8 md:mt-14 md:grid-cols-3">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <article
-                key={i}
-                className="relative rounded-2xl border border-border-subtle bg-white p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-colors duration-200 ease-out hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div
-                  aria-label={`Step ${i + 1}`}
-                  className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-brand-green text-sm font-bold text-white shadow-sm"
-                >
-                  {i + 1}
-                </div>
-
-                <div className="mb-4 mt-2 flex h-10 w-10 items-center justify-center rounded-lg bg-brand-green/10">
-                  <Icon
-                    className="h-5 w-5 text-brand-green"
-                    strokeWidth={2}
-                  />
-                </div>
-
-                <h3 className="mb-2 text-lg font-semibold text-primary">
-                  {step.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-secondary">
-                  {step.description}
-                </p>
-              </article>
-            );
-          })}
-        </div>
+    <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
+      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
+        {"// how it works"}
+      </h2>
+      <div className="mt-3 max-w-[560px] rounded-lg border-2 border-dashed border-[#b9b19b] bg-background-primary px-5 py-1.5">
+        {steps.map((step, index) => (
+          <div
+            key={step.n}
+            className={`flex items-center gap-3.5 py-3 ${
+              index < steps.length - 1
+                ? "border-b border-dashed border-[#d5cdb8]"
+                : ""
+            }`}
+          >
+            <span
+              className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold ${step.circle}`}
+            >
+              {step.n}
+            </span>
+            <span className="text-sm font-extrabold text-brand-green">
+              {step.title}
+            </span>
+            <span className="ml-auto font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
+              {step.aside}
+            </span>
+          </div>
+        ))}
       </div>
     </section>
   );
