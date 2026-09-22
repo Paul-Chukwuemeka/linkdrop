@@ -1,6 +1,6 @@
 "use client";
 
-import { Check } from "lucide-react";
+import { Check, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -50,10 +50,16 @@ export function HeroForm() {
         </button>
       </form>
 
-      <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-secondary">
-        <Check className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
-        No credit card required. Free forever.
-      </p>
+      <div className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-secondary">
+        <p className="flex items-center gap-1.5">
+          <Check className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
+          No credit card required. Free forever.
+        </p>
+        <p className="flex items-center gap-1.5">
+          <Lock className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
+          Secure &amp; private
+        </p>
+      </div>
     </div>
   );
 }
