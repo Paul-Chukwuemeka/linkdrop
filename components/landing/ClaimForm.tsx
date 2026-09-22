@@ -32,7 +32,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
         <span className="sr-only">Your LinkDrop username</span>
         <span
           aria-hidden="true"
-          className="font-[family-name:var(--font-jetbrains)] text-xs text-[#8a8a76] sm:text-sm"
+          className="font-[family-name:var(--font-jetbrains)] text-xs text-[#5a5a48] sm:text-sm"
         >
           linkdrop.bio/
         </span>
@@ -44,7 +44,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
           onChange={(event) => setUsername(event.target.value)}
           spellCheck={false}
           autoComplete="off"
-          className="w-full min-w-0 bg-transparent text-sm font-semibold text-brand-green placeholder:text-[#8a8a76] focus:outline-none"
+          className="w-full min-w-0 bg-transparent text-sm font-semibold text-brand-green placeholder:text-[#5a5a48] focus:outline-none"
         />
       </label>
       <button

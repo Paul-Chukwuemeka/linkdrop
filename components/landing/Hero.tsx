@@ -32,7 +32,7 @@ function TapedCard({
           {badge}
         </span>
       ) : null}
-      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-accent-gold">
+      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#8a6420]">
         {`// ${label}`}
       </div>
       <strong className="block text-[13px] text-brand-green">{handle}</strong>
@@ -46,7 +46,7 @@ function TapedCard({
           </div>
         ))}
       </div>
-      <div className="font-hand mt-2 text-[10px] text-[#8a8a76]">{caption}</div>
+      <div className="font-hand mt-2 text-[10px] text-[#5a5a48]">{caption}</div>
     </div>
   );
 }
@@ -88,7 +88,7 @@ export default function Hero() {
           <div className="mt-4">
             <ClaimForm variant="hero" />
           </div>
-          <p className="mt-2.5 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
+          <p className="mt-2.5 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
             free forever · no card · nothing to cancel
           </p>
         </div>

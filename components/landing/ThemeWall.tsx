@@ -56,7 +56,7 @@ const themes: ThemePreview[] = [
 export default function ThemeWall() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
+      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
         {"// pick a look. any look."}
       </h2>
       <div className="mt-3 flex flex-wrap items-start gap-3.5">

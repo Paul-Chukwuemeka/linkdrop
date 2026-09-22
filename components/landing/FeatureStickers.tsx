@@ -39,7 +39,7 @@ const stickers = [
 export default function FeatureStickers() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#8a8a76]">
+      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
         {"// what you get"}
       </h2>
       <div className="mt-3 flex max-w-[760px] flex-wrap gap-3">
