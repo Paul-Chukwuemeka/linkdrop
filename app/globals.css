@@ -11,6 +11,9 @@
   --color-brand-green: #1b3a1b;
   --color-brand-green-hover: #2a502a;
   --color-accent-gold: #c8963e;
+  --color-accent-coral: #e2603f;
+  --color-accent-coral-dark: #b8401f;
+  --color-background-paper: #efe9da;
   --color-border-subtle: rgba(26, 26, 26, 0.08);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
@@ -207,4 +210,28 @@ html {
   background-repeat: repeat;
   background-size: 200px 200px;
   border-radius: inherit;
+}
+
+/* ── Flyer landing ───────────────────────────────────────── */
+.paper-grain {
+  background-image: radial-gradient(rgba(27, 58, 27, 0.05) 1px, transparent 1px);
+  background-size: 7px 7px;
+}
+
+.tape {
+  background: rgba(200, 150, 62, 0.55);
+  pointer-events: none;
+}
+
+.sticker-shadow {
+  box-shadow: 3px 3px 0 rgba(27, 58, 27, 0.2);
+}
+
+.sticker-shadow-gold {
+  box-shadow: 3px 3px 0 #c8963e;
+}
+
+.font-hand {
+  font-family: Georgia, "Times New Roman", serif;
+  font-style: italic;
 }
