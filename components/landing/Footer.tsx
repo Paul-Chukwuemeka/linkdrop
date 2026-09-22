@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 const centerLinks = [
-  { label: "Features", href: "#how-it-works" },
-  { label: "Templates", href: "#how-it-works" },
-  { label: "Pricing", href: "#how-it-works" },
+  { label: "Features", href: "#features" },
+  { label: "Templates", href: "#templates" },
+  { label: "Pricing", href: "#pricing" },
   { label: "Examples", href: "#example-mockup" },
   { label: "Changelog", href: "#" },
 ];
