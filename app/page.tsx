@@ -1,25 +1,28 @@
 import Nav from "@/components/landing/Nav";
 import Hero from "@/components/landing/Hero";
+import ThemeWall from "@/components/landing/ThemeWall";
 import HowItWorks from "@/components/landing/HowItWorks";
-import FeatureBento from "@/components/landing/FeatureBento";
-import TemplatePreview from "@/components/landing/TemplatePreview";
-import TrustBar from "@/components/landing/TrustBar";
+import FeatureStickers from "@/components/landing/FeatureStickers";
 import Pricing from "@/components/landing/Pricing";
+import FinalCta from "@/components/landing/FinalCta";
 import Footer from "@/components/landing/Footer";
+import { landingFontClass } from "@/lib/fonts";
 
 export default function Home() {
   return (
-    <main className="relative flex min-h-dvh flex-col bg-background-primary font-(family-name:var(--font-inter)) text-primary">
+    <div
+      className={`${landingFontClass} paper-grain min-h-dvh bg-background-primary font-[family-name:var(--font-dm-sans)] text-brand-green`}
+    >
       <Nav />
-      <div className="flex flex-1 flex-col bg-background-primary ">
+      <main>
         <Hero />
+        <ThemeWall />
         <HowItWorks />
-        <FeatureBento />
-        <TemplatePreview />
-        <TrustBar />
+        <FeatureStickers />
         <Pricing />
-      </div>
+        <FinalCta />
+      </main>
       <Footer />
-    </main>
+    </div>
   );
 }
