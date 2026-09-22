@@ -176,7 +176,7 @@ linkdrop/
 │   ├── cards/                  # CardEditor, CardList, CardPreview
 │   ├── collections/            # CollectionBlock, CreateCollection
 │   ├── dashboard/              # Sidebar, PreviewFrame
-│   ├── landing/                # HeroForm (landing page)
+│   ├── landing/                # landing page components (Nav, Hero, ClaimForm, ThemeWall, …)
 │   ├── links/                  # CreateLink, LinkCard, LinkRow
 │   ├── profile/                # ProfileHeader, PublicProfileHeader
 │   ├── background.tsx          # Background gradient/image renderer

@@ -34,7 +34,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
           aria-hidden="true"
           className="font-[family-name:var(--font-jetbrains)] text-xs text-[#5a5a48] sm:text-sm"
         >
-          linkdrop.bio/
+          linkdrop.co/
         </span>
         <input
           id={inputId}

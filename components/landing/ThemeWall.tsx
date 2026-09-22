@@ -63,7 +63,7 @@ export default function ThemeWall() {
         {themes.map((theme) => (
           <div
             key={theme.name}
-            className={`relative w-[150px] rounded bg-white p-[11px] shadow-[0_10px_24px_rgba(27,58,27,0.14)] ${theme.rotate} ${theme.offset ?? ""}`}
+            className={`relative w-[150px] rounded bg-white p-[11px] shadow-[0_10px_24px_rgba(27,58,27,0.14)] transition-transform hover:-translate-y-0.5 ${theme.rotate} ${theme.offset ?? ""}`}
           >
             {theme.tape ? (
               <span

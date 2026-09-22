@@ -21,7 +21,7 @@ function TapedCard({
   return (
     <div
       aria-hidden="true"
-      className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] ${className}`}
+      className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] transition-transform hover:-translate-y-0.5 ${className}`}
     >
       <span
         aria-hidden="true"
@@ -133,7 +133,9 @@ export default function Hero() {
         </div>
       </div>
       <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48] md:px-9">
-        <span className="text-accent-coral">{"//"}</span>
+        <span aria-hidden="true" className="text-accent-coral">
+          {"//"}
+        </span>
         <span>18 fonts</span>
         <span>any color</span>
         <span>collections</span>

@@ -121,36 +121,6 @@ html {
   display: none;
 }
 
-/* ── Phone mockup ────────────────────────────────────────── */
-
-/* Perspective wrapper — rotation + hover effect; float on inner child */
-.phone-wrapper {
-  transform: perspective(1000px) rotateY(-4deg);
-  transition: transform 400ms ease;
-  will-change: transform;
-}
-
-@media (hover: hover) {
-  .phone-wrapper:hover {
-    transform: perspective(1000px) rotateY(-2deg) translateY(-4px);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  will-change: transform;
-  animation: float 6s ease-in-out infinite;
-}
-
 /* Slow drifting glow — used by the signup brand panel */
 @keyframes glow-drift {
   0%,
@@ -183,8 +153,6 @@ html {
     scroll-behavior: auto !important;
   }
 
-  .phone-wrapper,
-  .animate-float,
   .animate-glow-drift {
     animation: none;
   }
