@@ -25,7 +25,7 @@ export default function HowItWorks() {
   return (
     <section
       id="how-it-works"
-      className="scroll-mt-6 px-6 py-16 md:px-12 lg:py-24"
+      className="scroll-mt-24 px-6 py-16 md:px-12 lg:py-24"
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.15em] text-brand-green">

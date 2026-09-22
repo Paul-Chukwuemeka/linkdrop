@@ -35,7 +35,10 @@ const templates = [
 
 export default function TemplatePreview() {
   return (
-    <section className="px-6 py-16 md:px-12 lg:py-24">
+    <section
+      id="templates"
+      className="scroll-mt-24 px-6 py-16 md:px-12 lg:py-24"
+    >
       <div className="mx-auto w-full max-w-300">
         <h2 className="mb-10 text-center text-2xl font-medium text-primary">
           A profile for every vibe
