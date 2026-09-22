@@ -27,7 +27,7 @@ export function ExampleModal() {
       </button>
 
       <Modal isOpen={open} onClose={() => setOpen(false)} label="Example LinkDrop profile">
-        <div className="relative rounded-3xl bg-background-primary p-6 shadow-2xl sm:p-8">
+        <div className="relative min-w-0 rounded-3xl bg-background-primary p-6 shadow-2xl sm:p-8">
           <button
             ref={closeRef}
             type="button"
