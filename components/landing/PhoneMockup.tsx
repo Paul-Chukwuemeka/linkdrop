@@ -55,7 +55,7 @@ export default function PhoneMockup({ id }: { id?: string }) {
   return (
     <div
       id={id}
-      className="phone-wrapper relative mx-auto w-[420px] max-w-full sm:w-[450px]"
+      className="phone-wrapper relative mx-auto w-[364px] max-w-full sm:w-[390px]"
     >
       <div className="animate-float">
         <div
