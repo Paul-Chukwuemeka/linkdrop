@@ -77,10 +77,10 @@ export default function Pricing() {
                   most picked
                 </span>
               ) : null}
-              <div className="font-[family-name:var(--font-syne)] text-[15px] font-extrabold">
+              <div className="font-[family-name:var(--font-space-grotesk)] text-[15px] font-extrabold">
                 {tier.name}
               </div>
-              <div className="font-[family-name:var(--font-syne)] text-3xl font-extrabold tracking-tight">
+              <div className="font-[family-name:var(--font-space-grotesk)] text-3xl font-extrabold tracking-tight">
                 {tier.price}
                 <span className="text-xs font-bold opacity-70">
                   {tier.cadence}
@@ -102,7 +102,7 @@ export default function Pricing() {
               </ul>
               <Link
                 href="/register"
-                className={`mt-4 block rounded-md px-4 py-2.5 text-center font-[family-name:var(--font-syne)] text-xs font-extrabold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 ${buttonClass}`}
+                className={`mt-4 block rounded-md px-4 py-2.5 text-center font-[family-name:var(--font-space-grotesk)] text-xs font-extrabold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 ${buttonClass}`}
               >
                 {tier.cta}
               </Link>

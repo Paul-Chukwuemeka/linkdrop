@@ -49,7 +49,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
       </label>
       <button
         type="submit"
-        className={`shrink-0 rounded-md px-5 py-2.5 font-[family-name:var(--font-syne)] text-sm font-extrabold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 ${BUTTON_CLASS[variant]}`}
+        className={`shrink-0 rounded-md px-5 py-2.5 font-[family-name:var(--font-space-grotesk)] text-sm font-extrabold transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 ${BUTTON_CLASS[variant]}`}
       >
         {BUTTON_LABEL[variant]}
       </button>

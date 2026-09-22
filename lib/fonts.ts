@@ -102,7 +102,7 @@ export const fonts: FontType[] = [
 export const fontVariables = fonts.map((f) => f.font.className).join(" ");
 
 export const landingFontClass = [
-  syne.variable,
+  spaceGrotesk.variable,
   dmSans.variable,
   jetbrainsMono.variable,
 ].join(" ");

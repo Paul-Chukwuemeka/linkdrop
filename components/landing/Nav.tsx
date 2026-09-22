@@ -6,7 +6,7 @@ export default function Nav() {
       <div className="mx-auto flex max-w-[1200px] items-center justify-between px-6 py-3.5 md:px-9">
         <Link
           href="/"
-          className="font-[family-name:var(--font-syne)] text-lg font-extrabold tracking-tight text-brand-green"
+          className="font-[family-name:var(--font-space-grotesk)] text-lg font-extrabold tracking-tight text-brand-green"
         >
           LinkDrop
         </Link>
@@ -19,7 +19,7 @@ export default function Nav() {
           </Link>
           <Link
             href="/register"
-            className="rounded bg-brand-green px-4 py-2 font-[family-name:var(--font-syne)] text-sm font-extrabold text-background-primary sticker-shadow-gold transition-transform hover:-translate-y-0.5"
+            className="rounded bg-brand-green px-4 py-2 font-[family-name:var(--font-space-grotesk)] text-sm font-extrabold text-background-primary sticker-shadow-gold transition-transform hover:-translate-y-0.5"
           >
             claim your name
           </Link>

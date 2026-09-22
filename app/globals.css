@@ -203,3 +203,13 @@ html {
   font-family: Georgia, "Times New Roman", serif;
   font-style: italic;
 }
+
+.marker-phrase {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C 60 3, 130 12, 198 5' fill='none' stroke='%23e2603f' stroke-width='3.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 92%;
+  background-size: 104% 0.34em;
+  padding-bottom: 0.06em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

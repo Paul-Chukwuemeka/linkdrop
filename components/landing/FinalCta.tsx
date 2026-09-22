@@ -8,7 +8,7 @@ export default function FinalCta() {
           aria-hidden="true"
           className="tape absolute -top-3 left-4 h-5 w-16 -rotate-3"
         />
-        <h2 className="font-[family-name:var(--font-syne)] text-2xl font-extrabold tracking-tight sm:text-[26px]">
+        <h2 className="font-[family-name:var(--font-space-grotesk)] text-2xl font-extrabold tracking-tight sm:text-[26px]">
           your name is
           <br />
           still available.

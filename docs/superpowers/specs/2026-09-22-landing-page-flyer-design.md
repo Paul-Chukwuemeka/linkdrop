@@ -56,7 +56,7 @@ Add to `globals.css`:
 - Utilities: `.paper-grain`, `.tape`, `.sticker-shadow`, `.font-hand` (serif italic)
 
 Update `landingFontClass` in `lib/fonts.ts` to
-`[syne.className, dmSans.className, jetbrains.className].join(" ")`.
+`[spaceGrotesk.variable, dmSans.variable, jetbrainsMono.variable].join(" ")`.
 Do not modify product font instances or the appearance editor's font list.
 
 ## Page Structure & Copy

@@ -21,32 +21,32 @@ function TapedCard({
   return (
     <div
       aria-hidden="true"
-      className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] transition-transform hover:-translate-y-0.5 ${className}`}
+      className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] transition-transform hover:-translate-y-0.5 lg:p-[18px] ${className}`}
     >
       <span
         aria-hidden="true"
-        className="tape absolute -top-2 left-1/2 h-[18px] w-16 -translate-x-1/2 -rotate-3"
+        className="tape absolute -top-2 left-1/2 h-[18px] w-16 -translate-x-1/2 -rotate-3 lg:h-[22px] lg:w-20"
       />
       {badge ? (
-        <span className="absolute -right-2 -top-2 z-10 rotate-[8deg] rounded-full bg-accent-coral-dark px-2.5 py-1.5 text-[10px] font-extrabold text-white">
+        <span className="absolute -right-2 -top-2 z-10 rotate-[8deg] rounded-full bg-accent-coral-dark px-2.5 py-1.5 text-[10px] font-extrabold text-white lg:px-3 lg:py-2 lg:text-[11px]">
           {badge}
         </span>
       ) : null}
-      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#8a6420]">
+      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#8a6420] lg:text-xs">
         {`// ${label}`}
       </div>
-      <strong className="block text-[13px] text-brand-green">{handle}</strong>
-      <div className="mt-2 flex flex-col gap-1.5">
+      <strong className="block text-[13px] text-brand-green lg:text-[17px]">{handle}</strong>
+      <div className="mt-2 flex flex-col gap-1.5 lg:mt-2.5 lg:gap-2">
         {links.map((link) => (
           <div
             key={link.label}
-            className={`px-2.5 py-1.5 text-[10px] font-bold ${link.className}`}
+            className={`px-2.5 py-1.5 text-[10px] font-bold lg:px-3.5 lg:py-2 lg:text-xs ${link.className}`}
           >
             {link.label}
           </div>
         ))}
       </div>
-      <div className="font-hand mt-2 text-[10px] text-[#5a5a48]">{caption}</div>
+      <div className="font-hand mt-2 text-[10px] text-[#5a5a48] lg:mt-2.5 lg:text-xs">{caption}</div>
     </div>
   );
 }
@@ -59,25 +59,9 @@ export default function Hero() {
           <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-brand-green">
             100% FREE. ACTUALLY.
           </span>
-          <h1 className="mt-3.5 font-[family-name:var(--font-syne)] text-4xl font-extrabold leading-[0.99] tracking-tight text-brand-green sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3.5 font-[family-name:var(--font-space-grotesk)] text-4xl font-extrabold leading-[0.99] tracking-[-0.03em] text-brand-green sm:text-[41px]">
             stop looking like{" "}
-            <span className="relative inline-block">
-              everyone else&apos;s
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 200 14"
-                preserveAspectRatio="none"
-                className="absolute -bottom-0.5 left-0 h-3.5 w-full"
-              >
-                <path
-                  d="M2 9 C 60 3, 130 12, 198 5"
-                  fill="none"
-                  stroke="#e2603f"
-                  strokeWidth="3.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </span>
+            <span className="marker-phrase whitespace-nowrap">everyone else&apos;s</span>
             <br />
             link-in-bio.
           </h1>
@@ -92,11 +76,11 @@ export default function Hero() {
             free forever · no card · nothing to cancel
           </p>
         </div>
-        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:block lg:h-[360px]">
+        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:block lg:h-[430px]">
           <TapedCard
             label="theme 01"
             handle="@theo.codes"
-            caption="syne + forest"
+            caption="space grotesk + forest"
             className="lg:absolute lg:right-6 lg:top-0 lg:rotate-3"
             links={[
               {
@@ -114,7 +98,7 @@ export default function Hero() {
             handle="@lume.studio"
             caption="dm serif + gold"
             badge="new"
-            className="lg:absolute lg:left-8 lg:top-24 lg:-rotate-3"
+            className="lg:absolute lg:left-6 lg:top-32 lg:-rotate-3"
             links={[
               {
                 label: "book a session",
