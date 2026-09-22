@@ -2,7 +2,7 @@ import ClaimForm from "@/components/landing/ClaimForm";
 
 export default function FinalCta() {
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-6 pb-10 pt-9 md:px-9">
+    <section className="mx-auto mt-10 w-full max-w-[1200px] border-t-2 border-dashed border-[#c9c2ad] px-6 pb-10 pt-8 md:px-9">
       <div className="relative flex flex-wrap items-center gap-5 rounded-xl bg-brand-green p-7 text-background-primary">
         <span
           aria-hidden="true"

@@ -38,7 +38,7 @@ const stickers = [
 
 export default function FeatureStickers() {
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
+    <section className="mx-auto mt-10 w-full max-w-[1200px] border-t-2 border-dashed border-[#c9c2ad] px-6 pt-8 md:px-9">
       <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
         {"// what you get"}
       </h2>
