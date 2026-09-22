@@ -11,7 +11,7 @@ import { landingFontClass } from "@/lib/fonts";
 export default function Home() {
   return (
     <div
-      className={`${landingFontClass} paper-grain min-h-dvh bg-background-paper font-[family-name:var(--font-dm-sans)] text-brand-green`}
+      className={`${landingFontClass} min-h-dvh bg-background-primary font-[family-name:var(--font-dm-sans)] text-brand-green`}
     >
       <Nav />
       <main id="main-content">

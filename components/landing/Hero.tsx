@@ -53,7 +53,7 @@ function TapedCard({
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="paper-grain relative overflow-hidden bg-background-paper">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-6 pt-10 md:px-9 lg:grid-cols-[56fr_44fr] lg:gap-6 lg:pt-14">
         <div>
           <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-brand-green">
