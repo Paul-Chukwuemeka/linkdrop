@@ -4,6 +4,7 @@ import HowItWorks from "@/components/landing/HowItWorks";
 import FeatureBento from "@/components/landing/FeatureBento";
 import TemplatePreview from "@/components/landing/TemplatePreview";
 import TrustBar from "@/components/landing/TrustBar";
+import Pricing from "@/components/landing/Pricing";
 import Footer from "@/components/landing/Footer";
 
 export default function Home() {
@@ -16,6 +17,7 @@ export default function Home() {
         <FeatureBento />
         <TemplatePreview />
         <TrustBar />
+        <Pricing />
       </div>
       <Footer />
     </main>
