@@ -4,7 +4,7 @@ import { Check, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { FieldError } from "@/components/auth/FieldError";
 
-const TAKEN_USERNAMES = ["admin", "root", "test", "linkdrop", "support"];
+const TAKEN_USERNAMES = ["admin", "root", "test", "dropcard", "support"];
 const USERNAME_PATTERN = /^[a-zA-Z0-9_-]+$/;
 
 type Availability = "idle" | "checking" | "available" | "taken";
@@ -57,7 +57,7 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
       </label>
       <div className="flex">
         <span className="select-none rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-500">
-          linkdrop.co/
+          dropcard.co/
         </span>
         <input
           id={id}
@@ -83,12 +83,12 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
       ) : availability === "available" ? (
         <p id={`${id}-hint`} className="flex items-center gap-1 text-xs text-green-600">
           <Check className="h-3.5 w-3.5" aria-hidden="true" />
-          linkdrop.co/{trimmed} is available
+          dropcard.co/{trimmed} is available
         </p>
       ) : availability === "taken" ? (
         <p id={`${id}-hint`} className="flex items-center gap-1 text-xs text-red-500">
           <X className="h-3.5 w-3.5" aria-hidden="true" />
-          linkdrop.co/{trimmed} is taken
+          dropcard.co/{trimmed} is taken
         </p>
       ) : (
         <p id={`${id}-hint`} className="text-xs text-secondary">

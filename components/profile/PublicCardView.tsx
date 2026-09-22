@@ -81,7 +81,7 @@ export function PublicCardView({ card }: { card: Card }) {
               href="/"
               className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition-transform hover:scale-105"
             >
-              Join LinkDrop
+              Join Dropcard
             </Link>
           </div>
         </div>

@@ -29,12 +29,12 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
         htmlFor={inputId}
         className="flex min-w-0 flex-1 items-center rounded-md border-2 border-brand-green bg-white px-3.5 py-2.5 shadow-[3px_3px_0_rgba(27,58,27,0.15)] focus-within:ring-2 focus-within:ring-brand-green/30 focus-within:ring-offset-2"
       >
-        <span className="sr-only">Your LinkDrop username</span>
+        <span className="sr-only">Your Dropcard username</span>
         <span
           aria-hidden="true"
           className="font-[family-name:var(--font-jetbrains)] text-xs text-[#5a5a48] sm:text-sm"
         >
-          linkdrop.co/
+          dropcard.co/
         </span>
         <input
           id={inputId}

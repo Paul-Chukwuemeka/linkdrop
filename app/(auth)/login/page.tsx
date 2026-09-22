@@ -18,7 +18,7 @@ export default function LoginPage() {
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 sm:px-10">
         <div className="mb-10 flex w-full max-w-md items-center justify-between lg:hidden">
           <Link href="/" className="text-xl font-medium tracking-tight text-primary">
-            LinkDrop
+            Dropcard
           </Link>
         </div>
 
@@ -51,7 +51,7 @@ export default function LoginPage() {
           href="/"
           className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
         >
-          LinkDrop
+          Dropcard
         </Link>
 
         <div className="relative z-10 flex flex-col items-center pb-16 text-center">
@@ -75,7 +75,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <p className="relative z-10 text-xs text-white/50">© 2026 LinkDrop</p>
+        <p className="relative z-10 text-xs text-white/50">© 2026 Dropcard</p>
       </aside>
     </div>
   );

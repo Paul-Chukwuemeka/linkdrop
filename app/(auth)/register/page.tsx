@@ -20,13 +20,13 @@ export default function RegisterPage() {
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 sm:px-10">
         <div className="mb-10 flex w-full max-w-md items-center justify-between lg:hidden">
           <Link href="/" className="text-xl font-medium tracking-tight text-primary">
-            LinkDrop
+            Dropcard
           </Link>
         </div>
 
         <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
           <h1 className="text-2xl font-semibold tracking-tight text-primary">
-            Create your LinkDrop
+            Create your Dropcard
           </h1>
           <p className="mt-1 text-sm text-secondary">
             Claim your username and start building your public page.
@@ -54,7 +54,7 @@ export default function RegisterPage() {
           href="/"
           className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
         >
-          LinkDrop
+          Dropcard
         </Link>
 
         <div className="relative z-10 flex flex-col items-center pb-16 text-center">
@@ -79,7 +79,7 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        <p className="relative z-10 text-xs text-white/50">© 2026 LinkDrop</p>
+        <p className="relative z-10 text-xs text-white/50">© 2026 Dropcard</p>
       </aside>
     </div>
   );

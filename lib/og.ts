@@ -80,7 +80,7 @@ export async function fetchOgMetadata(url: string): Promise<OgMetadata> {
   try {
     response = await fetchWithTimeout(
       url,
-      { headers: { "User-Agent": "LinkDrop/1.0" } },
+      { headers: { "User-Agent": "Dropcard/1.0" } },
       FETCH_TIMEOUT
     );
   } catch (error) {

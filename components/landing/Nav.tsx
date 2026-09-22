@@ -8,7 +8,7 @@ export default function Nav() {
           href="/"
           className="font-[family-name:var(--font-space-grotesk)] text-lg font-extrabold tracking-tight text-brand-green"
         >
-          LinkDrop
+          Dropcard
         </Link>
         <div className="flex items-center gap-4">
           <Link

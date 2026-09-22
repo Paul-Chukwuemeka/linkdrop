@@ -7,7 +7,7 @@ type FullScreenLoaderProps = {
 };
 
 export function FullScreenLoader({
-  label = "Loading LinkDrop...",
+  label = "Loading Dropcard...",
   className = "min-h-dvh w-full",
 }: FullScreenLoaderProps) {
   return (

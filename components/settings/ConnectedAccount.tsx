@@ -24,7 +24,7 @@ export function ConnectedAccount({
 }) {
   const info = provider ? PROVIDERS[provider] : null;
   const Icon = info?.icon;
-  const label = info?.label ?? "LinkDrop username & password";
+  const label = info?.label ?? "Dropcard username & password";
 
   return (
     <SectionCard>

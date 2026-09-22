@@ -3,7 +3,7 @@ const steps = [
     n: "1",
     circle: "bg-brand-green text-background-primary",
     title: "claim your name",
-    aside: "linkdrop.co/you",
+    aside: "dropcard.co/you",
   },
   {
     n: "2",

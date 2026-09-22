@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Replace the LinkDrop landing page with the approved "Flyer world, Neon voice" design — cream paper collage, taped cards, stickers, blunt lowercase copy.
+**Goal:** Replace the Dropcard landing page with the approved "Flyer world, Neon voice" design — cream paper collage, taped cards, stickers, blunt lowercase copy.
 
 **Architecture:** Full replacement of `components/landing/*` plus `app/page.tsx`. New components are built alongside the old ones (build stays green), then the page is swapped and old files deleted. One shared client `ClaimForm` serves the hero and final CTA; everything else is a server component.
 
@@ -180,7 +180,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
           aria-hidden="true"
           className="font-(family-name:var(--font-jetbrains)) text-xs text-[#8a8a76] sm:text-sm"
         >
-          linkdrop.bio/
+          dropcard.bio/
         </span>
         <input
           id={inputId}
@@ -217,7 +217,7 @@ export default function Nav() {
           href="/"
           className="font-(family-name:var(--font-syne)) text-lg font-extrabold tracking-tight text-brand-green"
         >
-          LinkDrop
+          Dropcard
         </Link>
         <div className="flex items-center gap-4">
           <Link
@@ -523,7 +523,7 @@ const steps = [
     n: "1",
     circle: "bg-brand-green text-background-primary",
     title: "claim your name",
-    aside: "linkdrop.bio/you",
+    aside: "dropcard.bio/you",
   },
   {
     n: "2",
@@ -820,7 +820,7 @@ export default function Footer() {
   return (
     <footer className="border-t-2 border-brand-green">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-2 px-6 py-3.5 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#5a5a48] sm:flex-row sm:items-center sm:justify-between md:px-9">
-        <span>linkdrop — for people who hate ugly link pages</span>
+        <span>dropcard — for people who hate ugly link pages</span>
         <div className="flex gap-4">
           <Link href="/login" className="hover:text-brand-green">
             log in
@@ -945,7 +945,7 @@ curl -s http://localhost:3123/ > /tmp/landing-ssr.html
 - [ ] **Step 2: Assert new copy is present**
 
 ```bash
-for s in "stop looking like" "linkdrop.bio/" "// pick a look" "// how it works" "// what you get" "// pricing" "your name is" "most picked" "(soon)" "18 fonts"; do
+for s in "stop looking like" "dropcard.bio/" "// pick a look" "// how it works" "// what you get" "// pricing" "your name is" "most picked" "(soon)" "18 fonts"; do
   grep -q "$s" /tmp/landing-ssr.html && echo "OK: $s" || echo "MISSING: $s"
 done
 ```

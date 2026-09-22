@@ -1,8 +1,8 @@
-# LinkDrop — Landing Page Design Research
+# Dropcard — Landing Page Design Research
 
 Best-in-class landing page patterns for link-in-bio SaaS (Linktree, Beacons, Bio.link, Stan,
 Campsite, Kōmi, Later, Milkshake, Solo, Taplink), with actionable recommendations for
-LinkDrop's Next.js 16 / Tailwind 4 / React 19 build.
+Dropcard's Next.js 16 / Tailwind 4 / React 19 build.
 
 **Research date: accessed 2026-09-22.** All observations below come from fetching the live
 pages on that date (raw HTML/CSS via `curl` with a desktop browser UA where possible;
@@ -29,16 +29,16 @@ pages on that date (raw HTML/CSS via `curl` with a desktop browser UA where poss
 
 1. Linktree's hero is a **username-claim field with the URL prefix visibly pre-filled**
    (`value="linktr.ee/"`, placeholder `linktr.ee/yourname`, `aria-label="Claim your Linktree
-   username"`) submitting to "Get started for free". LinkDrop's current `HeroForm` already
+   username"`) submitting to "Get started for free". Dropcard's current `HeroForm` already
    mirrors this — it is the category's proven lowest-friction entry.
 2. **No competitor hero uses an email field.** Every fetched hero either claims a username
-   or pushes a single button into a separate signup app. LinkDrop's username-first form is
+   or pushes a single button into a separate signup app. Dropcard's username-first form is
    correct.
 3. **Social proof goes in the hero**: hard counts in the subheadline (Linktree "Join 70M+…",
    Bio.link "Join 3M+ creators…"), or a ratings cluster (Milkshake "5M+ Downloads / 4.9
    Stars* / 70K+ Reviews") or a creator wall (Kōmi, Bio.link) immediately after the CTA.
 4. **No fetched competitor hero says "no credit card required" or "free forever"** — that's
-   an open differentiator LinkDrop already uses. Keep it, but only while true.
+   an open differentiator Dropcard already uses. Keep it, but only while true.
 5. **The hero visual is an animated product mockup, not a stock illustration** — Linktree
    Lottie, Campsite animated profile stack with `campsite.bio/` labels inside, Later autoplay
    muted video, Milkshake card webp mockups.
@@ -53,7 +53,7 @@ pages on that date (raw HTML/CSS via `curl` with a desktop browser UA where poss
    trial length on paid CTAs, a compare-all-features matrix, and 8–12 FAQs.
 9. **Mobile: don't block zoom; keep the primary CTA out of the hamburger; respect
    `prefers-reduced-motion`.** Linktree does all three; Bio.link and Taplink disable zoom
-   and ship animations without reduced-motion rules — accessibility regressions LinkDrop
+   and ship animations without reduced-motion rules — accessibility regressions Dropcard
    should not copy.
 10. **Trends to skip for now:** React `<ViewTransition>` (Next flag is experimental and
     React 19.2.4 here does not export it), scroll-driven CSS animations as a dependency
@@ -100,13 +100,13 @@ https://milkshake.app/, https://komi.io/, https://taplink.cc/ (all accessed 2026
 - **Dead ends to avoid:** Bento is now a Linktree redirect, Koji's domain is a restaurant.
   The category consolidates; don't model a page on a dead product.
 
-### Takeaways for LinkDrop's hero
+### Takeaways for Dropcard's hero
 
-1. Keep the `linkdrop.co/` + username + "Get started for free" form (`components/landing/HeroForm.tsx`).
+1. Keep the `dropcard.co/` + username + "Get started for free" form (`components/landing/HeroForm.tsx`).
    Add a **debounced availability check** in the hero so the field does real work before
    `/register` — the register flow already checks availability (per `project.md`); surface it.
 2. Replace the static-feeling `PhoneMockup` content with a **CSS-only animated link-card
-   demo** — cards appearing/stacking on a loop, `linkdrop.co/yourname` printed inside the
+   demo** — cards appearing/stacking on a loop, `dropcard.co/yourname` printed inside the
    mock (the Campsite trick that teaches the output format before signup). Keep the existing
    `animate-float` and the global `prefers-reduced-motion` kill-switch in `app/globals.css`.
 3. Put a **real number in the hero subheadline** once there is one ("X pages created"), not
@@ -152,7 +152,7 @@ https://milkshake.app/, https://komi.io/, https://taplink.cc/ (all accessed 2026
 
 ### Takeaways
 
-1. Keep one primary CTA above the fold. LinkDrop's current hero does this correctly.
+1. Keep one primary CTA above the fold. Dropcard's current hero does this correctly.
 2. Upgrade `TrustBar` from icon slogans ("Secure & private") to **verifiable proof**: real
    creator/profile links, a press logo row, or a counter that is actually true. Do not ship
    invented numbers.
@@ -160,7 +160,7 @@ https://milkshake.app/, https://komi.io/, https://taplink.cc/ (all accessed 2026
    "No credit card required. Free forever.") — but make sure "free forever" is a policy
    commitment, because the research shows competitors avoid that exact phrase.
 4. Repeat the claim form at the page bottom with a stronger ownership verb ("Claim your
-   LinkDrop"), mirroring Linktree's second field.
+   Dropcard"), mirroring Linktree's second field.
 
 ---
 
@@ -186,7 +186,7 @@ https://beacons.ai/ (render proxy). All accessed 2026-09-22.
 ### What makes them not look generic
 
 - **An owned surface color, not white.** Every leader uses a warm off-white, cream, or tinted
-  surface with near-black ink. LinkDrop already has `#f5f2e9` background and `#1b3a1b`
+  surface with near-black ink. Dropcard already has `#f5f2e9` background and `#1b3a1b`
   brand green in `app/globals.css` — that is an owned palette. Protect it.
 - **One licensed/custom display face.** Linktree, Later, Kōmi, and Stan all ship licensed
   display fonts alongside a neutral body face. Inter-only reads as "starter template".
@@ -197,7 +197,7 @@ https://beacons.ai/ (render proxy). All accessed 2026-09-22.
   tower animation (`home-hero-tower-up`, paused on hover, `motion-reduce:[animation:none]`);
   Campsite's dotted connector line (`dash-38281725` 1s infinite, `reveal-38281725` 7s);
   Solo's logo draw (`circle 3s cubic-bezier(0,.2,.6,.85) infinite`).
-- **Texture, used once.** Later's noise PNG, Campsite's tiled mark pattern. LinkDrop's
+- **Texture, used once.** Later's noise PNG, Campsite's tiled mark pattern. Dropcard's
   `.bg-noise` overlay at 3.5% opacity and the gold headline underline already fit this.
 
 ### Takeaways
@@ -246,7 +246,7 @@ https://beacons.ai/ (render proxy). All accessed 2026-09-22.
 
 1. **Alternating text+visual rows for the core story, then one tab switcher for depth.**
    Rows are Server Components; the tab switcher is the only client island.
-2. **Name every section as a job-to-be-done**, not "Features" or "Analytics". For LinkDrop:
+2. **Name every section as a job-to-be-done**, not "Features" or "Analytics". For Dropcard:
    "Build your page", "Know what's working", "Own your audience" (email capture), "Make it
    yours" (themes), "Sell and share" (collections).
 3. **Use muted looping screen recordings** for the appearance editor and analytics — 5–10s
@@ -292,11 +292,11 @@ verified (blocked / JS-only).
 6. **Home-page teaser + dedicated pricing page** (Beacons) is the norm; render both from the
    same data source so they cannot drift.
 
-### Takeaway for LinkDrop
+### Takeaway for Dropcard
 
-LinkDrop currently has no pricing section on the landing page or a pricing page. Minimum
+Dropcard currently has no pricing section on the landing page or a pricing page. Minimum
 viable version: a Free / Pro (badged) / Business layout, annual-default toggle with monthly
-inline, explicit free-tier limits ("3 cards, 50 links, LinkDrop branding"), 7-day trial on
+inline, explicit free-tier limits ("3 cards, 50 links, Dropcard branding"), 7-day trial on
 Pro, compare table, and an 8-question FAQ. If shipping one paid plan only, use Bio.link's
 value-stack instead of a table.
 
@@ -343,7 +343,7 @@ value-stack instead of a table.
   and preload on by default; use variable fonts
   (`01-app/01-getting-started/13-fonts.md`, `01-app/03-api-reference/02-components/font.md`).
 
-### LinkDrop mobile checklist
+### Dropcard mobile checklist
 
 1. Never disable zoom; set `themeColor` via `generateViewport`.
 2. Primary CTA always visible; hamburger only for secondary links.
@@ -358,7 +358,7 @@ value-stack instead of a table.
 
 ## 7. Recent design trends 2025–2026
 
-| Trend | Status on 2026-09-22 | Verdict for LinkDrop |
+| Trend | Status on 2026-09-22 | Verdict for Dropcard |
 |---|---|---|
 | **Bento grids** | Curated examples at https://bentogrids.com/ (neon.tech, novu.co/inbox, useparagon.com); no link-in-bio competitor ships a named bento section | Use for **proof**, not slogans: 4–8 cells, ≥3 containing real product UI. Pure CSS Grid, Server Component. High AI-template risk if it's icon cards |
 | **Scroll-driven CSS animations** | MDN module marked **Experimental** (https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_scroll-driven_animations); **0 competitor CSS** uses `animation-timeline`; demos at https://scroll-driven-animations.style/ | Progressive enhancement only, behind `@supports (animation-timeline: view())`, default = content visible, no motion |
@@ -366,7 +366,7 @@ value-stack instead of a table.
 | **AI-generated/personalized demo content** | Vendor claims on Bio.link ("AI Chat doubles engagement" — marketing claim); NN/g on generative UI (https://www.nngroup.com/articles/generative-ui/); adoption is tiny — Prompt API on 0.1% of sites (https://almanac.httparchive.org/en/2025/generative-ai) | Legit as a **product demo** (type your handle → see a mocked profile). Don't claim conversion effects without a test |
 | **Motion restraint** | NN/g: motion should be feedback, not ambient decoration (https://www.nngroup.com/articles/animation-purpose-ux/); Linktree enforces reduced motion, Bio.link/Taplink don't | Follow Linktree. "Fade-up on every section" is the new AI-template tell |
 | **Dark mode** | Mechanism via `prefers-color-scheme` (https://web.dev/articles/prefers-color-scheme); no adoption stats verified | Ship for the marketing site if the product supports it; it also demos the product |
-| **Noise/grain textures** | Technique via CSS-Tricks grainy gradients / SVG `feTurbulence`; LinkDrop already ships `.bg-noise` | Keep, at low opacity. "Gradient + grain" is becoming its own template look — one texture only |
+| **Noise/grain textures** | Technique via CSS-Tricks grainy gradients / SVG `feTurbulence`; Dropcard already ships `.bg-noise` | Keep, at low opacity. "Gradient + grain" is becoming its own template look — one texture only |
 | **Fluid/oversized type** | Verified: Linktree `clamp()`, Bio.link stepped sizes; variable fonts on 39–41% of sites (https://almanac.httparchive.org/en/2025/fonts) | Adopt via `clamp()` + `next/font` variable font |
 | **Product-UI-as-hero** | Verified on Linktree, Bio.link, Taplink, Milkshake, Campsite | **Highest-value trend for this category.** Build the mock from real components, not a PNG |
 | **Anti-template brutalism** | Gallery https://brutalistwebsites.com/; risk of reading try-hard to creator audiences | Identity choice, not a conversion tactic |
@@ -374,7 +374,7 @@ value-stack instead of a table.
 
 ---
 
-## 8. Five landing-page structures LinkDrop could implement
+## 8. Five landing-page structures Dropcard could implement
 
 Shared baseline for all five: Server Components by default with client islands only for the
 menu toggle, tabs, and forms (`node_modules/next/dist/docs/01-app/01-getting-started/05-server-and-client-components.md`);
@@ -383,8 +383,8 @@ Tailwind 4 via `@tailwindcss/postcss`; `next/image` with `sizes` and `preload` (
 
 ### Structure 1 — "Claim-Your-Name, Show-The-Product" (recommended)
 
-1. Sticky header: logo, 2–3 anchors, always-visible "Claim your LinkDrop" button.
-2. Hero: `clamp()` H1 + subhead + `linkdrop.co/` username claim + trust microcopy.
+1. Sticky header: logo, 2–3 anchors, always-visible "Claim your Dropcard" button.
+2. Hero: `clamp()` H1 + subhead + `dropcard.co/` username claim + trust microcopy.
 3. Product-as-hero: phone-framed profile built in real HTML/CSS beside/below the form.
 4. Social-proof row (real profiles or press).
 5. Bento proof grid (4–6 cells: analytics, collections, themes, custom domain…).
@@ -423,7 +423,7 @@ line. 3. Ownership explainer (algorithm risk / email list / export anytime). 4. 
 with capture block highlighted. 5. Creator quotes with follower counts. 6. Comparison vs
 plain link pages. 7. Integrations row. 8. Pricing + guarantee. 9. FAQ + CTA.
 
-**Why:** differentiates LinkDrop on audience ownership rather than "another link list".
+**Why:** differentiates Dropcard on audience ownership rather than "another link list".
 **Implementation:** email capture posts to a Route Handler or Server Action with pending and
 `aria-live` success state; `inputMode="email"`; no exit-intent popups on mobile.
 
@@ -439,12 +439,12 @@ carousel); `next/image` with accurate `sizes` and blur placeholders.
 
 ---
 
-## 9. LinkDrop-specific action plan (mapped to current code)
+## 9. Dropcard-specific action plan (mapped to current code)
 
 | Current file | Observation from research | Action |
 |---|---|---|
 | `components/landing/HeroForm.tsx` | Matches Linktree's winning username-claim pattern, prefix + "Get started for free" | Add debounced availability check; keep one CTA; keep microcopy while true |
-| `components/landing/PhoneMockup.tsx` | Static; leaders animate the mock and print their URL inside it | Add a CSS-only link-card loop; label cards `linkdrop.co/…`; keep reduced-motion |
+| `components/landing/PhoneMockup.tsx` | Static; leaders animate the mock and print their URL inside it | Add a CSS-only link-card loop; label cards `dropcard.co/…`; keep reduced-motion |
 | `components/landing/TrustBar.tsx` | Icon slogans are weaker than all observed social proof | Replace with real profile links / press logos / a true counter |
 | `components/landing/Hero.tsx` | Split hero, gold underline, noise — on-strategy | A/B outcome headline; add setup-time claim; consider `clamp()` type |
 | `components/landing/TemplatePreview.tsx` | Category treats templates as a primary demo surface | Use real screenshots; `next/image` + `sizes`; horizontal snap scroll on mobile |

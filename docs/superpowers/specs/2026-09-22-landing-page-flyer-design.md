@@ -1,4 +1,4 @@
-# LinkDrop Landing Page — Flyer World, Neon Voice
+# Dropcard Landing Page — Flyer World, Neon Voice
 
 **Date:** 2026-09-22
 **Status:** Approved for planning
@@ -66,7 +66,7 @@ marketing register.
 
 ### 1. Nav (sticky, 2px bottom border)
 
-- Wordmark: `LinkDrop`
+- Wordmark: `Dropcard`
 - Right: `log in` (mono, links `/login`), button `claim your name` (links `/register`)
 
 ### 2. Hero
@@ -75,7 +75,7 @@ marketing register.
 - H1: `stop looking like everyone else's link-in-bio.` — coral marker strike through
   `everyone else's` (inline SVG, decorative)
 - Sub: `your colors, your fonts, your links. group them how you want. one minute, tops.`
-- `ClaimForm` variant `hero`: prefix `linkdrop.bio/`, button `go`
+- `ClaimForm` variant `hero`: prefix `dropcard.bio/`, button `go`
 - Note: `free forever · no card · nothing to cancel`
 - Right: two taped theme cards, rotated:
   - `// theme 01` `@theo.codes` — pill buttons `github`, `blog`; caption `syne + forest`
@@ -97,7 +97,7 @@ marketing register.
 
 - Label: `// how it works`
 - Dashed receipt card, three rows separated by dashed rules:
-  1. `claim your name` — mono aside `linkdrop.bio/you`
+  1. `claim your name` — mono aside `dropcard.bio/you`
   2. `pick a theme, or wreck it` — `any color. any font.`
   3. `paste your links` — `done. go outside.`
 - Numbered circles: green, gold, coral.
@@ -124,13 +124,13 @@ marketing register.
 ### 7. FinalCta
 
 - Green block, taped corner, headline: `your name is still available.`
-- `ClaimForm` variant `final`: prefix `linkdrop.bio/`, button `claim it`
+- `ClaimForm` variant `final`: prefix `dropcard.bio/`, button `claim it`
 - Handwritten aside, rotated: `probably. check fast.`
 - Blob stamp optional here.
 
 ### 8. Footer
 
-- 2px top border, mono: `linkdrop — for people who hate ugly link pages`
+- 2px top border, mono: `dropcard — for people who hate ugly link pages`
 - Links **only to routes that exist**: `log in` (`/login`), `claim your name` (`/register`).
   No terms/privacy links until those pages exist.
 
@@ -191,7 +191,7 @@ paper background, and text color.
 1. `npm run lint` — 0 errors (4 pre-existing warnings allowed).
 2. `npm run build` — must pass.
 3. SSR smoke test: `npm run start` + curl `/` and assert key strings
-   (`stop looking like`, `linkdrop.bio/`, `// pick a look`, `// pricing`);
+   (`stop looking like`, `dropcard.bio/`, `// pick a look`, `// pricing`);
    confirm the old copy is gone.
 4. Manual check of `/` in a browser at mobile and desktop widths against the
    approved mock, plus keyboard tab-through of nav, claim forms, pricing CTAs.
