@@ -9,20 +9,7 @@ async function copyToClipboard(text: string): Promise<boolean> {
     await navigator.clipboard.writeText(text);
     return true;
   } catch {
-    try {
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.focus();
-      textarea.select();
-      const ok = document.execCommand("copy");
-      document.body.removeChild(textarea);
-      return ok;
-    } catch {
-      return false;
-    }
+    return false;
   }
 }
 
@@ -30,6 +17,9 @@ export function PublicUrlBar() {
   const { profile } = useProfile();
   const [copied, setCopied] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const host = window.location.host;
+
+  console.log(host);
 
   useEffect(() => {
     return () => {
@@ -40,8 +30,7 @@ export function PublicUrlBar() {
   const username = profile?.username;
   if (!username) return null;
 
-  const urlBarSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const realUrl = `${urlBarSiteUrl.replace(/\/+$/, "")}/u/${encodeURIComponent(username)}`;
+  const realUrl = `${host}/u/${encodeURIComponent(username)}`;
 
   async function handleCopy() {
     const ok = await copyToClipboard(realUrl);
@@ -59,7 +48,7 @@ export function PublicUrlBar() {
         rel="noopener noreferrer"
         className="min-w-0 text-sm font-medium text-gray-900 dark:text-neutral-100 hover:text-brand-green transition-colors"
       >
-        <span className="text-gray-400 dark:text-neutral-500">linkdrop.co/</span>
+        <span className="text-gray-400 dark:text-neutral-500">{host}/u/</span>
         <span className="truncate">{username}</span>
       </a>
       <button

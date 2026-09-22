@@ -114,8 +114,8 @@ export function PublicLinkCard({
       rel="noopener noreferrer"
     >
       {layout === "row" ? (
-        <div className="flex items-center gap-4 flex-1 min-w-0">
-          <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden border border-black/10">
+        <div className="flex  items-center gap-4 flex-1 min-w-0">
+          <div className="w-8 border h-8 rounded-lg bg-transparent flex items-center justify-center shrink-0 overflow-hidden border-black/10">
             <img
               width={40}
               height={40}

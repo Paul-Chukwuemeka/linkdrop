@@ -3,15 +3,13 @@ import type { NextConfig } from "next";
 // Extra origins allowed to hit the dev server (HMR). Defaults to the LAN IP
 // used for testing on a second device; override with a comma-separated list:
 // ALLOWED_DEV_ORIGINS="192.168.160.209,*.local" npm run dev
-const allowedDevOrigins = (
-  process.env.ALLOWED_DEV_ORIGINS ?? "192.168.160.209"
-)
+const allowedDevOrigins = (process.env.ALLOWED_DEV_ORIGINS ?? "192.168.160.209")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
 
 const nextConfig: NextConfig = {
-  allowedDevOrigins,
+  allowedDevOrigins: ["192.168.48.209", "*"],
   images: {
     remotePatterns: [
       {
