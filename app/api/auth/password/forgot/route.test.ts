@@ -4,6 +4,7 @@ vi.mock("@/lib/db", () => ({
   prisma: {
     user: { findUnique: vi.fn() },
     passwordResetToken: { deleteMany: vi.fn(), create: vi.fn() },
+    $transaction: vi.fn(),
   },
 }))
 
@@ -25,11 +26,12 @@ function makeRequest(body: unknown, ip: string): Request {
 
 describe("POST /api/auth/password/forgot", () => {
   beforeEach(() => {
+    vi.clearAllMocks()
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
     vi.mocked(prisma.passwordResetToken.deleteMany).mockResolvedValue({ count: 0 })
     vi.mocked(prisma.passwordResetToken.create).mockResolvedValue({ id: "t-1" } as never)
     vi.mocked(sendPasswordResetEmail).mockResolvedValue({ delivered: true })
-    vi.clearAllMocks()
+    vi.mocked(prisma.$transaction).mockResolvedValue([{ count: 0 }, { id: "t-1" }] as never)
   })
 
   it("returns 400 for an invalid email", async () => {
@@ -53,6 +55,7 @@ describe("POST /api/auth/password/forgot", () => {
     } as never)
     const response = await POST(makeRequest({ email: "Jane@Example.com" }, "10.0.0.3"))
     expect(response.status).toBe(200)
+    expect(prisma.$transaction).toHaveBeenCalledOnce()
     expect(prisma.passwordResetToken.deleteMany).toHaveBeenCalledWith({
       where: { userId: "user-1" },
     })

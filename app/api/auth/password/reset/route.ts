@@ -27,15 +27,26 @@ export async function POST(request: Request) {
     }
 
     const hashed = await argon2.hash(parsed.data.new_password)
-    await prisma.user.update({
-      where: { id: record.userId },
-      data: { password: hashed },
+    const claimed = await prisma.$transaction(async (tx) => {
+      const tokenUpdate = await tx.passwordResetToken.updateMany({
+        where: {
+          id: record.id,
+          usedAt: null,
+          expiresAt: { gt: new Date() },
+        },
+        data: { usedAt: new Date() },
+      })
+      if (tokenUpdate.count === 0) return false
+      await tx.user.update({
+        where: { id: record.userId },
+        data: { password: hashed },
+      })
+      await tx.session.deleteMany({ where: { userId: record.userId } })
+      return true
     })
-    await prisma.passwordResetToken.update({
-      where: { id: record.id },
-      data: { usedAt: new Date() },
-    })
-    await prisma.session.deleteMany({ where: { userId: record.userId } })
+    if (!claimed) {
+      return errorResponse("This reset link is invalid or has expired", 400)
+    }
 
     return new NextResponse(null, { status: 204 })
   } catch (e) {

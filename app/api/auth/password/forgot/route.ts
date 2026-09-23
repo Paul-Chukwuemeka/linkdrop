@@ -3,8 +3,7 @@ import { prisma } from "@/lib/db"
 import { passwordForgotSchema } from "@/lib/validations/auth"
 import { errorResponse, readJsonBody } from "@/lib/api-utils"
 import { checkRateLimit } from "@/lib/rate-limit"
-import { generateResetToken } from "@/lib/password-reset"
-import { RESET_TOKEN_TTL_MS } from "@/lib/password-reset"
+import { RESET_TOKEN_TTL_MS, generateResetToken, hashResetToken } from "@/lib/password-reset"
 import { sendPasswordResetEmail } from "@/lib/email"
 
 export async function POST(request: Request) {
@@ -24,17 +23,25 @@ export async function POST(request: Request) {
     const user = await prisma.user.findUnique({ where: { email } })
 
     if (user) {
-      await prisma.passwordResetToken.deleteMany({ where: { userId: user.id } })
       const { token, tokenHash } = generateResetToken()
-      await prisma.passwordResetToken.create({
-        data: {
-          userId: user.id,
-          tokenHash,
-          expiresAt: new Date(Date.now() + RESET_TOKEN_TTL_MS),
-        },
-      })
+      const expiresAt = new Date(Date.now() + RESET_TOKEN_TTL_MS)
+      await prisma.$transaction([
+        prisma.passwordResetToken.deleteMany({ where: { userId: user.id } }),
+        prisma.passwordResetToken.create({
+          data: {
+            userId: user.id,
+            tokenHash,
+            expiresAt,
+          },
+        }),
+      ])
       const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
       await sendPasswordResetEmail(user.email, `${base}/reset-password?token=${token}`)
+    } else {
+      // Dummy work so unknown emails cost comparable time (Req 7).
+      const { token } = generateResetToken()
+      hashResetToken(token)
+      await new Promise((resolve) => setTimeout(resolve, 100 + Math.random() * 200))
     }
 
     return NextResponse.json({ ok: true })

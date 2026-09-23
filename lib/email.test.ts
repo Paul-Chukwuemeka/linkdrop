@@ -35,6 +35,15 @@ describe("sendPasswordResetEmail", () => {
     expect(payload.text).toContain("http://localhost:3000/reset-password?token=abc")
   })
 
+  it("returns delivered false and logs when resend reports an error", async () => {
+    sendMock.mockResolvedValue({ data: null, error: { message: "boom" } })
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {})
+    const result = await sendPasswordResetEmail("jane@example.com", "http://x/y?token=abc")
+    expect(result).toEqual({ delivered: false })
+    expect(errorSpy).toHaveBeenCalled()
+    errorSpy.mockRestore()
+  })
+
   it("logs instead of sending when no API key is configured", async () => {
     delete process.env.RESEND_API_KEY
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {})

@@ -12,11 +12,15 @@ export async function sendPasswordResetEmail(
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY)
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: EMAIL_FROM,
     to,
     subject: "reset your dropcard password",
     text: `someone requested a password reset for your dropcard account.\n\nset a new password here (valid for 1 hour):\n${resetUrl}\n\nif that wasn't you, ignore this email.`,
   })
+  if (error) {
+    console.error("Failed to send password reset email:", error)
+    return { delivered: false }
+  }
   return { delivered: true }
 }
