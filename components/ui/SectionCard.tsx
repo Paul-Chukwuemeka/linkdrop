@@ -15,7 +15,7 @@ export function SectionCard({
 }) {
   return (
     <section
-      className={`rounded-xl border border-[rgba(26,26,26,0.08)] p-4 sm:p-6 ${
+      className={`rounded-xl border border-[rgba(26,26,26,0.08)] p-4 sm:p-5 ${
         tinted
           ? "bg-[#F9F9F7] dark:bg-neutral-800"
           : "bg-white dark:bg-neutral-900"

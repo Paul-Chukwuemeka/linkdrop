@@ -41,7 +41,7 @@ export function CardBioAndPublish() {
   }
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4">
+    <div className="flex flex-col gap-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4">
       <div>
         <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200">
           Publishing

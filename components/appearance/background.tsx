@@ -159,7 +159,7 @@ const Background = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-5 w-full">
+    <div className="flex flex-col gap-3 sm:gap-4 w-full">
       <div className="font-semibold flex flex-col mt-1 gap-2">
         <h2 className="text-sm sm:text-base font-semibold">Background Color</h2>
         <div className="w-full sm:w-70">
@@ -205,7 +205,7 @@ const Background = () => {
       </div>
 
       {bg_type === "gradient" && (
-        <div className="flex flex-col gap-4 sm:gap-5 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
+        <div className="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           <div>
             <h2 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Gradient Colors</h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-2 sm:mb-3">
@@ -297,7 +297,7 @@ const Background = () => {
       )}
 
       {bg_type === "image" && (
-        <div className="flex flex-col gap-4 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
+        <div className="flex flex-col gap-3 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           <div>
             <h2 className="text-sm sm:text-base font-semibold mb-2">Background Image</h2>
             <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-3">

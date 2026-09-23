@@ -53,7 +53,7 @@ export function CardRow({
 
   return (
     <div
-      className={`flex items-center justify-between gap-3 rounded-xl border p-3 sm:p-4 transition-colors ${
+      className={`flex items-center justify-between gap-3 rounded-xl border p-2.5 sm:p-3 transition-colors ${
         isActive
           ? "border-brand-green/40 bg-brand-green/5 dark:border-brand-green/50 dark:bg-brand-green/10"
           : "border-gray-200 bg-white dark:border-neutral-800 dark:bg-neutral-900"
@@ -66,7 +66,7 @@ export function CardRow({
       </div>
       {!isActive && (
         <button
-          className="shrink-0 inline-flex h-10 items-center justify-center rounded-lg bg-brand-green/10 px-3 sm:px-4 text-sm font-semibold text-brand-green transition-colors hover:bg-brand-green/20 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
+          className="shrink-0 inline-flex h-9 items-center justify-center rounded-lg bg-brand-green/10 px-3 sm:px-4 text-[13px] font-semibold text-brand-green transition-colors hover:bg-brand-green/20 touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={selectCard}
           disabled={isSelecting}
         >
@@ -74,7 +74,7 @@ export function CardRow({
         </button>
       )}
       {isActive && (
-        <span className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-brand-green/10 px-3 sm:px-4 py-2 text-sm font-medium text-brand-green">
+        <span           className="shrink-0 inline-flex items-center gap-1.5 rounded-lg bg-brand-green/10 px-3 sm:px-4 py-1.5 text-[13px] font-medium text-brand-green">
           <Star className="h-3.5 w-3.5" aria-hidden="true" />
           Active
         </span>
@@ -83,7 +83,7 @@ export function CardRow({
         onClick={() => {
           setIsConfirmOpen(true);
         }}
-        className="shrink-0 inline-flex h-10 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 touch-manipulation"
+        className="shrink-0 inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-[13px] font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 touch-manipulation"
       >
         <Trash2 className="h-4 w-4" />
         Delete

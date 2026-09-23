@@ -63,7 +63,7 @@ const Buttons = () => {
   const linkLayout = getLinkLayout(cardStyle);
   const isGlass = button_type.startsWith("glass");
   return (
-    <div className="flex flex-col gap-5 sm:gap-6 w-full">
+    <div className="flex flex-col gap-4 w-full">
       <div>
         <h2 className="text-sm sm:text-base font-semibold">Link Layout</h2>
         <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">

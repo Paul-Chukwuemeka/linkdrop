@@ -2,7 +2,7 @@
 import { useMemo, useState } from "react";
 import { useCard } from "@/context/CardContext";
 import { useProfile } from "@/context/ProfileContext";
-import { PenLine, Plus, FolderPlus, Loader2 } from "lucide-react";
+import { PenLine, Plus, FolderPlus, Loader2, Link2 } from "lucide-react";
 import Link from "next/link";
 import CardPreview from "@/components/cards/CardPreview";
 import { ButtonLoader } from "@/components/ui/ButtonLoader";
@@ -132,7 +132,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-3 lg:gap-4">
+    <div className="flex min-w-0 flex-col h-full gap-2 sm:gap-2.5 lg:gap-3">
       {error && (
         <div className="bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-700 dark:text-red-300  ring-red-100 dark:ring-red-800/50">
           {error}
@@ -153,8 +153,8 @@ export default function DashboardPage() {
         </div>
       )}
       <div className="flex-1 gap-1 md:gap-4 items-center w-full overflow-auto flex justify-center rounded-xl">
-        <div className="overflow-auto rounded-xl bg-white dark:bg-neutral-900 flex justify-center flex-1 w-full p-3 sm:p-4 md:p-6 h-full">
-          <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-3 sm:gap-4">
+        <div className="overflow-auto rounded-xl bg-white dark:bg-neutral-900 flex justify-center flex-1 w-full p-3 sm:p-4 md:p-5 h-full">
+          <div className="max-w-200 w-full h-fit shrink-0 flex flex-col gap-2.5 sm:gap-3">
             {currentCard && (
               <>
               <div className="flex px-1 items-center justify-between">
@@ -164,7 +164,7 @@ export default function DashboardPage() {
                   <input
                     id="card-name"
                     autoFocus
-                    className="text-xl flex-1 sm:text-2xl mb-1 font-semibold outline-none border-b-2 border-black dark:border-white bg-transparent text-neutral-900 dark:text-neutral-100 w-full mr-4"
+                    className="text-lg flex-1 sm:text-xl font-semibold outline-none border-b-2 border-black dark:border-white bg-transparent text-neutral-900 dark:text-neutral-100 w-full mr-4"
                     value={editedName}
                     onChange={(e) => setEditedName(e.target.value)}
                     onBlur={handleRename}
@@ -176,7 +176,7 @@ export default function DashboardPage() {
                 </>
               ) : (
                 <button
-                  className="text-xl tracking-wider capitalize sm:text-2xl mb-1 flex items-center gap-1 font-semibold cursor-pointer group dark:text-neutral-100 text-left"
+                  className="text-lg tracking-wide capitalize sm:text-xl flex items-center gap-1 font-semibold cursor-pointer group dark:text-neutral-100 text-left"
                   onClick={() => {
                     setEditedName(currentCard?.name || "");
                     setIsEditingName(true);
@@ -197,7 +197,7 @@ export default function DashboardPage() {
                 <button
                   onClick={() => updateCurrentCard(currentCard!.id)}
                   disabled={isSettingMain}
-                  className="text-white shadow-(--shadow-card) cursor-pointer font-bold w-30 h-9 bg-[#1B3A1B] px-3 rounded-full text-xs md:text-md disabled:opacity-50"
+                  className="text-white shadow-(--shadow-card) cursor-pointer font-bold w-30 h-9 bg-[#1B3A1B] px-3 rounded-full text-xs md:text-[13px] disabled:opacity-50"
                 >
                   {isSettingMain ? <ButtonLoader label="Saving…" /> : "Set as main card"}
                 </button>
@@ -207,7 +207,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex flex-col gap-2">
               <button
-                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-3 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 bg-[#1B3A1B] text-white font-medium py-2.5 px-4 rounded-xl hover:bg-[#2A502A] active:scale-[0.98] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
                 onClick={() => {
                   setIsCreatingLink(true);
                 }}
@@ -216,7 +216,7 @@ export default function DashboardPage() {
                 Add link
               </button>
               <button
-                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2.5 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
+                className="w-full cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 dark:border-neutral-700 py-2 px-4 text-sm font-medium text-gray-600 dark:text-neutral-300 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
                 onClick={() => {
                   setIsCreatingCollection(true);
                 }}
@@ -227,6 +227,22 @@ export default function DashboardPage() {
             </div>
             {isCreatingLink && <CreateLink />}
             {isCreatingCollection && <CreateCollection />}
+            {(currentCard.items_list?.length || 0) === 0 &&
+            !isCreatingLink &&
+            !isCreatingCollection ? (
+              <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 dark:border-neutral-700 px-4 py-8 text-center">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-green/10">
+                  <Link2 className="h-5 w-5 text-brand-green" aria-hidden="true" />
+                </div>
+                <p className="mt-2.5 text-sm font-semibold text-neutral-800 dark:text-neutral-200">
+                  No links yet
+                </p>
+                <p className="mt-1 max-w-xs text-[13px] text-neutral-500 dark:text-neutral-400">
+                  Add your first link above — it shows up here and in the
+                  preview instantly.
+                </p>
+              </div>
+            ) : null}
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -259,10 +275,10 @@ export default function DashboardPage() {
           </div>
         </div>
         <div
-          className="hidden lg:flex bg-gray-100 dark:bg-neutral-800/60 rounded-2xl  border-gray-200 dark:border-neutral-700 p-6 items-center justify-center h-full"
+          className="hidden lg:flex bg-gray-100 dark:bg-neutral-800/60 rounded-2xl  border-gray-200 dark:border-neutral-700 p-4 items-center justify-center h-full"
         >
           <div className="w-full">
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+            <h3 className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
               Preview
             </h3>
             <div className="mx-auto w-fit bg-white rounded-4xl border-6 border-gray-200 dark:border-neutral-700 shadow-xl p-2">

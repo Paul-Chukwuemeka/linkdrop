@@ -107,7 +107,7 @@ export function DraggableLink({
         style={style}
         ref={setNodeRef}
         className={[
-          "flex w-full items-center rounded-lg bg-white dark:bg-neutral-900 px-2 py-4 border-b border-gray-100 dark:border-neutral-800 last:border-b-0 shadow-(--shadow-card) sm:px-3 md:px-4 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors",
+          "flex w-full items-center rounded-lg bg-white dark:bg-neutral-900 px-2 py-3 border-b border-gray-100 dark:border-neutral-800 last:border-b-0 shadow-(--shadow-card) sm:px-3 hover:bg-gray-50 dark:hover:bg-neutral-800 transition-colors",
         ]
           .filter(Boolean)
           .join(" ")}
@@ -123,7 +123,7 @@ export function DraggableLink({
         <div className="flex min-w-0 flex-1 flex-col gap-1 px-2 sm:gap-1.5 sm:px-3">
           <div className="flex items-center gap-2">
             <button
-              className="flex-1 flex cursor-pointer items-center gap-2 text-sm font-semibold capitalize sm:text-base dark:text-neutral-100 text-left"
+              className="flex-1 flex cursor-pointer items-center gap-2 text-[13px] font-semibold capitalize sm:text-sm dark:text-neutral-100 text-left"
               onClick={() => setIsEditing(true)}
             >
               <span className="flex min-w-0 flex-1 items-center gap-2">
@@ -186,7 +186,7 @@ export function DraggableLink({
             </button>
           </div>
           <button
-            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-sm text-left"
+            className="flex w-full min-w-0 cursor-pointer items-center gap-1 text-xs font-medium text-black/70 dark:text-white/70 sm:text-[13px] text-left"
             onClick={() => setIsEditing(true)}
           >
             <span className="min-w-0 flex-1 truncate">{item.url}</span>

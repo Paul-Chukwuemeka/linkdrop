@@ -61,7 +61,7 @@ function NavItem({
         "transition-colors duration-150",
         mobile
           ? "flex md:hidden flex-col items-center justify-center px-1 py-1 h-10 w-10 touch-manipulation"
-          : "px-3 py-2.5 rounded-lg text-sm lg:text-base",
+          : "px-2.5 py-2 rounded-lg text-[13px]",
         !mobile && active
           ? "bg-[#1B3A1B]/10 text-[#1B3A1B] font-medium dark:bg-brand-green/25 dark:text-[#7ece7e]"
           : "font-semibold text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100",
@@ -83,19 +83,19 @@ export function Sidebar() {
   const { profile } = useProfile()
 
   return (
-    <aside className="hidden md:flex h-full min-h-0 w-full flex-col gap-4 overflow-y-auto rounded-xl bg-white/60 dark:bg-neutral-900/60 p-4 shadow-(--shadow-nav)    backdrop-blur">
+    <aside className="hidden md:flex h-full min-h-0 w-full flex-col gap-3 overflow-y-auto rounded-xl bg-white/60 dark:bg-neutral-900/60 p-3 shadow-(--shadow-nav)    backdrop-blur">
       <div className="flex items-center justify-between">
         <Link
           href="/"
-          className="text-xl lg:text-2xl font-extrabold tracking-tight text-dark dark:text-dark"
+          className="text-lg lg:text-xl font-extrabold tracking-tight text-dark dark:text-dark"
         >
           Dropcard
         </Link>
       </div>
 
-      <div className="px-3 py-4 border-b border-gray-100 dark:border-neutral-800">
+      <div className="px-2.5 py-3 border-b border-gray-100 dark:border-neutral-800">
         <div className="flex items-center justify-between gap-2">
-          <p className="min-w-0 truncate text-sm font-semibold text-gray-900 dark:text-neutral-100">
+          <p className="min-w-0 truncate text-[13px] font-semibold text-gray-900 dark:text-neutral-100">
             {profile?.fullname || user?.name}
           </p>
           <Link
@@ -118,20 +118,20 @@ export function Sidebar() {
         <NavItem href="/dashboard/settings" label="Settings" />
       </nav>
 
-      <div className="mt-auto flex flex-col gap-2">
+      <div className="flex flex-col gap-1.5">
         <PreviewToggle />
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {user?.username && (
             <Link
               href={`/u/${encodeURIComponent(user.username)}`}
               target="_blank"
-              className="inline-flex text-xs md:text-sm items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2.5 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
+              className="inline-flex text-xs md:text-[13px] items-center justify-center w-full bg-brand-green hover:bg-brand-green-hover text-white font-medium py-2 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
             >
               View public page
             </Link>
           )}
           <button
-            className="inline-flex items-center justify-center w-full bg-transparent border border-gray-200 text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 py-2.5 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
+            className="inline-flex items-center justify-center w-full bg-transparent border border-gray-200 text-xs md:text-[13px] text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800 py-2 px-4 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30"
             onClick={() => logout()}
           >
             Log out

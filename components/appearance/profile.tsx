@@ -146,8 +146,8 @@ const Profile = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row items-center gap-6 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700">
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-col sm:flex-row items-center gap-4 p-4 bg-neutral-50 dark:bg-neutral-800 rounded-2xl border border-neutral-200 dark:border-neutral-700">
         <div className="relative w-25 h-25 group">
           <div className="w-25 h-25 sm:w-full sm:h-full rounded-full overflow-hidden border-4 border-white dark:border-neutral-900 shadow-md bg-white dark:bg-neutral-700">
             {avatarPreview ? (
@@ -173,7 +173,7 @@ const Profile = () => {
         </div>
         
         <div className="flex flex-col gap-3 items-center sm:items-start">
-          <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200">Profile Image</h3>
+          <h3 className="font-bold text-base text-neutral-800 dark:text-neutral-200">Profile Image</h3>
           <div className="flex gap-2">
             <Button 
               variant="primary" 
@@ -218,7 +218,7 @@ const Profile = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
           Username
           <Input

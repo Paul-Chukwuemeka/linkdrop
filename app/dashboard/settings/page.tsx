@@ -44,7 +44,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center gap-3 rounded-xl bg-white dark:bg-neutral-900 p-10">
+      <div className="flex items-center gap-3 rounded-xl bg-white dark:bg-neutral-900 p-6">
         <Spinner />
         <div className="text-sm font-semibold text-neutral-800 dark:text-neutral-200">
           Loading settings…
@@ -54,12 +54,12 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="flex flex-col gap-3 sm:gap-4">
-      <div className="bg-white dark:bg-neutral-900 p-4 sm:p-5 md:p-6 rounded-xl">
-        <h1 className="text-xl sm:text-2xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
+    <div className="flex flex-col gap-2 sm:gap-3">
+      <div className="bg-white dark:bg-neutral-900 p-4 md:p-5 rounded-xl">
+        <h1 className="text-lg sm:text-xl font-extrabold tracking-tight text-neutral-900 dark:text-neutral-100">
           Settings
         </h1>
-        <p className="mt-2 text-sm text-neutral-700 dark:text-neutral-300">
+        <p className="mt-1 text-[13px] text-neutral-700 dark:text-neutral-300">
           Manage your account security.
         </p>
       </div>
@@ -70,7 +70,7 @@ export default function SettingsPage() {
         </div>
       )}
 
-      <div className="flex flex-1 flex-col gap-3 sm:gap-4 pb-5 pt-2">
+      <div className="flex flex-1 flex-col gap-2 sm:gap-3 pb-4 pt-1">
         <div className="w-full flex flex-col gap-3 sm:gap-4">
           <ConnectedAccount provider={me?.provider ?? null} email={me?.email ?? ""} />
           {me?.has_password ? <ChangePassword /> : null}

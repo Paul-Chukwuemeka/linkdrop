@@ -14,7 +14,7 @@ const Text = () => {
   const textSizes = ["small", "medium", "large"] as const;
 
   return (
-    <div className="flex flex-col gap-4 sm:gap-5">
+    <div className="flex flex-col gap-3 sm:gap-4">
       <div className="font-semibold flex flex-col gap-2">
         <p className="text-sm sm:text-base">Page font</p>
         <div className="w-full sm:w-70">

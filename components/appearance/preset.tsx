@@ -246,7 +246,7 @@ const Presets = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full max-w-180">
+    <div className="flex flex-col gap-4 w-full max-w-180">
       <div>
         <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
           Theme Presets
@@ -255,7 +255,7 @@ const Presets = () => {
           Choose a preset to quickly apply a complete theme to your profile.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {STYLE_PRESETS.map((preset, i) => {
             const isActive = cardStyle?.name === preset.name;
             const bgStyle = getBackgroundStyle(preset);

@@ -11,8 +11,20 @@ import { previewTitleSizeClasses, previewTextSizeClasses } from "@/lib/style-map
 import { fonts } from "@/lib/fonts";
 import { isLight, darken, lighten } from "@/utils/colors";
 
-const CardPreview = ({ mobile }: { mobile?: boolean }) => {
-  const { profile } = useProfile();
+function GhostRows() {
+  return (
+    <div aria-hidden="true" className="flex w-full flex-col gap-2 p-1 sm:p-2">
+      {[0, 1, 2].map((i) => (
+        <div
+          key={i}
+          className="h-11 rounded-xl border-2 border-dashed border-current opacity-20"
+        />
+      ))}
+    </div>
+  );
+}
+
+const CardPreview = ({ mobile }: { mobile?: boolean }) => {  const { profile } = useProfile();
   const { currentCard, isPreview, setIsPreview } = useCard();
   const { cardStyle, previewImage } = useStyle();
   const [imgError, setImgError] = useState(false);
@@ -109,6 +121,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               cardStyle={cardStyle}
               className="mt-4 gap-4"
             />
+            {(!items || items.length === 0) && <GhostRows />}
           </div>
         </div>
       </div>
@@ -184,6 +197,7 @@ const CardPreview = ({ mobile }: { mobile?: boolean }) => {
               cardStyle={cardStyle}
               className="w-full gap-2 sm:gap-2.5 p-1 sm:p-2 flex-1 text-xs"
             />
+            {(!items || items.length === 0) && <GhostRows />}
           </div>
         </div>
       </div>
