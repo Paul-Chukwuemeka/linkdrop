@@ -133,8 +133,8 @@ export default function Blob({ className = "" }: { className?: string }) {
   return (
     <div aria-hidden="true" className={className}>
       <div className="relative h-[68px] w-[78px] -rotate-[8deg] rounded-[52%_48%_46%_54%] bg-brand-green/90">
-        <span className="absolute left-[20px] top-[26px] h-3 w-2 rounded-full bg-background-primary" />
-        <span className="absolute right-[20px] top-[26px] h-3 w-2 rounded-full bg-background-primary" />
+        <span className="absolute left-[20px] top-6.5 h-3 w-2 rounded-full bg-background-primary" />
+        <span className="absolute right-[20px] top-6.5 h-3 w-2 rounded-full bg-background-primary" />
         <span className="absolute -top-[10px] left-1/2 h-3 w-0.5 -translate-x-1/2 bg-brand-green" />
       </div>
     </div>
@@ -268,7 +268,7 @@ function TapedCard({
     >
       <span
         aria-hidden="true"
-        className="tape absolute -top-2 left-1/2 h-[18px] w-16 -translate-x-1/2 -rotate-3"
+        className="tape absolute -top-2 left-1/2 h-4.5 w-16 -translate-x-1/2 -rotate-3"
       />
       {badge ? (
         <span className="absolute -right-2 -top-2 z-10 rotate-[8deg] rounded-full bg-accent-coral-dark px-2.5 py-1.5 text-[10px] font-extrabold text-white">
@@ -299,7 +299,7 @@ export default function Hero() {
     <section className="relative overflow-hidden">
       <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-6 pt-10 md:px-9 lg:grid-cols-[56fr_44fr] lg:gap-6 lg:pt-14">
         <div>
-          <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-brand-green">
+          <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-2.75 font-extrabold tracking-[0.08em] text-brand-green">
             100% FREE. ACTUALLY.
           </span>
           <h1 className="mt-3.5 font-(family-name:var(--font-syne)) text-4xl font-extrabold leading-[0.99] tracking-tight text-brand-green sm:text-5xl lg:text-6xl">
@@ -331,7 +331,7 @@ export default function Hero() {
           <div className="mt-4">
             <ClaimForm variant="hero" />
           </div>
-          <p className="mt-2.5 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+          <p className="mt-2.5 font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
             free forever · no card · nothing to cancel
           </p>
         </div>
@@ -370,12 +370,12 @@ export default function Hero() {
             ]}
           />
           <Blob className="hidden lg:absolute lg:bottom-2 lg:right-0 lg:block" />
-          <p className="font-hand text-[11px] text-[#5a5a48] lg:absolute lg:bottom-4 lg:left-24">
+          <p className="font-hand text-2.75 text-[#5a5a48] lg:absolute lg:bottom-4 lg:left-24">
             blob keeps an eye on it
           </p>
         </div>
       </div>
-      <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#5a5a48] md:px-9">
+      <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-(family-name:var(--font-jetbrains)) text-2.75 text-[#5a5a48] md:px-9">
         <span className="text-accent-coral">//</span>
         <span>18 fonts</span>
         <span>any color</span>
@@ -479,14 +479,14 @@ const themes: ThemePreview[] = [
 export default function ThemeWall() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+      <h2 className="font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
         // pick a look. any look.
       </h2>
       <div className="mt-3 flex flex-wrap items-start gap-3.5">
         {themes.map((theme) => (
           <div
             key={theme.name}
-            className={`relative w-[150px] rounded bg-white p-[11px] shadow-[0_10px_24px_rgba(27,58,27,0.14)] ${theme.rotate} ${theme.offset ?? ""}`}
+            className={`relative w-37.5 rounded bg-white p-2.75 shadow-[0_10px_24px_rgba(27,58,27,0.14)] ${theme.rotate} ${theme.offset ?? ""}`}
           >
             {theme.tape ? (
               <span
@@ -495,7 +495,7 @@ export default function ThemeWall() {
               />
             ) : null}
             <div className={`rounded-xl p-2.5 ${theme.surface}`}>
-              <div className={`mx-auto h-[26px] w-[26px] rounded-full ${theme.avatar}`} />
+              <div className={`mx-auto h-6.5 w-6.5 rounded-full ${theme.avatar}`} />
               <div className={`mx-auto mt-2 h-1.5 w-3/5 rounded-full ${theme.bar}`} />
               <div className={`mt-2 h-3.5 ${theme.link}`} />
               <div className={`mt-1.5 h-3.5 ${theme.linkAlt}`} />
@@ -505,7 +505,7 @@ export default function ThemeWall() {
             </div>
           </div>
         ))}
-        <p className="font-hand max-w-[180px] self-center text-xs text-[#5a5a48]">
+        <p className="font-hand max-w-45 self-center text-xs text-[#5a5a48]">
           ← or build your own from the editor. 18 fonts, any hex color, buttons,
           backgrounds.
         </p>
@@ -542,7 +542,7 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+      <h2 className="font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
         // how it works
       </h2>
       <div className="mt-3 max-w-[560px] rounded-lg border-2 border-dashed border-[#b9b19b] bg-background-primary px-5 py-1.5">
@@ -563,7 +563,7 @@ export default function HowItWorks() {
             <span className="text-sm font-extrabold text-brand-green">
               {step.title}
             </span>
-            <span className="ml-auto font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+            <span className="ml-auto font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
               {step.aside}
             </span>
           </div>
@@ -618,7 +618,7 @@ const stickers = [
 export default function FeatureStickers() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+      <h2 className="font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
         // what you get
       </h2>
       <div className="mt-3 flex max-w-[760px] flex-wrap gap-3">
@@ -723,7 +723,7 @@ const tiers: Tier[] = [
 export default function Pricing() {
   return (
     <section className="mx-auto w-full max-w-[1200px] px-6 pt-10 md:px-9">
-      <h2 className="font-(family-name:var(--font-jetbrains)) text-[11px] text-[#8a8a76]">
+      <h2 className="font-(family-name:var(--font-jetbrains)) text-2.75 text-[#8a8a76]">
         // pricing. no asterisks.
       </h2>
       <div className="mt-3 flex flex-wrap gap-4">
@@ -754,7 +754,7 @@ export default function Pricing() {
                   {tier.cadence}
                 </span>
               </div>
-              <ul className="mt-3 space-y-1.5 text-[11px] leading-snug">
+              <ul className="mt-3 space-y-1.5 text-2.75 leading-snug">
                 {tier.features.map((feature) => (
                   <li key={feature.text}>
                     {feature.text}
@@ -796,7 +796,7 @@ export default function FinalCta() {
           aria-hidden="true"
           className="tape absolute -top-3 left-4 h-5 w-16 -rotate-3"
         />
-        <h2 className="font-(family-name:var(--font-syne)) text-2xl font-extrabold tracking-tight sm:text-[26px]">
+        <h2 className="font-(family-name:var(--font-syne)) text-2xl font-extrabold tracking-tight sm:text-6.5">
           your name is
           <br />
           still available.
@@ -819,7 +819,7 @@ import Link from "next/link";
 export default function Footer() {
   return (
     <footer className="border-t-2 border-brand-green">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-2 px-6 py-3.5 font-(family-name:var(--font-jetbrains)) text-[11px] text-[#5a5a48] sm:flex-row sm:items-center sm:justify-between md:px-9">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-2 px-6 py-3.5 font-(family-name:var(--font-jetbrains)) text-2.75 text-[#5a5a48] sm:flex-row sm:items-center sm:justify-between md:px-9">
         <span>dropcard — for people who hate ugly link pages</span>
         <div className="flex gap-4">
           <Link href="/login" className="hover:text-brand-green">

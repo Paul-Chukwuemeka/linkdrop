@@ -55,7 +55,7 @@ const tiers: Tier[] = [
 export default function Pricing() {
   return (
     <section className="mx-auto mt-10 w-full max-w-[1200px] border-t-2 border-dashed border-[#c9c2ad] px-6 pt-8 md:px-9">
-      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+      <h2 className="font-(family-name:--font-jetbrains) text-2.75 text-[#5a5a48]">
         {"// pricing. no asterisks."}
       </h2>
       <div className="mt-3 flex flex-wrap gap-4">
@@ -86,7 +86,7 @@ export default function Pricing() {
                   {tier.cadence}
                 </span>
               </div>
-              <ul className="mt-3 space-y-1.5 text-[11px] leading-snug">
+              <ul className="mt-3 space-y-1.5 text-2.75 leading-snug">
                 {tier.features.map((feature) => (
                   <li key={feature.text}>
                     {feature.text}

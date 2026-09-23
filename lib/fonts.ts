@@ -107,6 +107,10 @@ export const landingFontClass = [
   jetbrainsMono.variable,
 ].join(" ");
 
+export const authFontClass = [spaceGrotesk.variable, jetbrainsMono.variable].join(
+  " "
+);
+
 const appFont = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-app",

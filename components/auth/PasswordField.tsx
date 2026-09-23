@@ -59,7 +59,10 @@ export function PasswordField({
   return (
     <div className="space-y-1.5">
       <div className="flex items-center justify-between">
-        <label htmlFor={id} className="text-sm font-medium text-primary">
+        <label
+          htmlFor={id}
+          className="font-[family-name:var(--font-jetbrains)] text-[11px] font-medium uppercase tracking-wider text-[#5a5a48]"
+        >
           Password
         </label>
         {labelAction}
@@ -75,7 +78,7 @@ export function PasswordField({
           autoComplete={autoComplete}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-error` : `${id}-strength`}
-          className="w-full rounded-lg border border-gray-200 bg-white py-2.5 pl-3 pr-10 text-sm text-primary placeholder:text-gray-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 transition-colors"
+          className="w-full rounded-md border-2 border-brand-green bg-white py-2.5 pl-3 pr-10 text-sm text-primary placeholder:text-gray-400 focus:border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 transition-colors"
         />
         <button
           type="button"

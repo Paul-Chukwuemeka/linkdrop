@@ -32,7 +32,7 @@ export default function ClaimForm({ variant }: { variant: Variant }) {
         <span className="sr-only">Your Dropcard username</span>
         <span
           aria-hidden="true"
-          className="font-[family-name:var(--font-jetbrains)] text-xs text-[#5a5a48] sm:text-sm"
+          className="font-(family-name:--font-jetbrains) text-xs text-[#5a5a48] sm:text-sm"
         >
           dropcard.co/
         </span>

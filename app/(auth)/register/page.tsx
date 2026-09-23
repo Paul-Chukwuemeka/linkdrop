@@ -19,17 +19,23 @@ export default function RegisterPage() {
     <div className="grid min-h-dvh lg:grid-cols-[55%_45%]">
       <div className="flex min-h-dvh flex-col items-center justify-center px-6 py-10 sm:px-10">
         <div className="mb-10 flex w-full max-w-md items-center justify-between lg:hidden">
-          <Link href="/" className="text-xl font-medium tracking-tight text-primary">
+          <Link
+            href="/"
+            className="font-[family-name:var(--font-space-grotesk)] text-xl font-extrabold tracking-tight text-brand-green"
+          >
             Dropcard
           </Link>
         </div>
 
-        <div className="w-full max-w-md sm:rounded-2xl sm:border sm:border-gray-200 sm:bg-background-elevated sm:p-8 sm:shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)]">
-          <h1 className="text-2xl font-semibold tracking-tight text-primary">
-            Create your Dropcard
+        <div className="w-full max-w-md rounded-lg border-2 border-dashed border-[#b9b19b] bg-background-elevated p-6 shadow-[0_20px_50px_-12px_rgba(27,58,27,0.18)] sm:p-8">
+          <p className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+            {"// sign up"}
+          </p>
+          <h1 className="mt-1 font-[family-name:var(--font-space-grotesk)] text-3xl font-extrabold tracking-tight text-brand-green">
+            claim your name
           </h1>
           <p className="mt-1 text-sm text-secondary">
-            Claim your username and start building your public page.
+            claim your username and start building your public page.
           </p>
 
           <div className="mt-8">
@@ -52,25 +58,24 @@ export default function RegisterPage() {
         />
         <Link
           href="/"
-          className="relative z-10 self-start text-2xl font-medium tracking-tight text-white"
+          className="relative z-10 self-start font-[family-name:var(--font-space-grotesk)] text-2xl font-extrabold tracking-tight text-white"
         >
           Dropcard
         </Link>
 
         <div className="relative z-10 flex flex-col items-center pb-16 text-center">
-          <h2 className="max-w-sm text-4xl font-medium leading-tight tracking-tight text-white">
-            Make it unmistakably{" "}
-            <span className="headline-underline">yours</span>.
+          <h2 className="max-w-sm font-[family-name:var(--font-space-grotesk)] text-5xl font-extrabold leading-[1.02] tracking-tight text-white">
+            make it unmistakably <span className="marker-phrase">yours.</span>
           </h2>
-          <p className="mt-4 max-w-sm text-center text-base leading-relaxed text-white/70">
-            Your work deserves a better link-in-bio.
+          <p className="mt-4 font-[family-name:var(--font-jetbrains)] text-xs text-white/70">
+            {"// free forever · no card"}
           </p>
 
           <div className="mt-8 flex items-center gap-3">
-            {featurePills.map(({ icon: Icon, label }) => (
+            {featurePills.map(({ icon: Icon, label }, i) => (
               <span
                 key={label}
-                className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur-sm"
+                className={`inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur-sm ${i % 2 === 0 ? "-rotate-2" : "rotate-1"}`}
               >
                 <Icon className="h-3 w-3" aria-hidden="true" />
                 {label}

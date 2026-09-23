@@ -55,24 +55,26 @@ const themes: ThemePreview[] = [
 
 export default function ThemeWall() {
   return (
-    <section className="mx-auto mt-10 w-full max-w-[1200px] border-t-2 border-dashed border-[#c9c2ad] px-6 pt-8 md:px-9">
-      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+    <section className="mx-auto w-full max-w-300 border-dashed border-[#c9c2ad] px-6 pt-8 md:px-9">
+      <h2 className="font-(family-name:--font-jetbrains) text-2.75 text-[#5a5a48]">
         {"// pick a look. any look."}
       </h2>
       <div className="mt-3 flex flex-wrap items-start gap-3.5">
         {themes.map((theme) => (
           <div
             key={theme.name}
-            className={`relative w-[150px] rounded bg-white p-[11px] shadow-[0_10px_24px_rgba(27,58,27,0.14)] transition-transform hover:-translate-y-0.5 ${theme.rotate} ${theme.offset ?? ""}`}
+            className={`relative w-37.5 rounded bg-white p-2.75 shadow-[0_10px_24px_rgba(27,58,27,0.14)] transition-transform hover:-translate-y-0.5 ${theme.rotate} ${theme.offset ?? ""}`}
           >
             {theme.tape ? (
               <span
                 aria-hidden="true"
                 className="tape absolute -top-2 left-4 h-4 w-14 -rotate-3"
+
               />
+
             ) : null}
             <div className={`rounded-xl p-2.5 ${theme.surface}`}>
-              <div className={`mx-auto h-[26px] w-[26px] rounded-full ${theme.avatar}`} />
+              <div className={`mx-auto h-6.5 w-6.5 rounded-full ${theme.avatar}`} />
               <div className={`mx-auto mt-2 h-1.5 w-3/5 rounded-full ${theme.bar}`} />
               <div className={`mt-2 h-3.5 ${theme.link}`} />
               <div className={`mt-1.5 h-3.5 ${theme.linkAlt}`} />
@@ -82,10 +84,11 @@ export default function ThemeWall() {
             </div>
           </div>
         ))}
-        <p className="font-hand max-w-[180px] self-center text-xs text-[#5a5a48]">
+        <p className="font-hand max-w-45 self-center text-xs text-[#5a5a48]">
           ← or build your own from the editor. 18 fonts, any hex color, buttons,
           backgrounds.
         </p>
+
       </div>
     </section>
   );

@@ -144,9 +144,11 @@ export function RegisterForm() {
       />
 
       <div className="my-6 flex items-center gap-4">
-        <div className="h-px flex-1 bg-gray-200" />
-        <span className="text-xs font-medium text-gray-400">Or continue with</span>
-        <div className="h-px flex-1 bg-gray-200" />
+        <div className="flex-1 border-t-2 border-dashed border-[#d5cdb8]" />
+        <span className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+          or continue with
+        </span>
+        <div className="flex-1 border-t-2 border-dashed border-[#d5cdb8]" />
       </div>
 
       <form className="flex flex-col gap-5" onSubmit={onSubmit} noValidate>
@@ -190,7 +192,7 @@ export function RegisterForm() {
         />
 
         {error && (
-          <div role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          <div role="alert" className="rounded-md border border-accent-coral/40 bg-[#fbe9e1] p-3 text-sm text-accent-coral-dark">
             {error}
           </div>
         )}
@@ -198,7 +200,7 @@ export function RegisterForm() {
         <button
           type="submit"
           disabled={isSubmitting || isGoogleSubmitting}
-          className="flex w-full items-center justify-center rounded-lg bg-brand-green py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-brand-green-hover active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+          className="flex w-full items-center justify-center rounded-md bg-brand-green py-2.5 font-[family-name:var(--font-space-grotesk)] text-sm font-extrabold text-background-primary sticker-shadow-gold transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
         >
           {isSubmitting ? (
             <>
@@ -206,23 +208,23 @@ export function RegisterForm() {
               <span className="sr-only">Creating account…</span>
             </>
           ) : (
-            "Sign up free"
+            "sign up free"
           )}
         </button>
       </form>
 
       <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-secondary">
         <Check className="h-3.5 w-3.5 text-brand-green" aria-hidden="true" />
-        No credit card required. Free forever.
+        no credit card. free forever.
       </p>
 
       <p className="mt-6 text-center text-sm text-secondary">
-        Already have an account?{" "}
+        already have an account?{" "}
         <Link
           href="/login"
           className="font-semibold text-brand-green underline-offset-2 hover:underline"
         >
-          Log in
+          log in
         </Link>
       </p>
     </div>

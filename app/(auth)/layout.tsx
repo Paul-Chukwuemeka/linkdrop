@@ -1,6 +1,10 @@
+import { authFontClass } from "@/lib/fonts";
+
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-dvh bg-background-primary font-[family-name:var(--font-inter)] text-primary">
+    <main
+      className={`${authFontClass} paper-grain min-h-dvh bg-background-paper font-[family-name:var(--font-inter)] text-primary`}
+    >
       {children}
     </main>
   );

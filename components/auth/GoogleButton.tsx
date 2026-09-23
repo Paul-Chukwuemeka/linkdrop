@@ -24,7 +24,7 @@ export function GoogleButton({
       aria-label={ariaLabel ?? label}
       onClick={onClick}
       disabled={loading || disabled}
-      className="w-full flex items-center justify-center gap-2.5 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-primary shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+      className="w-full flex items-center justify-center gap-2.5 rounded-md border-2 border-brand-green bg-white px-4 py-2.5 text-sm font-semibold text-primary shadow-sm transition-all hover:-translate-y-0.5 hover:bg-[#f7efdd] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
     >
       {loading ? (
         <ButtonLoader label="Redirecting…" />

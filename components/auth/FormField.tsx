@@ -2,7 +2,7 @@ import React from "react";
 import { FieldError } from "@/components/auth/FieldError";
 
 const inputBase =
-  "w-full bg-white px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors rounded-lg";
+  "w-full bg-white px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 border-2 border-brand-green focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors rounded-md";
 
 interface FormFieldProps {
   id: string;
@@ -21,7 +21,10 @@ export function FormField({
 }: FormFieldProps) {
   return (
     <div className="space-y-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-primary">
+      <label
+        htmlFor={id}
+        className="font-[family-name:var(--font-jetbrains)] text-[11px] font-medium uppercase tracking-wider text-[#5a5a48]"
+      >
         {label}
       </label>
       {React.cloneElement(children, {

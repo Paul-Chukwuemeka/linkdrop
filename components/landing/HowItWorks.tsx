@@ -22,7 +22,7 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section className="mx-auto mt-10 w-full max-w-[1200px] border-t-2 border-dashed border-[#c9c2ad] px-6 pt-8 md:px-9">
-      <h2 className="font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+      <h2 className="font-(family-name:--font-jetbrains) text-2.75 text-[#5a5a48]">
         {"// how it works"}
       </h2>
       <div className="mt-3 max-w-[560px] rounded-lg border-2 border-dashed border-[#b9b19b] bg-background-primary px-5 py-1.5">
@@ -43,7 +43,7 @@ export default function HowItWorks() {
             <span className="text-sm font-extrabold text-brand-green">
               {step.title}
             </span>
-            <span className="ml-auto font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+            <span className="ml-auto font-(family-name:--font-jetbrains) text-2.75 text-[#5a5a48]">
               {step.aside}
             </span>
           </div>

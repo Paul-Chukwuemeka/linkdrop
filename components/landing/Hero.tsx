@@ -1,4 +1,3 @@
-import Blob from "@/components/landing/Blob";
 import ClaimForm from "@/components/landing/ClaimForm";
 
 type CardLink = { label: string; className: string };
@@ -21,18 +20,18 @@ function TapedCard({
   return (
     <div
       aria-hidden="true"
-      className={`relative rounded bg-white p-[13px] shadow-[0_12px_30px_rgba(27,58,27,0.16)] transition-transform hover:-translate-y-0.5 lg:p-[18px] ${className}`}
+      className={`relative hover:z-100 rounded bg-white lg:w-60 p-3.25 shadow-[0_12px_30px_rgba(27,58,27,0.16)] transition-transform hover:-translate-y-0.5 lg:p-4.5 ${className}`}
     >
       <span
         aria-hidden="true"
-        className="tape absolute -top-2 left-1/2 h-[18px] w-16 -translate-x-1/2 -rotate-3 lg:h-[22px] lg:w-20"
+        className="tape absolute -top-2 left-1/2 h-4.5 w-16 -translate-x-1/2 -rotate-3 lg:h-5.5 lg:w-20"
       />
       {badge ? (
-        <span className="absolute -right-2 -top-2 z-10 rotate-[8deg] rounded-full bg-accent-coral-dark px-2.5 py-1.5 text-[10px] font-extrabold text-white lg:px-3 lg:py-2 lg:text-[11px]">
+        <span className="absolute -right-2 -top-2 z-10 rotate-[8deg] rounded-full bg-accent-coral-dark px-2.5 py-1.5 text-[10px] font-extrabold text-white lg:px-3 lg:py-2 lg:text-2.75">
           {badge}
         </span>
       ) : null}
-      <div className="font-[family-name:var(--font-jetbrains)] text-[10px] text-[#8a6420] lg:text-xs">
+      <div className="font-(family-name:--font-jetbrains) text-[10px] text-[#8a6420] lg:text-xs">
         {`// ${label}`}
       </div>
       <strong className="block text-[13px] text-brand-green lg:text-[17px]">{handle}</strong>
@@ -53,30 +52,30 @@ function TapedCard({
 
 export default function Hero() {
   return (
-    <section className="paper-grain relative overflow-hidden bg-background-paper">
-      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-1 gap-10 px-6 pt-10 md:px-9 lg:grid-cols-[56fr_44fr] lg:gap-6 lg:pt-14">
+    <section className="paper-grain relative overflow-hidden pb-10 border-b-2 border-[#c9c2ad] lg:min-h-200 flex items-center justify-center border-dashed bg-background-paper">
+      <div className="mx-auto grid w-full max-w-300 grid-cols-1 gap-10 px-6 pt-10 md:px-9 lg:grid-cols-[56fr_44fr] lg:gap-6 lg:pt-14">
         <div>
-          <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-[11px] font-extrabold tracking-[0.08em] text-brand-green">
+          <span className="inline-block -rotate-2 rounded-[3px] bg-accent-gold px-2.5 py-1.5 text-2.75 font-extrabold tracking-[0.08em] text-brand-green">
             100% FREE. ACTUALLY.
           </span>
-          <h1 className="mt-3.5 font-[family-name:var(--font-space-grotesk)] text-4xl font-extrabold leading-[0.99] tracking-[-0.03em] text-brand-green sm:text-[41px]">
-            stop looking like{" "}
+          <h1 className="mt-3.5 font-(family-name:--font-space-grotesk) text-4xl font-extrabold leading-[0.99] tracking-[-0.03em] text-brand-green sm:text-[41px]">
+            Stop looking like{" "}
             <span className="marker-phrase whitespace-nowrap">everyone else&apos;s</span>
             <br />
             link-in-bio.
           </h1>
-          <p className="mt-3 max-w-[430px] text-[15px] text-[#5a5a48]">
+          <p className="mt-3 max-w-107.5 text-[15px] text-[#5a5a48]">
             your colors, your fonts, your links. group them how you want. one
             minute, tops.
           </p>
           <div className="mt-4">
             <ClaimForm variant="hero" />
           </div>
-          <p className="mt-2.5 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48]">
+          <p className="mt-2.5 font-(family-name:--font-jetbrains) text-2.75 text-[#5a5a48]">
             free forever · no card · nothing to cancel
           </p>
         </div>
-        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:block lg:h-[430px]">
+        <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 lg:block lg:h-107.5">
           <TapedCard
             label="theme 01"
             handle="@theo.codes"
@@ -97,7 +96,6 @@ export default function Hero() {
             label="theme 02"
             handle="@lume.studio"
             caption="dm serif + gold"
-            badge="new"
             className="lg:absolute lg:left-6 lg:top-32 lg:-rotate-3"
             links={[
               {
@@ -110,23 +108,10 @@ export default function Hero() {
               },
             ]}
           />
-          <Blob className="hidden lg:absolute lg:bottom-2 lg:right-0 lg:block" />
-          <p className="font-hand text-[11px] text-[#5a5a48] lg:absolute lg:bottom-4 lg:left-24">
-            blob keeps an eye on it
-          </p>
+
         </div>
       </div>
-      <div className="mx-auto mt-8 flex max-w-[1200px] flex-wrap gap-x-6 gap-y-1 border-t-2 border-dashed border-[#c9c2ad] px-6 pt-3 font-[family-name:var(--font-jetbrains)] text-[11px] text-[#5a5a48] md:px-9">
-        <span aria-hidden="true" className="text-accent-coral">
-          {"//"}
-        </span>
-        <span>18 fonts</span>
-        <span>any color</span>
-        <span>collections</span>
-        <span>multiple cards</span>
-        <span>backgrounds</span>
-        <span>free forever</span>
-      </div>
+
     </section>
   );
 }

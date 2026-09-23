@@ -121,7 +121,6 @@ html {
   display: none;
 }
 
-/* Slow drifting glow — used by the signup brand panel */
 @keyframes glow-drift {
   0%,
   100% {
@@ -156,15 +155,6 @@ html {
   .animate-glow-drift {
     animation: none;
   }
-}
-
-/* ── Headline gold underline ──────────────────────────────── */
-.headline-underline {
-  text-decoration: underline;
-  text-decoration-color: #c8963e;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 6px;
-  text-decoration-skip-ink: none;
 }
 
 /* ── Noise texture overlay ────────────────────────────────── */

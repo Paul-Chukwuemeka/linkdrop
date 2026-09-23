@@ -48,15 +48,18 @@ export function UsernameField({ id, value, onChange, onBlur, error }: UsernameFi
       : "checking";
 
   const inputClassName =
-    "flex-1 rounded-r-lg border border-gray-200 px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors";
+    "flex-1 rounded-r-md border-2 border-brand-green px-3 py-2.5 text-sm text-primary placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green transition-colors";
 
   return (
     <div className="space-y-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-primary">
+      <label
+        htmlFor={id}
+        className="font-[family-name:var(--font-jetbrains)] text-[11px] font-medium uppercase tracking-wider text-[#5a5a48]"
+      >
         Username
       </label>
       <div className="flex">
-        <span className="select-none rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 px-3 py-2.5 text-sm font-medium text-gray-500">
+        <span className="select-none rounded-l-md border-2 border-r-0 border-brand-green bg-[#f7efdd] px-3 py-2.5 font-[family-name:var(--font-jetbrains)] text-sm text-[#5a5a48]">
           dropcard.co/
         </span>
         <input
