@@ -46,6 +46,22 @@ export const passwordChangeSchema = z.object({
     ),
 })
 
+export const passwordForgotSchema = z.object({
+  email: z.string().email("Invalid email address"),
+})
+
+export const passwordResetSchema = z.object({
+  token: z.string().min(1, "Reset token is required"),
+  new_password: z
+    .string()
+    .min(PASSWORD_MIN_LENGTH, `Password must be at least ${PASSWORD_MIN_LENGTH} characters`)
+    .max(PASSWORD_MAX_LENGTH, `Password must be at most ${PASSWORD_MAX_LENGTH} characters`)
+    .regex(
+      PASSWORD_PATTERN,
+      "Password must contain an uppercase letter, a lowercase letter, and a number"
+    ),
+})
+
 export const accountDeleteSchema = z.object({
   password: z.string().min(1, "Current password is required").optional(),
   confirm: z.string().min(1, "Confirmation is required").optional(),
@@ -55,3 +71,5 @@ export type SignupInput = z.infer<typeof signupSchema>
 export type LoginInput = z.infer<typeof loginSchema>
 export type PasswordChangeInput = z.infer<typeof passwordChangeSchema>
 export type AccountDeleteInput = z.infer<typeof accountDeleteSchema>
+export type PasswordForgotInput = z.infer<typeof passwordForgotSchema>
+export type PasswordResetInput = z.infer<typeof passwordResetSchema>
