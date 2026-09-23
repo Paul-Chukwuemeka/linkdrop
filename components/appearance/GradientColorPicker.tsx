@@ -145,7 +145,7 @@ export const GradientColorsManager = ({
       </div>
 
       <div className="flex flex-col gap-2">
-        <span className="text-sm text-neutral-500 dark:text-neutral-400">Quick add from palette:</span>
+        <span className="text-[13px] text-neutral-500 dark:text-neutral-400">Quick add from palette:</span>
         <div className="flex gap-2">
           {paletteColors.map((color, index) => (
           <button

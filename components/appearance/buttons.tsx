@@ -65,7 +65,7 @@ const Buttons = () => {
   return (
     <div className="flex flex-col gap-4 w-full">
       <div>
-        <h2 className="text-sm sm:text-base font-semibold">Link Layout</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold">Link Layout</h2>
         <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
           {layoutOptions.map((option) => (
               <button
@@ -77,13 +77,13 @@ const Buttons = () => {
                 aria-pressed={linkLayout == option.value}
               >
               <LayoutMockup value={option.value} />
-              <p className="text-xs sm:text-sm font-semibold capitalize">{option.label}</p>
+              <p className="text-xs sm:text-[13px] font-semibold capitalize">{option.label}</p>
             </button>
           ))}
         </div>
       </div>
       <div>
-        <h2 className="text-sm sm:text-base font-semibold">Button Style</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold">Button Style</h2>
         <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
           <button
             className={`${button_type == "solid" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex flex-1 sm:flex-none sm:w-40 items-center justify-center bg-black/5 flex-col gap-1 p-2 rounded-lg transition-colors touch-manipulation`}
@@ -123,7 +123,7 @@ const Buttons = () => {
 
       {isGlass && (
         <div>
-          <h2 className="text-sm sm:text-base font-semibold">Glass Intensity</h2>
+          <h2 className="text-[13px] sm:text-sm font-semibold">Glass Intensity</h2>
           <div className="flex flex-wrap w-full mt-2 gap-2 sm:gap-3">
             {glassOptions.map((option) => (
               <button
@@ -146,7 +146,7 @@ const Buttons = () => {
       )}
 
       <div>
-        <h2 className="text-sm sm:text-base font-semibold">Button Corner</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold">Button Corner</h2>
         <div className="flex flex-wrap gap-2 sm:gap-3 mt-2">
           <button
             className={`${button_radius == "square" && "ring-2 ring-black dark:ring-white/40"} h-16 sm:h-20 flex-1 sm:flex-none sm:w-32 p-2 sm:p-4 flex items-center justify-center bg-black/5 flex-col gap-1 rounded-lg transition-colors touch-manipulation`}
@@ -196,21 +196,21 @@ const Buttons = () => {
       </div>
 
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-sm sm:text-base">Button {button_type === "outline" ? "outline" : "background"} color</p>
+        <p className="text-[13px] sm:text-sm">Button {button_type === "outline" ? "outline" : "background"} color</p>
         <div className="w-full sm:w-70">
           <ColorPicker property="button_bg" />
         </div>
       </div>
 
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-sm sm:text-base">Button text color</p>
+        <p className="text-[13px] sm:text-sm">Button text color</p>
         <div className="w-full sm:w-70">
           <ColorPicker property="button_color" />
         </div>
       </div>
 
       <div>
-        <h2 className="text-sm sm:text-base font-semibold mb-3">Shadow Style</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold mb-3">Shadow Style</h2>
         <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
           {shadowOptions.map((option) => {
             const isActive = shadow === option.value;
@@ -246,7 +246,7 @@ const Buttons = () => {
       </div>
 
       <div className="font-semibold flex flex-col gap-2">
-        <p className="text-sm sm:text-base">Shadow color</p>
+        <p className="text-[13px] sm:text-sm">Shadow color</p>
         <div className="w-full sm:w-70">
           <ColorPicker property="shadow_color" />
         </div>

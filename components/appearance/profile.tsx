@@ -68,8 +68,6 @@ const Profile = () => {
 
   const getAvatarUrl = (url: string | null | undefined) => {
     if (!url) return "/user.svg";
-    // Absolute (re-hosted or remote) or a relative /avatars/ path rendered as-is;
-    // anything else is a legacy/garbage value we shouldn't hand to <Image>.
     if (url.startsWith("http") || url.startsWith("/avatars/")) return url;
     return "/user.svg";
   };
@@ -110,9 +108,7 @@ const Profile = () => {
         setAvatarBlob(null);
       }
 
-      // Only send username when it actually changed. Always sending it breaks
-      // legacy OAuth users with short (< 3 char) usernames, because the schema
-      // rejects them and the profile could never be saved again.
+     
       const payload: Record<string, unknown> = {
         fullname: profile.fullname,
         bio: profile.bio,
@@ -219,7 +215,7 @@ const Profile = () => {
       </div>
 
       <div className="flex flex-col gap-3">
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-2 text-[13px] font-semibold text-neutral-800 dark:text-neutral-200">
           Username
           <Input
             value={profile?.username}
@@ -230,7 +226,7 @@ const Profile = () => {
           />
         </label>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-2 text-[13px] font-semibold text-neutral-800 dark:text-neutral-200">
           Full name
           <Input
             value={profile?.fullname}
@@ -244,7 +240,7 @@ const Profile = () => {
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-3  ring-black/5">
             <div>
-              <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+              <div className="text-[13px] font-bold text-neutral-800 dark:text-neutral-200">
                 Use profile bio
               </div>
               <div className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
@@ -273,7 +269,7 @@ const Profile = () => {
             </button>
           </div>
 
-          <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
+          <label className="flex flex-col gap-2 text-[13px] font-semibold text-neutral-800 dark:text-neutral-200">
             {useProfileBio ? "Profile bio" : "Card bio"}
             <Textarea
               rows={4}
@@ -299,7 +295,7 @@ const Profile = () => {
           </label>
         </div>
 
-        <label className="flex flex-col gap-2 font-semibold text-neutral-800 dark:text-neutral-200">
+        <label className="flex flex-col gap-2 text-[13px] font-semibold text-neutral-800 dark:text-neutral-200">
           Avatar URL (Optional)
           <Input
             value={urlInput}

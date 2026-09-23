@@ -43,7 +43,7 @@ export function CardBioAndPublish() {
   return (
     <div className="flex flex-col gap-3 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 p-4">
       <div>
-        <h3 className="font-bold text-lg text-neutral-800 dark:text-neutral-200">
+        <h3 className="font-bold text-base text-neutral-800 dark:text-neutral-200">
           Publishing
         </h3>
         <p className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">
@@ -59,7 +59,7 @@ export function CardBioAndPublish() {
 
       <div className="flex items-center justify-between gap-3 rounded-xl bg-white dark:bg-neutral-900 p-4  ring-black/5">
         <div>
-          <div className="text-sm font-bold text-neutral-800 dark:text-neutral-200">
+          <div className="text-[13px] font-bold text-neutral-800 dark:text-neutral-200">
             Public page
           </div>
           <div className="mt-1 text-xs text-neutral-500 dark:text-neutral-400">

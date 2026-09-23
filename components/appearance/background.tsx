@@ -161,13 +161,13 @@ const Background = () => {
   return (
     <div className="flex flex-col gap-3 sm:gap-4 w-full">
       <div className="font-semibold flex flex-col mt-1 gap-2">
-        <h2 className="text-sm sm:text-base font-semibold">Background Color</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold">Background Color</h2>
         <div className="w-full sm:w-70">
           <ColorPicker property="card_bg" />
         </div>
       </div>
       <div>
-        <h2 className="text-sm sm:text-base font-semibold">Background Style</h2>
+        <h2 className="text-[13px] sm:text-sm font-semibold">Background Style</h2>
         <div className="flex flex-wrap gap-2 sm:gap-3">
           <button
             className={`flex flex-col items-center gap-1 sm:gap-2 font-semibold text-black/60 dark:text-white/60 text-sm sm:text-base p-2 sm:p-3 rounded-lg transition-colors touch-manipulation ${bg_type == "solid" ? "ring-2 ring-black/50 dark:ring-white/50" : "ring-1 ring-black/20 dark:ring-white/20"}`}
@@ -207,8 +207,8 @@ const Background = () => {
       {bg_type === "gradient" && (
         <div className="flex flex-col gap-3 sm:gap-4 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           <div>
-            <h2 className="text-sm sm:text-base font-semibold mb-2 sm:mb-3">Gradient Colors</h2>
-            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-2 sm:mb-3">
+            <h2 className="text-[13px] sm:text-sm font-semibold mb-2 sm:mb-3">Gradient Colors</h2>
+            <p className="text-xs sm:text-[13px] text-neutral-600 dark:text-neutral-400 mb-2 sm:mb-3">
               Add up to 6 colors. First color is from Background Color above.
             </p>
             <GradientColorsManager
@@ -219,7 +219,7 @@ const Background = () => {
           </div>
 
           <div className="border-t border-neutral-200 dark:border-neutral-700 pt-3 sm:pt-4">
-            <h2 className="text-sm sm:text-base font-semibold">Gradient Type</h2>
+            <h2 className="text-[13px] sm:text-sm font-semibold">Gradient Type</h2>
             <div className="flex gap-2 sm:gap-3 mt-2">
               <button
                 className={`flex-1 py-2 sm:py-3 px-3 sm:px-4 rounded-lg border-2 text-sm font-medium transition-colors touch-manipulation ${
@@ -248,7 +248,7 @@ const Background = () => {
 
           {gradient_type === "linear" && (
             <>
-              <h2 className="text-sm sm:text-base font-semibold mt-2">Gradient Direction</h2>
+              <h2 className="text-[13px] sm:text-sm font-semibold mt-2">Gradient Direction</h2>
               <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
                 {directionPresets.map((preset) => {
                   const isActive = (gradient_direction ?? 135) === preset.angle;
@@ -265,15 +265,15 @@ const Background = () => {
                       }
                       aria-pressed={isActive}
                     >
-                      <span className="text-base sm:text-lg font-bold">{preset.label}</span>
+                      <span className="text-sm sm:text-base font-bold">{preset.label}</span>
                     </button>
                   );
                 })}
               </div>
               <div className="mt-2">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400">Custom Angle</span>
-                  <span className="text-xs sm:text-sm font-medium">
+                  <span className="text-xs sm:text-[13px] text-neutral-600 dark:text-neutral-400">Custom Angle</span>
+                  <span className="text-xs sm:text-[13px] font-medium">
                     {gradient_direction ?? 135}°
                   </span>
                 </div>
@@ -299,8 +299,8 @@ const Background = () => {
       {bg_type === "image" && (
         <div className="flex flex-col gap-3 p-3 sm:p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-700">
           <div>
-            <h2 className="text-sm sm:text-base font-semibold mb-2">Background Image</h2>
-            <p className="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 mb-3">
+            <h2 className="text-[13px] sm:text-sm font-semibold mb-2">Background Image</h2>
+            <p className="text-xs sm:text-[13px] text-neutral-600 dark:text-neutral-400 mb-3">
               Upload an image or paste an image URL. It applies to this card only.
             </p>
 

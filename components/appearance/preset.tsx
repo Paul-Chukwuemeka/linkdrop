@@ -248,10 +248,10 @@ const Presets = () => {
   return (
     <div className="flex flex-col gap-4 w-full max-w-180">
       <div>
-        <h2 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
+        <h2 className="text-base font-bold text-neutral-900 dark:text-neutral-100 mb-2">
           Theme Presets
         </h2>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400 mb-6">
+        <p className="text-[13px] text-neutral-600 dark:text-neutral-400 mb-4">
           Choose a preset to quickly apply a complete theme to your profile.
         </p>
 
@@ -300,7 +300,7 @@ const Presets = () => {
 
                 <div className="flex items-center justify-between">
                   <span
-                    className={`font-semibold text-sm ${
+                    className={`font-semibold text-[13px] ${
                       isActive ? "text-neutral-900 dark:text-neutral-100" : "text-neutral-700 dark:text-neutral-300"
                     }`}
                   >
