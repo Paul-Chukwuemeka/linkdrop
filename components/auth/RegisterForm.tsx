@@ -53,6 +53,7 @@ export function RegisterForm() {
   const [error, setError] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false)
+  const [succeeded, setSucceeded] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof FormState, string>>>({})
   const [touched, setTouched] = useState<Partial<Record<keyof FormState, boolean>>>({})
 
@@ -123,6 +124,8 @@ export function RegisterForm() {
         password: form.password,
         redirectTo: "/dashboard",
       })
+      // Navigation away is async — stay locked so the button can't be re-clicked.
+      setSucceeded(true)
     } catch {
       setError("Registration failed. Please try again.")
     } finally {
@@ -199,10 +202,15 @@ export function RegisterForm() {
 
         <button
           type="submit"
-          disabled={isSubmitting || isGoogleSubmitting}
-          className="flex w-full items-center justify-center rounded-md bg-brand-green py-2.5 font-[family-name:var(--font-space-grotesk)] text-sm font-extrabold text-background-primary sticker-shadow-gold transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
+          disabled={isSubmitting || isGoogleSubmitting || succeeded}
+          className="flex w-full items-center justify-center gap-2 rounded-md bg-brand-green py-2.5 font-[family-name:var(--font-space-grotesk)] text-sm font-extrabold text-background-primary sticker-shadow-gold transition-transform hover:-translate-y-0.5 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
         >
-          {isSubmitting ? (
+          {succeeded ? (
+            <>
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+              taking you in…
+            </>
+          ) : isSubmitting ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
               <span className="sr-only">Creating account…</span>
