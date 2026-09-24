@@ -118,7 +118,7 @@ export function Sidebar() {
         <NavItem href="/dashboard/settings" label="Settings" />
       </nav>
 
-      <div className="flex flex-col gap-1.5">
+      <div className="mt-auto flex flex-col gap-1.5">
         <PreviewToggle />
         <div className="space-y-1.5">
           {user?.username && (
