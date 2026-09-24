@@ -79,3 +79,4 @@ backup.sql
 .superpowers/
 
 .worktrees/
+*.md
